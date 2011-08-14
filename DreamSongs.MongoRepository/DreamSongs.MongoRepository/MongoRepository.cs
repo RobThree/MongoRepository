@@ -44,6 +44,29 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
+        /// Gets the Mongo collection (to perform advance operations)
+        /// </summary>
+        public MongoCollection<T> Collection
+        {
+            get
+            {
+                return _collection;
+            }
+        }
+        
+
+        /// <summary>
+        /// Gets the database in being used for this repository
+        /// </summary>
+        public MongoDatabase DB 
+        {
+            get
+            {
+                return _db;
+            }
+        }
+
+        /// <summary>
         /// Returns the T by its given ObjectId
         /// </summary>
         /// <param name="id">The object Id</param>
@@ -104,7 +127,7 @@ namespace DreamSongs.MongoRepository
        public void Remove(string objectId)
         {
             _collection.Remove(Query.EQ("_id", objectId));
-        }
+        }      
     }
 }
 

@@ -1,11 +1,23 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using MongoDB.Driver;
 
 namespace DreamSongs.MongoRepository
 {
    public interface IRepository<T> where T : Entity
     {
+
+       /// <summary>
+       /// Gets the Mongo collection (to perform advance operations)
+       /// </summary>
+        MongoCollection<T> Collection { get; }
+
+       /// <summary>
+       /// Gets the database in being used for this repository
+       /// </summary>
+        MongoDatabase DB { get; }
+
         /// <summary>
         /// Returns the T by its given ObjectId
         /// </summary>
