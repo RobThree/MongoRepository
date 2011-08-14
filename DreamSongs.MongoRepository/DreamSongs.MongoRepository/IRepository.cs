@@ -18,14 +18,14 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>The T</returns>
-        T GetSingle(Expression<Func<T, bool>> expression);
+        T GetSingle(Expression<Func<T, bool>> criteria);
 
         /// <summary>
         /// Retunrs the list of T where it matches the criteria
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>List of T</returns>
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> criteria);
 
         /// <summary>
         /// Inserts the new item in DB
@@ -33,5 +33,18 @@ namespace DreamSongs.MongoRepository
         /// <param name="item">The Item T</param>
         /// <returns>The added Item inclduing its new ObjectId</returns>
         T Insert(T item);
+
+        /// <summary>
+        /// Updates a row
+        /// </summary>
+        /// <param name="item">The object</param>
+        /// <returns>The updated object</returns>
+        T Update(T item);
+
+       /// <summary>
+       /// Deletes a document from db by its id
+       /// </summary>
+       /// <param name="objectId">The obj id</param>
+        void Remove(string objectId);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using FluentMongo.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
 namespace DreamSongs.MongoRepository
 {
@@ -57,9 +58,9 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>The T</returns>
-        public T GetSingle(Expression<Func<T, bool>> expression)
+        public T GetSingle(Expression<Func<T, bool>> criteria)
         {
-            return _collection.AsQueryable().Where(expression).FirstOrDefault();
+            return _collection.AsQueryable().Where(criteria).FirstOrDefault();
         }
 
         /// <summary>
@@ -67,9 +68,9 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>List of T</returns>
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> criteria)
         {
-            return _collection.AsQueryable().Where(expression);
+            return _collection.AsQueryable().Where(criteria);
         }
 
         /// <summary>
@@ -82,14 +83,27 @@ namespace DreamSongs.MongoRepository
             _collection.Insert<T>(item);
 
             return item;
-        }        
+        }
 
-        public MongoCollection<T> Collection
+        /// <summary>
+        /// Updates a row
+        /// </summary>
+        /// <param name="item">The object</param>
+        /// <returns>The updated object</returns>
+        public T Update(T item)
         {
-            get
-            {
-                return _collection;
-            }
+            _collection.Save<T>(item);
+
+            return item;
+        }
+
+        /// <summary>
+        /// Deletes a document from db by its id
+        /// </summary>
+        /// <param name="objectId">The obj id</param>
+       public void Remove(string objectId)
+        {
+            _collection.Remove(Query.EQ("_id", objectId));
         }
     }
 }
