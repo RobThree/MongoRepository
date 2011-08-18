@@ -28,14 +28,14 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Returns the T (1 record) by the given criteria
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="criteria">The expression</param>
         /// <returns>The T</returns>
         T GetSingle(Expression<Func<T, bool>> criteria);
 
         /// <summary>
         /// Retunrs the list of T where it matches the criteria
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="criteria">The expression</param>
         /// <returns>List of T</returns>
         IQueryable<T> GetAll(Expression<Func<T, bool>> criteria);
 
@@ -45,6 +45,13 @@ namespace DreamSongs.MongoRepository
         /// <param name="item">The Item T</param>
         /// <returns>The added Item inclduing its new ObjectId</returns>
         T Insert(T item);
+
+        /// <summary>
+        /// Adds the new item in DB
+        /// </summary>
+        /// <param name="item">The Item T</param>
+        /// <returns>The added Item inclduing its new ObjectId</returns>
+        T Add(T item);
 
         /// <summary>
         /// Updates a row
@@ -58,5 +65,25 @@ namespace DreamSongs.MongoRepository
        /// </summary>
        /// <param name="objectId">The obj id</param>
         void Remove(string objectId);
+
+        /// <summary>
+        /// Deletes a document from db by its id
+        /// </summary>
+        /// <param name="objectId">The obj id</param>
+        void Delete(string objectId);
+
+       /// <summary>
+       /// Counts the total records saved in db.
+       /// </summary>
+       /// <returns>Int value</returns>
+        int Count();
+
+       /// <summary>
+       /// Checks if the entity exists for given criteria
+       /// </summary>
+       /// <typeparam name="T">The T</typeparam>
+        /// <param name="criteria">The expression</param>
+       /// <returns>true or false</returns>
+        bool Exists(Expression<Func<T, bool>> criteria);
     }
 }

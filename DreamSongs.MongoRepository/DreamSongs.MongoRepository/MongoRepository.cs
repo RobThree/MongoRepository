@@ -27,6 +27,8 @@ namespace DreamSongs.MongoRepository
 
         /// <summary>
         /// Initilizes the instance of MongoRepository, Setups the MongoDB and The Collection (i.e T)
+        /// Uses the Default App.Config tag names to fetch the connectionString and Database name
+        /// Check the DBSetting class for the App.Config tag names.
         /// </summary>
         public MongoRepository()
         {
@@ -41,7 +43,7 @@ namespace DreamSongs.MongoRepository
             }
 
             _collection = _db.GetCollection<T>(collectionName);
-        }
+        }        
 
         /// <summary>
         /// Gets the Mongo collection (to perform advance operations)
@@ -101,7 +103,20 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="item">The Item T</param>
         /// <returns>The added Item inclduing its new ObjectId</returns>
+        [Obsolete("This method will be removed in future releases. Use Add method instead of Insert")]
         public T Insert(T item)
+        {
+            _collection.Insert<T>(item);
+
+            return item;
+        }
+
+        /// <summary>
+        /// Adds the new item in DB
+        /// </summary>
+        /// <param name="item">The Item T</param>
+        /// <returns>The added Item inclduing its new ObjectId</returns>
+        public T Add(T item)
         {
             _collection.Insert<T>(item);
 
@@ -124,10 +139,40 @@ namespace DreamSongs.MongoRepository
         /// Deletes a document from db by its id
         /// </summary>
         /// <param name="objectId">The obj id</param>
+        [Obsolete("This method will be removed in future releases. Use Delete method instead of Remove")]
        public void Remove(string objectId)
         {
             _collection.Remove(Query.EQ("_id", objectId));
-        }      
+        }
+
+        /// <summary>
+        /// Deletes a document from db by its id
+        /// </summary>
+        /// <param name="objectId">The obj id</param>
+        public void Delete(string objectId)
+        {
+            _collection.Remove(Query.EQ("_id", objectId));
+        }
+
+       /// <summary>
+       /// Counts the total records saved in db.
+       /// </summary>
+       /// <returns>Int value</returns>
+       public int Count()
+       {
+           return _collection.Count();
+       }
+
+       /// <summary>
+       /// Checks if the entity exists for given criteria
+       /// </summary>
+       /// <typeparam name="T">The T</typeparam>
+       /// <param name="criteria">The expression</param>
+       /// <returns>true or false</returns>
+       public bool Exists(Expression<Func<T, bool>> criteria)
+       {
+           return _collection.AsQueryable().Any(criteria);
+       }
     }
 }
 

@@ -45,7 +45,7 @@ namespace MongoRepositoryTests
                 Country = "Alaska"
             };
 
-            _customerRepo.Insert(customer);
+            _customerRepo.Add(customer);
 
             Assert.IsNotNull(customer.Id);
 
@@ -66,7 +66,9 @@ namespace MongoRepositoryTests
 
             Assert.IsNotNull(updatedCustomer);
             Assert.AreEqual(alreadyAddedCustomer.Phone, updatedCustomer.Phone);
-            Assert.AreEqual(alreadyAddedCustomer.Email, updatedCustomer.Email);           
+            Assert.AreEqual(alreadyAddedCustomer.Email, updatedCustomer.Email);
+
+            Assert.IsTrue(_customerRepo.Exists(c => c.HomeAddress.Country == "Alaska"));
         }
     }
 }
