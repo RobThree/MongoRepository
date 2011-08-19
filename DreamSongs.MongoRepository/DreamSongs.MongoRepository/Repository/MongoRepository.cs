@@ -81,7 +81,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Returns the T (1 record) by the given criteria
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="criteria">The expression</param>
         /// <returns>The T</returns>
         public T GetSingle(Expression<Func<T, bool>> criteria)
         {
@@ -91,7 +91,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Retunrs the list of T where it matches the criteria
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="criteria">The expression</param>
         /// <returns>List of T</returns>
         public IQueryable<T> GetAll(Expression<Func<T, bool>> criteria)
         {

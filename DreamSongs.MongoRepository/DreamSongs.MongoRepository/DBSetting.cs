@@ -13,12 +13,12 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// placeholder for server settings tag in app/web.config (use to build the connectionstring)
         /// </summary>
-        private static string _settingsTag = "MongoServerSettings";
+        private const string _settingsTag = "MongoServerSettings";
 
         /// <summary>
         /// the database tag name in app/web.config (use to build the connectionstring)
         /// </summary>
-        private static string _dbNameTag = "MongoDBName";
+        private const string _dbNameTag = "MongoDBName";
 
         /// <summary>
         /// The database (in use) name

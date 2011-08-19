@@ -9,7 +9,7 @@ namespace DreamSongs.MongoRepository
     /// </summary>
     public abstract class Entity
     {
-        public Entity()
+        protected Entity()
         {
             if (string.IsNullOrEmpty(CollectionName))
             {
@@ -17,7 +17,7 @@ namespace DreamSongs.MongoRepository
             }
         }
 
-        public Entity(string collectionName)
+        protected Entity(string collectionName)
         {
             CollectionName = collectionName;            
         }

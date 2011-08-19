@@ -5,6 +5,10 @@ using MongoDB.Driver;
 
 namespace DreamSongs.MongoRepository
 {
+    /// <summary>
+    /// IRepository definition
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
    public interface IRepository<T> where T : Entity
     {
 
