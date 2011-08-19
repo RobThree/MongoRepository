@@ -89,5 +89,11 @@ namespace DreamSongs.MongoRepository
         /// <param name="criteria">The expression</param>
        /// <returns>true or false</returns>
         bool Exists(Expression<Func<T, bool>> criteria);
+
+        /// <summary>
+        /// Returns an IQueryable for the given entity
+        /// </summary>
+        /// <returns>The IQueryable </returns>
+        IQueryable<T> AsQueryable();
     }
 }
