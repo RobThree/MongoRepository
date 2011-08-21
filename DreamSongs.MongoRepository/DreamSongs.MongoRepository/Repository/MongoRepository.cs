@@ -99,6 +99,15 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
+        /// Retunrs the All the records of T
+        /// </summary>
+        /// <returns>List of T</returns>
+        public IQueryable<T> GetAll()
+        {
+            return _collection.AsQueryable();
+        }
+
+        /// <summary>
         /// Inserts the new item in DB
         /// </summary>
         /// <param name="item">The Item T</param>
@@ -181,7 +190,7 @@ namespace DreamSongs.MongoRepository
         public IQueryable<T> AsQueryable()
        {
            return _collection.AsQueryable();
-       }
+       }        
     }
 }
 

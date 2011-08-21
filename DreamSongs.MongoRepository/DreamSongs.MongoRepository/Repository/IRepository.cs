@@ -37,6 +37,12 @@ namespace DreamSongs.MongoRepository
         T GetSingle(Expression<Func<T, bool>> criteria);
 
         /// <summary>
+        /// Retunrs the All the records of T
+        /// </summary>
+        /// <returns>List of T</returns>
+        IQueryable<T> GetAll();
+
+        /// <summary>
         /// Retunrs the list of T where it matches the criteria
         /// </summary>
         /// <param name="criteria">The expression</param>

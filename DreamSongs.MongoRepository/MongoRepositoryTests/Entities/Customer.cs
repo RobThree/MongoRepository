@@ -33,7 +33,18 @@ namespace MongoRepositoryTests.Entities
    {
        public DateTime PurchaseDate { get; set; }
 
-       public IList<Tuple<Product, int>> Items;
+       public IList<OrderItem> Items;
+   }
+
+   public class OrderItem
+   {
+       public Product Product
+       {
+           get;
+           set;
+       }
+
+       public int Quantity { get; set; }
    }
 
     public class Address
