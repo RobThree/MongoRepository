@@ -1,5 +1,4 @@
-﻿using System;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace DreamSongs.MongoRepository
@@ -9,29 +8,34 @@ namespace DreamSongs.MongoRepository
     /// </summary>
     public abstract class Entity
     {
-        protected Entity()
-        {
-            if (string.IsNullOrEmpty(CollectionName))
-            {
-                throw new ArgumentNullException("The collection name for this entity can't be empty.");
-            }
-        }
-
-        protected Entity(string collectionName)
-        {
-            CollectionName = collectionName;            
-        }
-
         /// <summary>
         /// Gets or sets the id for this object (the primary record for an entity)
         /// </summary>
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets the persistance collection name for this entity
         /// </summary>
         [BsonIgnore]
         public string CollectionName { get; private set; }
+
+        /// <summary>
+        /// Default constructor; uses the typename as collectionname
+        /// </summary>
+        protected Entity()
+        {
+            CollectionName = this.GetType().Name;
+        }
+
+        /// <summary>
+        /// Constructor specifying collectionname
+        /// </summary>
+        /// <param name="collectionName">Used to override collectionname</param>
+        protected Entity(string collectionName)
+        {
+            CollectionName = collectionName;
+        }
     }
 }

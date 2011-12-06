@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DreamSongs.MongoRepository
@@ -9,91 +10,83 @@ namespace DreamSongs.MongoRepository
     /// IRepository definition
     /// </summary>
     /// <typeparam name="T"></typeparam>
-   public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : Entity
     {
-
-       /// <summary>
-       /// Gets the Mongo collection (to perform advance operations)
-       /// </summary>
+        /// <summary>
+        /// Gets the Mongo collection (to perform advanced operations)
+        /// </summary>
+        /// <remarks>
+        /// One can argue that exposing this property (and with that, access to it's Database property for instance
+        /// (which is a "parent")) is not the responsibility of this class.
+        /// </remarks>
+        [Obsolete("This property will be removed in future releases.")]
         MongoCollection<T> Collection { get; }
-
-       /// <summary>
-       /// Gets the database in being used for this repository
-       /// </summary>
-        MongoDatabase DB { get; }
 
         /// <summary>
         /// Returns the T by its given ObjectId
         /// </summary>
-        /// <param name="id">The object Id</param>
+        /// <param name="id">The string representing the ObjectId of the object to retrieve</param>
         /// <returns>The Entity T</returns>
         T GetById(string id);
 
         /// <summary>
-        /// Returns the T (1 record) by the given criteria
+        /// Returns a single T by the given criteria
         /// </summary>
         /// <param name="criteria">The expression</param>
         /// <returns>The T</returns>
         T GetSingle(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Retunrs the All the records of T
+        /// Returns All the records of T
         /// </summary>
-        /// <returns>List of T</returns>
+        /// <returns>IQueryable of T</returns>
         IQueryable<T> GetAll();
 
         /// <summary>
-        /// Retunrs the list of T where it matches the criteria
+        /// Returns the list of T where it matches the criteria
         /// </summary>
         /// <param name="criteria">The expression</param>
-        /// <returns>List of T</returns>
+        /// <returns>IQueryable of T</returns>
         IQueryable<T> GetAll(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Inserts the new item in DB
+        /// Adds the new item in the collection
         /// </summary>
         /// <param name="item">The Item T</param>
-        /// <returns>The added Item inclduing its new ObjectId</returns>
-        T Insert(T item);
-
-        /// <summary>
-        /// Adds the new item in DB
-        /// </summary>
-        /// <param name="item">The Item T</param>
-        /// <returns>The added Item inclduing its new ObjectId</returns>
+        /// <returns>The added Item including its new ObjectId</returns>
         T Add(T item);
 
         /// <summary>
-        /// Updates a row
+        /// Upserts an item
         /// </summary>
         /// <param name="item">The object</param>
         /// <returns>The updated object</returns>
         T Update(T item);
 
-       /// <summary>
-       /// Deletes a document from db by its id
-       /// </summary>
-       /// <param name="objectId">The obj id</param>
-        void Remove(string objectId);
+        /// <summary>
+        /// Deletes an item from the collection by its id
+        /// </summary>
+        /// <param name="id">The string representation of the object id</param>
+        void Delete(string id);
 
         /// <summary>
-        /// Deletes a document from db by its id
+        /// Deletes an item from the collection by its id
         /// </summary>
-        /// <param name="objectId">The obj id</param>
-        void Delete(string objectId);
+        /// <param name="id">The object id</param>
+        void Delete(ObjectId id);
 
-       /// <summary>
-       /// Counts the total records saved in db.
-       /// </summary>
-       /// <returns>Int value</returns>
-        int Count();
+        /// <summary>
+        /// Counts the total items in the collection.
+        /// </summary>
+        /// <returns>Count of items in the collection</returns>
+        long Count();
 
-       /// <summary>
-       /// Checks if the entity exists for given criteria
-       /// </summary>
-       /// <typeparam name="T">The T</typeparam>
+        /// <summary>
+        /// Checks if the entity exists for given criteria
+        /// </summary>
+        /// <typeparam name="T">The T</typeparam>
         /// <param name="criteria">The expression</param>
-       /// <returns>true or false</returns>
+        /// <returns>true when an entity matching the criteria exists, false otherwise</returns>
         bool Exists(Expression<Func<T, bool>> criteria);
 
         /// <summary>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DreamSongs.MongoRepository;
-using MongoRepositoryTests.Entities;
-using FluentMongo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
-
+using MongoRepositoryTests.Entities;
 
 namespace MongoRepositoryTests
 {
@@ -14,18 +13,24 @@ namespace MongoRepositoryTests
     public class RepoTests
     {
         IRepository<Customer> _customerRepo;
-        
-        [TestInitialize]   
+        IRepository<Product> _productRepo;
+
+        [TestInitialize]
         public void Setup()
         {
             // setup the db, tables and Repository 
-            _customerRepo = new MongoRepository<Customer>();            
+            _customerRepo = new MongoRepository<Customer>();
+            _productRepo = new MongoRepository<Product>();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _customerRepo.DB.Drop();
+            //_customerRepo.Collection.Database.Drop();
+            var x = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
+            var s = new MongoServer(x.ToServerSettings());
+            var d = s.GetDatabase(x.DatabaseName);
+            d.Drop();
         }
 
         [TestMethod]
@@ -40,8 +45,8 @@ namespace MongoRepositoryTests
             {
                 Address1 = "North kingdom 15 west",
                 Address2 = "1 north way",
-                PostCode = "40990", 
-                City = "George Town", 
+                PostCode = "40990",
+                City = "George Town",
                 Country = "Alaska"
             };
 
@@ -92,9 +97,13 @@ namespace MongoRepositoryTests
             order.PurchaseDate = DateTime.Now.AddDays(-2);
             var orderItems = new List<OrderItem>();
 
-            var item1 =  new OrderItem{ Product = new Product(){ Name = "Palmolive Shampoo", Price = 5 }, Quantity = 1};
-            var item2 = new OrderItem { Product = new Product() { Name = "Mcleans Paste", Price = 4 }, Quantity = 2 };
-            
+            var shampoo = _productRepo.Add(new Product() { Name = "Palmolive Shampoo", Price = 5 });
+            var paste = _productRepo.Add(new Product() { Name = "Mcleans Paste", Price = 4 });
+
+
+            var item1 = new OrderItem { Product = shampoo, Quantity = 1 };
+            var item2 = new OrderItem { Product = paste, Quantity = 2 };
+
             orderItems.Add(item1);
             orderItems.Add(item2);
 
@@ -103,7 +112,7 @@ namespace MongoRepositoryTests
             customer.Orders = new List<Order>
             {
                 order
-            };              
+            };
 
             _customerRepo.Add(customer);
 
@@ -115,7 +124,7 @@ namespace MongoRepositoryTests
             var theOrderItems = theOrders[0].Select(o => o.Items);
 
             Assert.IsNotNull(theOrders);
-            Assert.IsNotNull(theOrderItems);            
+            Assert.IsNotNull(theOrderItems);
         }
     }
 }
