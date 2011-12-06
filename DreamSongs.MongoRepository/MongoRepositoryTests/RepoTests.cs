@@ -67,7 +67,7 @@ namespace MongoRepositoryTests
             _customerRepo.Update(alreadyAddedCustomer);
 
             // fetch by id now 
-            var updatedCustomer = _customerRepo.GetById(customer.Id.ToString());
+            var updatedCustomer = _customerRepo.GetById(customer.Id);
 
             Assert.IsNotNull(updatedCustomer);
             Assert.AreEqual(alreadyAddedCustomer.Phone, updatedCustomer.Phone);
