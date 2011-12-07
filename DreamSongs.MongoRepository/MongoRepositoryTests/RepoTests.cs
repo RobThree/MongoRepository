@@ -36,6 +36,8 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void AddAndUpdateTest()
         {
+            new MongoRepositoryManager<Customer>().Drop();
+
             var customer = new Customer();
             customer.FirstName = "Bob";
             customer.LastName = "Dillon";
@@ -79,6 +81,8 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void ComplexEntityTest()
         {
+            new MongoRepositoryManager<Customer>().Drop();
+
             var customer = new Customer();
             customer.FirstName = "Erik";
             customer.LastName = "Swaun";
@@ -126,5 +130,64 @@ namespace MongoRepositoryTests
             Assert.IsNotNull(theOrders);
             Assert.IsNotNull(theOrderItems);
         }
+
+
+        [TestMethod]
+        public void BatchTest()
+        {
+            _customerRepo.DeleteAll();
+
+            var custlist = new List<Customer>(new Customer[] {
+                new Customer() { FirstName = "Customer A" },
+                new Customer() { FirstName = "Client B" },
+                new Customer() { FirstName = "Customer C" },
+                new Customer() { FirstName = "Client D" },
+                new Customer() { FirstName = "Customer E" },
+                new Customer() { FirstName = "Client F" },
+                new Customer() { FirstName = "Customer G" },
+            });
+
+            //Insert batch
+            _customerRepo.Add(custlist);
+
+            var count = _customerRepo.Count();
+            Assert.AreEqual(7, count);
+            foreach (Customer c in custlist)
+                Assert.AreNotEqual("000000000000000000000000", c.Id);
+
+            //Update batch
+            foreach (Customer c in custlist)
+                c.LastName = c.FirstName;
+            _customerRepo.Update(custlist);
+
+            foreach (Customer c in _customerRepo.GetAll())
+                Assert.AreEqual(c.FirstName, c.LastName);
+
+            //Delete by criteria
+            _customerRepo.Delete(f => f.FirstName.StartsWith("Client"));
+
+            count = _customerRepo.Count();
+            Assert.AreEqual(4, count);
+
+            //Delete specific object
+            _customerRepo.Delete(custlist[0]);
+
+            //Test AsQueryable
+            var selectedcustomers = from cust in _customerRepo.AsQueryable()
+                                       where cust.LastName.EndsWith("C") || cust.LastName.EndsWith("G")
+                                       select cust;
+
+            Assert.AreEqual(2, selectedcustomers.ToList().Count);
+
+            count = _customerRepo.Count();
+            Assert.AreEqual(3, count);
+
+            //Drop entire repo
+            new MongoRepositoryManager<Customer>().Drop();
+
+            count = _customerRepo.Count();
+            Assert.AreEqual(0, count);
+        }
+
     }
 }

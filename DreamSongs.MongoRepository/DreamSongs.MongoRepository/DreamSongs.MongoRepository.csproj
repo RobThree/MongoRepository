@@ -55,9 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="RepositoryManager\IRepositoryManager.cs" />
+    <Compile Include="RepositoryManager\MongoRepositoryManager.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\MongoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentMongo.Linq;
@@ -9,6 +9,10 @@ using MongoDB.Driver.Builders;
 
 namespace DreamSongs.MongoRepository
 {
+    /// <summary>
+    /// Deals with entities in MongoDb
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class MongoRepository<T> : IRepository<T>
         where T : Entity
     {
@@ -18,30 +22,21 @@ namespace DreamSongs.MongoRepository
         private MongoCollection<T> _collection;
 
         /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the collection (i.e T)
+        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
         /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name
         /// </summary>
         /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring</remarks>
         public MongoRepository()
-            : this(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString)
+            : this(Util.GetDefaultConnectionString())
         { }
 
         /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and The Collection (i.e T)
+        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
         /// </summary>
         /// <param name="connectionString">Connectionstring to use for connecting to MongoDB</param>
         public MongoRepository(string connectionString)
         {
-            var collectionName = ((Entity)Activator.CreateInstance((typeof(T)))).CollectionName;
-            if (String.IsNullOrEmpty(collectionName))
-            {
-                throw new ArgumentException("Collection name cannot be empty for this entity");
-            }
-
-            var cnn = new MongoUrl(connectionString);
-            var _server = MongoServer.Create(cnn.ToServerSettings());
-            var _db = _server.GetDatabase(cnn.DatabaseName);
-            _collection = _db.GetCollection<T>(collectionName);
+            _collection = Util.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace DreamSongs.MongoRepository
         /// One can argue that exposing this property (and with that, access to it's Database property for instance
         /// (which is a "parent")) is not the responsibility of this class.
         /// </remarks>
-        [Obsolete("This property will be removed in future releases.")]
+        [Obsolete("This property will be removed in future releases; for most purposes you can use the MongoRepositoryManager<T>.")]
         public MongoCollection<T> Collection
         {
             get
@@ -61,13 +56,23 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Returns the T by its given ObjectId
+        /// Returns the T by its given id
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the object to retrieve</param>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
         /// <returns>The Entity T</returns>
         public T GetById(string id)
         {
-            return _collection.FindOneByIdAs<T>(new ObjectId(id));
+            return this.GetById(new ObjectId(id));
+        }
+
+        /// <summary>
+        /// Returns the T by its given ObjectId
+        /// </summary>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
+        /// <returns>The Entity T</returns>
+        public T GetById(ObjectId id)
+        {
+            return _collection.FindOneByIdAs<T>(id);
         }
 
         /// <summary>
@@ -100,51 +105,97 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Adds the new item in the collection
+        /// Adds the new entity in the repository
         /// </summary>
-        /// <param name="item">The Item T</param>
-        /// <returns>The added Item including its new ObjectId</returns>
-        public T Add(T item)
+        /// <param name="entity">The entity T</param>
+        /// <returns>The added entity including its new ObjectId</returns>
+        public T Add(T entity)
         {
-            _collection.Insert<T>(item);
+            _collection.Insert<T>(entity);
 
-            return item;
+            return entity;
         }
 
         /// <summary>
-        /// Upserts an item
+        /// Adds the new entities in the repository
         /// </summary>
-        /// <param name="item">The object</param>
-        /// <returns>The updated object</returns>
-        public T Update(T item)
+        /// <param name="entities">The entities of type T</param>
+        public void Add(IEnumerable<T> entities)
         {
-            _collection.Save<T>(item);
-
-            return item;
+            _collection.InsertBatch<T>(entities);
         }
 
         /// <summary>
-        /// Deletes an item from the collection by its id
+        /// Upserts an entity
         /// </summary>
-        /// <param name="id">The string representation of the object id</param>
+        /// <param name="entity">The entity</param>
+        /// <returns>The updated entity</returns>
+        public T Update(T entity)
+        {
+            _collection.Save<T>(entity);
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Upserts the entities
+        /// </summary>
+        /// <param name="entities">The entities to update</param>
+        public void Update(IEnumerable<T> entities)
+        {
+            foreach (T entity in entities)
+                _collection.Save<T>(entity);
+        }
+
+        /// <summary>
+        /// Deletes an entity from the repository by its id
+        /// </summary>
+        /// <param name="id">The string representation of the entity's id</param>
         public void Delete(string id)
         {
             this.Delete(new ObjectId(id));
         }
 
         /// <summary>
-        /// Deletes an item from the collection by its id
+        /// Deletes an entity from the repository by its id
         /// </summary>
-        /// <param name="id">The object id</param>
+        /// <param name="id">The entity's id</param>
         public void Delete(ObjectId id)
         {
             _collection.Remove(Query.EQ("_id", id));
         }
 
         /// <summary>
-        /// Counts the total items in the collection.
+        /// Deletes the given entity
         /// </summary>
-        /// <returns>Count of items in the collection</returns>
+        /// <param name="entity">The entity to delete</param>
+        public void Delete(T entity)
+        {
+            this.Delete(entity.Id);
+        }
+
+        /// <summary>
+        /// Deletes the entities matching the criteria
+        /// </summary>
+        /// <param name="criteria">The expression</param>
+        public void Delete(Expression<Func<T, bool>> criteria)
+        {
+            foreach (T entity in _collection.AsQueryable().Where(criteria))
+                _collection.Remove(Query.EQ("_id", new ObjectId(entity.Id)));
+        }
+
+        /// <summary>
+        /// Deletes all entities in the repository
+        /// </summary>
+        public void DeleteAll()
+        {
+            _collection.RemoveAll();
+        }
+
+        /// <summary>
+        /// Counts the total entities in the repository
+        /// </summary>
+        /// <returns>Count of entities in the collection</returns>
         public long Count()
         {
             return _collection.Count();

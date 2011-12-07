@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MongoDB.Bson;
@@ -23,11 +24,19 @@ namespace DreamSongs.MongoRepository
         MongoCollection<T> Collection { get; }
 
         /// <summary>
-        /// Returns the T by its given ObjectId
+        /// Returns the T by its given id
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the object to retrieve</param>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
         /// <returns>The Entity T</returns>
         T GetById(string id);
+
+        /// <summary>
+        /// Returns the T by its given ObjectId
+        /// </summary>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
+        /// <returns>The Entity T</returns>
+        T GetById(ObjectId id);
+
 
         /// <summary>
         /// Returns a single T by the given criteria
@@ -50,35 +59,64 @@ namespace DreamSongs.MongoRepository
         IQueryable<T> GetAll(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Adds the new item in the collection
+        /// Adds the new entity in the repository
         /// </summary>
-        /// <param name="item">The Item T</param>
-        /// <returns>The added Item including its new ObjectId</returns>
-        T Add(T item);
+        /// <param name="entity">The entity to add</param>
+        /// <returns>The added entity including its new ObjectId</returns>
+        T Add(T entity);
 
         /// <summary>
-        /// Upserts an item
+        /// Adds the new entities in the repository
         /// </summary>
-        /// <param name="item">The object</param>
-        /// <returns>The updated object</returns>
-        T Update(T item);
+        /// <param name="entities">The entities of type T</param>
+        void Add(IEnumerable<T> entities);
 
         /// <summary>
-        /// Deletes an item from the collection by its id
+        /// Upserts an entity
         /// </summary>
-        /// <param name="id">The string representation of the object id</param>
+        /// <param name="entity">The entity</param>
+        /// <returns>The updated entity</returns>
+        T Update(T entity);
+
+        /// <summary>
+        /// Upserts the entities
+        /// </summary>
+        /// <param name="entities">The entities to update</param>
+        void Update(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Deletes an entity from the repository by its id
+        /// </summary>
+        /// <param name="id">The string representation of the entity's id</param>
         void Delete(string id);
 
         /// <summary>
-        /// Deletes an item from the collection by its id
+        /// Deletes an entity from the repository by its id
         /// </summary>
-        /// <param name="id">The object id</param>
+        /// <param name="id">The entity's id</param>
         void Delete(ObjectId id);
 
         /// <summary>
-        /// Counts the total items in the collection.
+        /// Deletes the given entity
         /// </summary>
-        /// <returns>Count of items in the collection</returns>
+        /// <param name="entity">The entity to delete</param>
+        void Delete(T entity);
+
+        /// <summary>
+        /// Deletes the entities matching the criteria
+        /// </summary>
+        /// <param name="criteria">The expression</param>
+        void Delete(Expression<Func<T, bool>> criteria);
+
+        /// <summary>
+        /// Deletes all entities in the repository
+        /// </summary>
+        void DeleteAll();
+
+        /// <summary>
+        /// Counts the total entities in the repository
+        /// </summary>
+        /// <returns>Count of entities in the repository</returns>
         long Count();
 
         /// <summary>
