@@ -9,6 +9,8 @@ using MongoRepositoryTests.Entities;
 
 namespace MongoRepositoryTests
 {
+    //TODO: Tests here might need a little more logical grouping
+
     [TestClass]
     public class RepoTests
     {
@@ -26,7 +28,9 @@ namespace MongoRepositoryTests
         [TestCleanup]
         public void Cleanup()
         {
-            //_customerRepo.Collection.Database.Drop();
+            //new MongoRepositoryManager<Customer>().Drop();
+            //new MongoRepositoryManager<Product>().Drop();
+
             var x = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
             var s = new MongoServer(x.ToServerSettings());
             var d = s.GetDatabase(x.DatabaseName);
@@ -36,8 +40,6 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void AddAndUpdateTest()
         {
-            new MongoRepositoryManager<Customer>().Drop();
-
             var customer = new Customer();
             customer.FirstName = "Bob";
             customer.LastName = "Dillon";
@@ -81,8 +83,6 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void ComplexEntityTest()
         {
-            new MongoRepositoryManager<Customer>().Drop();
-
             var customer = new Customer();
             customer.FirstName = "Erik";
             customer.LastName = "Swaun";
@@ -135,8 +135,6 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void BatchTest()
         {
-            _customerRepo.DeleteAll();
-
             var custlist = new List<Customer>(new Customer[] {
                 new Customer() { FirstName = "Customer A" },
                 new Customer() { FirstName = "Client B" },

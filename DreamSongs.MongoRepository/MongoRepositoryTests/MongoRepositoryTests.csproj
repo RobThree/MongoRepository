@@ -40,6 +40,7 @@
     <Reference Include="FluentMongo, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMongo.1.3.1\lib\FluentMongo.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.3.1\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -52,6 +53,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -61,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="MongoRepositoryManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepoTests.cs" />
   </ItemGroup>
