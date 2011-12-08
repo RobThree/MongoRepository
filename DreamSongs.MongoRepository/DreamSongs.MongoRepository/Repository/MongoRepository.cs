@@ -211,15 +211,6 @@ namespace DreamSongs.MongoRepository
         {
             return _collection.AsQueryable().Any(criteria);
         }
-
-        /// <summary>
-        /// Returns an IQueryable for the given entity
-        /// </summary>
-        /// <returns>The IQueryable </returns>
-        public IQueryable<T> AsQueryable()
-        {
-            return _collection.AsQueryable();
-        }
     }
 }
 

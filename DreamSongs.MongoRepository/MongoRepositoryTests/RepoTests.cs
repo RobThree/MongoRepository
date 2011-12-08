@@ -171,7 +171,7 @@ namespace MongoRepositoryTests
             _customerRepo.Delete(custlist[0]);
 
             //Test AsQueryable
-            var selectedcustomers = from cust in _customerRepo.AsQueryable()
+            var selectedcustomers = from cust in _customerRepo.All()
                                        where cust.LastName.EndsWith("C") || cust.LastName.EndsWith("G")
                                        select cust;
 
