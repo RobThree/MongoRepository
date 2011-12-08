@@ -49,14 +49,14 @@ namespace DreamSongs.MongoRepository
         /// Returns All the records of T
         /// </summary>
         /// <returns>IQueryable of T</returns>
-        IQueryable<T> GetAll();
+        IQueryable<T> All();
 
         /// <summary>
         /// Returns the list of T where it matches the criteria
         /// </summary>
         /// <param name="criteria">The expression</param>
         /// <returns>IQueryable of T</returns>
-        IQueryable<T> GetAll(Expression<Func<T, bool>> criteria);
+        IQueryable<T> All(Expression<Func<T, bool>> criteria);
 
         /// <summary>
         /// Adds the new entity in the repository

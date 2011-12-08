@@ -124,7 +124,7 @@ namespace MongoRepositoryTests
             Assert.IsNotNull(customer.Orders[0].Items[0].Product.Id);
 
             // get the orders  
-            var theOrders = _customerRepo.GetAll(c => c.Id == customer.Id).Select(c => c.Orders).ToList();
+            var theOrders = _customerRepo.All(c => c.Id == customer.Id).Select(c => c.Orders).ToList();
             var theOrderItems = theOrders[0].Select(o => o.Items);
 
             Assert.IsNotNull(theOrders);
@@ -151,14 +151,14 @@ namespace MongoRepositoryTests
             var count = _customerRepo.Count();
             Assert.AreEqual(7, count);
             foreach (Customer c in custlist)
-                Assert.AreNotEqual("000000000000000000000000", c.Id);
+                Assert.AreNotEqual(new string('0', 24), c.Id);
 
             //Update batch
             foreach (Customer c in custlist)
                 c.LastName = c.FirstName;
             _customerRepo.Update(custlist);
 
-            foreach (Customer c in _customerRepo.GetAll())
+            foreach (Customer c in _customerRepo.All())
                 Assert.AreEqual(c.FirstName, c.LastName);
 
             //Delete by criteria

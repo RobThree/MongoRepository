@@ -90,7 +90,7 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="criteria">The expression</param>
         /// <returns>IQueryable of T</returns>
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> criteria)
+        public IQueryable<T> All(Expression<Func<T, bool>> criteria)
         {
             return _collection.AsQueryable().Where(criteria);
         }
@@ -99,7 +99,7 @@ namespace DreamSongs.MongoRepository
         /// Returns All the records of T
         /// </summary>
         /// <returns>IQueryable of T</returns>
-        public IQueryable<T> GetAll()
+        public IQueryable<T> All()
         {
             return _collection.AsQueryable();
         }
