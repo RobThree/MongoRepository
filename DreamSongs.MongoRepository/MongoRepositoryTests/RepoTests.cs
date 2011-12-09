@@ -56,6 +56,11 @@ namespace MongoRepositoryTests
 
             _customerRepo.Add(customer);
 
+//TODO: For now, we do not have a real alternative other than getting the database via the Collection property of
+//      the repository (see issue #776).
+#pragma warning disable 618
+            Assert.IsTrue(_customerRepo.Collection.Database.CollectionExists("CustomersTest"));
+#pragma warning restore 618
             Assert.IsNotNull(customer.Id);
 
             // fetch it back 

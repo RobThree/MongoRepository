@@ -10,7 +10,7 @@ namespace MongoRepositoryTests.Entities
     /// </summary>
    public class Customer : Entity
     {
-       public Customer() : base("Customer")
+       public Customer() : base("CustomersTest")
        {           
        }
 

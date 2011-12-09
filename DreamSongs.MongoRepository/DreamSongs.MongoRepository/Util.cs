@@ -13,17 +13,21 @@ namespace DreamSongs.MongoRepository
             return ConfigurationManager.ConnectionStrings[DefaultConnectionstringName].ConnectionString;
         }
 
-        public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionString)
+        public static MongoDatabase GetDatabaseFromConnectionString(string connectionstring)
+        {
+            var cnn = new MongoUrl(connectionstring);
+            var _server = MongoServer.Create(cnn.ToServerSettings());
+            return _server.GetDatabase(cnn.DatabaseName);
+        }
+
+        public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionstring)
             where T : Entity
         {
             var collectionName = ((Entity)Activator.CreateInstance((typeof(T)))).CollectionName;
             if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentException("Collection name cannot be empty for this entity");
 
-            var cnn = new MongoUrl(connectionString);
-            var _server = MongoServer.Create(cnn.ToServerSettings());
-            var _db = _server.GetDatabase(cnn.DatabaseName);
-            return _db.GetCollection<T>(collectionName);
+            return Util.GetDatabaseFromConnectionString(connectionstring).GetCollection<T>(collectionName);
         }
     }
 }
