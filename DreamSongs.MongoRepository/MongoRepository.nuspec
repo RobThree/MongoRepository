@@ -2,13 +2,13 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.0.0</version>
-    <authors>tgeek, Rob Janssen (RobIII)</authors>
+    <version>$version$</version>
+    <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
     <projectUrl>http://mongorepository.codeplex.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>An easy to use library to use MongoDB with .NET. (Implements Repository implementation on top of Official MongoDB C# driver).</description>
+    <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
     <tags>mongo mongodb repository</tags>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="\DreamSongs.MongoRepository\bin\Release\DreamSongs.MongoRepository.dll" target="lib" />
+    <file src="\DreamSongs.MongoRepository\bin\Release\DreamSongs.MongoRepository.XML" target="lib" />
   </files>
 </package>

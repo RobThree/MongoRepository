@@ -204,7 +204,6 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Checks if the entity exists for given criteria
         /// </summary>
-        /// <typeparam name="T">The T</typeparam>
         /// <param name="criteria">The expression</param>
         /// <returns>true when an entity matching the criteria exists, false otherwise</returns>
         public bool Exists(Expression<Func<T, bool>> criteria)

@@ -23,7 +23,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Drops specified index on the repository
         /// </summary>
-        /// <param name="keynames">The name of the indexed field</param>
+        /// <param name="keyname">The name of the indexed field</param>
         void DropIndex(string keyname);
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Ensures that the desired index exist and creates it if it doesn't exist
         /// </summary>
-        /// <param name="keynames">The indexed field</param>
+        /// <param name="keyname">The indexed field</param>
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// Index will be ascending order, non-unique, non-sparse
@@ -50,7 +50,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Ensures that the desired index exist and creates it if it doesn't exist
         /// </summary>
-        /// <param name="keynames">The indexed field</param>
+        /// <param name="keyname">The indexed field</param>
         /// <param name="descending">Set to true to make index descending, false for ascending</param>
         /// <param name="unique">Set to true to ensure index enforces unique values</param>
         /// <param name="sparse">Set to true to specify the index is sparse</param>
@@ -95,7 +95,7 @@ namespace DreamSongs.MongoRepository
         /// <summary>
         /// Tests whether indexes exist
         /// </summary>
-        /// <param name="keynames">The indexed fields</param>
+        /// <param name="keyname">The indexed fields</param>
         /// <returns>Returns true when the indexes exist, false otherwise</returns>
         bool IndexExists(string keyname);
 
