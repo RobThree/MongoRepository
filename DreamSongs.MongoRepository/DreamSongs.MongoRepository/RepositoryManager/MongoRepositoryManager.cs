@@ -9,15 +9,14 @@ namespace DreamSongs.MongoRepository
     //      test these methods. Ofcourse we also need to update codeplex documentation on this entirely new object.
     //      This is a work-in-progress.
 
-    //TODO: Implement GetIndexes(); figure out what we want to return (preferrably a "wrapper" around GetIndexesResult)
-
-    //TODO: GetStats(), Validate() and EnsureIndexes(IMongoIndexKeys, IMongoIndexOptions) "leak" MongoDb-specific
-    //      details. These probably need to get wrapped in MongoRepository specific objects to hide MongoDb.
+    //TODO: GetStats(), Validate(), GetIndexes and EnsureIndexes(IMongoIndexKeys, IMongoIndexOptions) "leak"
+    //      MongoDb-specific details. These probably need to get wrapped in MongoRepository specific objects to hide
+    //      MongoDb.
 
     /// <summary>
     /// Deals with the collections of entities in MongoDb. This class tries to hide as much MongoDb-specific details
-    /// as possible but it's not 100% yet. It is a very thin wrapper around most collection methods on MongoDb's
-    /// MongoCollection objects
+    /// as possible but it's not 100% *yet*. It is a very thin wrapper around most methods on MongoDb's MongoCollection
+    /// objects
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MongoRepositoryManager<T> : IRepositoryManager<T>
@@ -212,6 +211,24 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
+        /// Gets the total size for the repository (data + indexes)
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes)</returns>
+        public long GetTotalDataSize()
+        {
+            return _collection.GetTotalDataSize();
+        }
+
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes)
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes)</returns>
+        public long GetTotalStorageSize()
+        {
+            return _collection.GetTotalStorageSize();
+        }
+
+        /// <summary>
         /// Validates the integrity of the repository
         /// </summary>
         /// <returns>Returns a ValidateCollectionResult</returns>
@@ -232,21 +249,12 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Gets the total size for the repository (data + indexes)
+        /// Gets the indexes for this repository
         /// </summary>
-        /// <returns>Returns total size for the repository (data + indexes)</returns>
-        public long GetTotalDataSize()
+        /// <returns>Returns the indexes for this repository</returns>
+        public GetIndexesResult GetIndexes()
         {
-            return _collection.GetTotalDataSize();
-        }
-
-        /// <summary>
-        /// Gets the total storage size for the repository (data + indexes)
-        /// </summary>
-        /// <returns>Returns total storage size for the repository (data + indexes)</returns>
-        public long GetTotalStorageSize()
-        {
-            return _collection.GetTotalStorageSize();
+            return _collection.GetIndexes();
         }
     }
 }

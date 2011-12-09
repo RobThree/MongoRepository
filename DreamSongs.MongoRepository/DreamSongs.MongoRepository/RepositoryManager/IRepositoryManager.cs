@@ -121,6 +121,18 @@ namespace DreamSongs.MongoRepository
         void ResetIndexCache();
 
         /// <summary>
+        /// Gets the total size for the repository (data + indexes)
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes)</returns>
+        long GetTotalDataSize();
+
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes)
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes)</returns>
+        long GetTotalStorageSize();
+
+        /// <summary>
         /// Validates the integrity of the repository
         /// </summary>
         /// <returns>Returns a ValidateCollectionResult</returns>
@@ -135,15 +147,9 @@ namespace DreamSongs.MongoRepository
         CollectionStatsResult GetStats();
 
         /// <summary>
-        /// Gets the total size for the repository (data + indexes)
+        /// Gets the indexes for this repository
         /// </summary>
-        /// <returns>Returns total size for the repository (data + indexes)</returns>
-        long GetTotalDataSize();
-
-        /// <summary>
-        /// Gets the total storage size for the repository (data + indexes)
-        /// </summary>
-        /// <returns>Returns total storage size for the repository (data + indexes)</returns>
-        long GetTotalStorageSize();
+        /// <returns>Returns the indexes for this repository</returns>
+        GetIndexesResult GetIndexes();
     }
 }
