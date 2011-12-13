@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>$version$</version>
+    <version>1.1.0</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -10,6 +10,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
     <tags>mongo mongodb repository</tags>
+    <releaseNotes>
+      Added new methods to MongoRepository&lt;T&gt; (mostly for "batch" purposes), Added new MongoRepositoryManager&lt;T&gt; class for managing collections, Renamed GetAll() method to All() since it _doesn't_ Get all T's, it uses deferred loading and removed AsQueryable method since it does the same as the All (previously known as GetAll) method.
+    </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
     </summary>

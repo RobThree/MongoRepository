@@ -14,23 +14,14 @@ namespace MongoRepositoryTests
     [TestClass]
     public class RepoTests
     {
-        IRepository<Customer> _customerRepo;
-        IRepository<Product> _productRepo;
-
         [TestInitialize]
         public void Setup()
         {
-            // setup the db, tables and Repository 
-            _customerRepo = new MongoRepository<Customer>();
-            _productRepo = new MongoRepository<Product>();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            //new MongoRepositoryManager<Customer>().Drop();
-            //new MongoRepositoryManager<Product>().Drop();
-
             var x = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
             var s = new MongoServer(x.ToServerSettings());
             var d = s.GetDatabase(x.DatabaseName);
@@ -40,6 +31,8 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void AddAndUpdateTest()
         {
+            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+
             var customer = new Customer();
             customer.FirstName = "Bob";
             customer.LastName = "Dillon";
@@ -56,8 +49,8 @@ namespace MongoRepositoryTests
 
             _customerRepo.Add(customer);
 
-//TODO: For now, we do not have a real alternative other than getting the database via the Collection property of
-//      the repository (see issue #776).
+            //TODO: For now, we do not have a real alternative other than getting the database via the Collection property of
+            //      the repository (see issue #776).
 #pragma warning disable 618
             Assert.IsTrue(_customerRepo.Collection.Database.CollectionExists("CustomersTest"));
 #pragma warning restore 618
@@ -88,6 +81,9 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void ComplexEntityTest()
         {
+            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            IRepository<Product> _productRepo = new MongoRepository<Product>();
+
             var customer = new Customer();
             customer.FirstName = "Erik";
             customer.LastName = "Swaun";
@@ -140,6 +136,8 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void BatchTest()
         {
+            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+
             var custlist = new List<Customer>(new Customer[] {
                 new Customer() { FirstName = "Customer A" },
                 new Customer() { FirstName = "Client B" },
@@ -177,8 +175,8 @@ namespace MongoRepositoryTests
 
             //Test AsQueryable
             var selectedcustomers = from cust in _customerRepo.All()
-                                       where cust.LastName.EndsWith("C") || cust.LastName.EndsWith("G")
-                                       select cust;
+                                    where cust.LastName.EndsWith("C") || cust.LastName.EndsWith("G")
+                                    select cust;
 
             Assert.AreEqual(2, selectedcustomers.ToList().Count);
 
