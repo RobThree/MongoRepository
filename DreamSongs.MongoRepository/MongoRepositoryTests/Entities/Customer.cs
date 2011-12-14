@@ -8,9 +8,10 @@ namespace MongoRepositoryTests.Entities
     /// <summary>
     /// Business Entity for Customer
     /// </summary>
-   public class Customer : Entity
+    [CollectionName("CustomersTest")]
+    public class Customer : Entity
     {
-       public Customer() : base("CustomersTest")
+       public Customer()
        {           
        }
 

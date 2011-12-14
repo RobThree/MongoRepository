@@ -8,7 +8,7 @@ namespace MongoRepositoryTests.Entities
     /// </summary>
     public class Product : Entity
     {
-        public Product() : base ("Product")
+        public Product()
         {
         }
 

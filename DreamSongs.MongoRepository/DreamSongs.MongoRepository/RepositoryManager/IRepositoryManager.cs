@@ -151,5 +151,16 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <returns>Returns the indexes for this repository</returns>
         GetIndexesResult GetIndexes();
+
+        /// <summary>
+        /// Tests whether the collection already exists
+        /// </summary>
+        /// <returns>Returns true when the collection already exists, false otherwise</returns>
+        bool Exists { get; }
+
+        /// <summary>
+        /// Returns the name of the collection as Mongo uses.
+        /// </summary>
+        string Name { get; }
     }
 }

@@ -256,5 +256,22 @@ namespace DreamSongs.MongoRepository
         {
             return _collection.GetIndexes();
         }
+
+        /// <summary>
+        /// Tests whether the collection already exists
+        /// </summary>
+        /// <returns>Returns true when the collection already exists, false otherwise</returns>
+        public bool Exists
+        {
+            get { return _collection.Exists(); }
+        }
+
+        /// <summary>
+        /// Returns the name of the collection as Mongo uses.
+        /// </summary>
+        public string Name
+        {
+            get { return _collection.Name; }
+        }
     }
 }

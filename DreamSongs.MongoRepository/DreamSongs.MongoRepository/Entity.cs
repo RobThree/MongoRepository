@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace DreamSongs.MongoRepository
@@ -14,28 +15,29 @@ namespace DreamSongs.MongoRepository
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+    }
+
+    /// <summary>
+    /// Attribute used to annotate Enities with to override mongo collection name. By default, when this attribute
+    /// is not specified, the classname will be used
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+    public class CollectionName : Attribute
+    {
+        /// <summary>
+        /// Gets the name of the collection
+        /// </summary>
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the persistance collection name for this entity
+        /// Initializes a CollectionName attribute with the desired name
         /// </summary>
-        [BsonIgnore]
-        public string CollectionName { get; private set; }
-
-        /// <summary>
-        /// Default constructor; uses the typename as collectionname
-        /// </summary>
-        protected Entity()
+        /// <param name="value">Name of the collection</param>
+        public CollectionName(string value)
         {
-            CollectionName = this.GetType().Name;
-        }
-
-        /// <summary>
-        /// Constructor specifying collectionname
-        /// </summary>
-        /// <param name="collectionName">Used to override collectionname</param>
-        protected Entity(string collectionName)
-        {
-            CollectionName = collectionName;
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Empty collectionname not allowed", "value");
+            this.Name = value;
         }
     }
 }

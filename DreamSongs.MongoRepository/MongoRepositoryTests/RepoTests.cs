@@ -17,10 +17,16 @@ namespace MongoRepositoryTests
         [TestInitialize]
         public void Setup()
         {
+            this.DropDB();
         }
 
         [TestCleanup]
         public void Cleanup()
+        {
+            this.DropDB();
+        }
+
+        private void DropDB()
         {
             var x = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
             var s = new MongoServer(x.ToServerSettings());
@@ -32,6 +38,9 @@ namespace MongoRepositoryTests
         public void AddAndUpdateTest()
         {
             IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            IRepositoryManager<Customer> _customerMan = new MongoRepositoryManager<Customer>();
+
+            Assert.IsFalse(_customerMan.Exists);
 
             var customer = new Customer();
             customer.FirstName = "Bob";
@@ -49,11 +58,8 @@ namespace MongoRepositoryTests
 
             _customerRepo.Add(customer);
 
-            //TODO: For now, we do not have a real alternative other than getting the database via the Collection property of
-            //      the repository (see issue #776).
-#pragma warning disable 618
-            Assert.IsTrue(_customerRepo.Collection.Database.CollectionExists("CustomersTest"));
-#pragma warning restore 618
+            Assert.IsTrue(_customerMan.Exists);
+
             Assert.IsNotNull(customer.Id);
 
             // fetch it back 
@@ -190,5 +196,58 @@ namespace MongoRepositoryTests
             Assert.AreEqual(0, count);
         }
 
+        [TestMethod]
+        public void CollectionNamesTest()
+        {
+            var a = new MongoRepository<Animal>();
+            var am = new MongoRepositoryManager<Animal>();
+            Assert.IsFalse(am.Exists);
+            a.Update(new Dog());
+            Assert.IsTrue(am.Exists);
+            Assert.AreEqual(am.Name, "AnimalsTest");
+
+            var cl = new MongoRepository<CatLike>();
+            var clm = new MongoRepositoryManager<CatLike>();
+            Assert.IsFalse(clm.Exists);
+            cl.Update(new Lion());
+            Assert.IsTrue(clm.Exists);
+            Assert.AreEqual(clm.Name, "Catlikes");
+
+            var b = new MongoRepository<Bird>();
+            var bm = new MongoRepositoryManager<Bird>();
+            Assert.IsFalse(bm.Exists);
+            b.Update(new Bird());
+            Assert.IsTrue(bm.Exists);
+            Assert.AreEqual(bm.Name, "Birds");
+
+            var l = new MongoRepository<Lion>();
+            var lm = new MongoRepositoryManager<Lion>();
+            //Assert.IsFalse(lm.Exists);   //Should already exist (created by cl)
+            l.Update(new Lion());
+            Assert.IsTrue(lm.Exists);
+            Assert.AreEqual(lm.Name, "Catlikes");
+
+            var d = new MongoRepository<Dog>();
+            var dm = new MongoRepositoryManager<Dog>();
+            //Assert.IsFalse(dm.Exists);
+            d.Update(new Dog());
+            Assert.IsTrue(dm.Exists);
+            Assert.AreEqual(dm.Name, "AnimalsTest");
+
+            var m = new MongoRepository<Bird>();
+            var mm = new MongoRepositoryManager<Bird>();
+            //Assert.IsFalse(mm.Exists);
+            m.Update(new Macaw());
+            Assert.IsTrue(mm.Exists);
+            Assert.AreEqual(mm.Name, "Birds");
+
+            var w = new MongoRepository<Whale>();
+            var wm = new MongoRepositoryManager<Whale>();
+            Assert.IsFalse(wm.Exists);
+            w.Update(new Whale());
+            Assert.IsTrue(wm.Exists);
+            Assert.AreEqual(wm.Name, "Whale");
+
+        }
     }
 }
