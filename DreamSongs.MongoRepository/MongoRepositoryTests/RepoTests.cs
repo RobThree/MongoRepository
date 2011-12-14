@@ -201,51 +201,65 @@ namespace MongoRepositoryTests
         {
             var a = new MongoRepository<Animal>();
             var am = new MongoRepositoryManager<Animal>();
+            var va = new Dog();
             Assert.IsFalse(am.Exists);
-            a.Update(new Dog());
+            a.Update(va);
             Assert.IsTrue(am.Exists);
+            Assert.IsInstanceOfType(a.GetById(va.Id), typeof(Dog));
             Assert.AreEqual(am.Name, "AnimalsTest");
 
             var cl = new MongoRepository<CatLike>();
             var clm = new MongoRepositoryManager<CatLike>();
+            var vcl = new Lion();
             Assert.IsFalse(clm.Exists);
-            cl.Update(new Lion());
+            cl.Update(vcl);
             Assert.IsTrue(clm.Exists);
+            Assert.IsInstanceOfType(cl.GetById(vcl.Id), typeof(Lion));
             Assert.AreEqual(clm.Name, "Catlikes");
 
             var b = new MongoRepository<Bird>();
             var bm = new MongoRepositoryManager<Bird>();
+            var vb = new Bird();
             Assert.IsFalse(bm.Exists);
-            b.Update(new Bird());
+            b.Update(vb);
             Assert.IsTrue(bm.Exists);
+            Assert.IsInstanceOfType(b.GetById(vb.Id), typeof(Bird));
             Assert.AreEqual(bm.Name, "Birds");
 
             var l = new MongoRepository<Lion>();
             var lm = new MongoRepositoryManager<Lion>();
+            var vl = new Lion();
             //Assert.IsFalse(lm.Exists);   //Should already exist (created by cl)
-            l.Update(new Lion());
+            l.Update(vl);
             Assert.IsTrue(lm.Exists);
+            Assert.IsInstanceOfType(l.GetById(vl.Id), typeof(Lion));
             Assert.AreEqual(lm.Name, "Catlikes");
 
             var d = new MongoRepository<Dog>();
             var dm = new MongoRepositoryManager<Dog>();
+            var vd = new Dog();
             //Assert.IsFalse(dm.Exists);
-            d.Update(new Dog());
+            d.Update(vd);
             Assert.IsTrue(dm.Exists);
+            Assert.IsInstanceOfType(d.GetById(vd.Id), typeof(Dog));
             Assert.AreEqual(dm.Name, "AnimalsTest");
 
             var m = new MongoRepository<Bird>();
             var mm = new MongoRepositoryManager<Bird>();
+            var vm = new Macaw();
             //Assert.IsFalse(mm.Exists);
-            m.Update(new Macaw());
+            m.Update(vm);
             Assert.IsTrue(mm.Exists);
+            Assert.IsInstanceOfType(m.GetById(vm.Id), typeof(Macaw));
             Assert.AreEqual(mm.Name, "Birds");
 
             var w = new MongoRepository<Whale>();
             var wm = new MongoRepositoryManager<Whale>();
+            var vw = new Whale();
             Assert.IsFalse(wm.Exists);
-            w.Update(new Whale());
+            w.Update(vw);
             Assert.IsTrue(wm.Exists);
+            Assert.IsInstanceOfType(w.GetById(vw.Id), typeof(Whale));
             Assert.AreEqual(wm.Name, "Whale");
 
         }
