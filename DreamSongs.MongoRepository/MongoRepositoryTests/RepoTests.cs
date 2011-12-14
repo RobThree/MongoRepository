@@ -275,6 +275,9 @@ namespace MongoRepositoryTests
             Assert.IsTrue(xm.Exists);
             Assert.IsInstanceOfType(x.GetById("aaa"), typeof(CustomIDEntity));
 
+            x.Delete("aaa");
+            Assert.AreEqual(0, x.Count());
+
             var y = new MongoRepository<CustomIDEntityCustomCollection>();
             var ym = new MongoRepositoryManager<CustomIDEntityCustomCollection>();
 
@@ -283,6 +286,9 @@ namespace MongoRepositoryTests
             Assert.IsTrue(ym.Exists);
             Assert.AreEqual(ym.Name, "MyTestCollection");
             Assert.IsInstanceOfType(y.GetById("xyz"), typeof(CustomIDEntityCustomCollection));
+
+            y.Delete("xyz");
+            Assert.AreEqual(0, y.Count());
         }
 
         

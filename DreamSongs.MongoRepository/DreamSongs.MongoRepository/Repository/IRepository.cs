@@ -31,14 +31,6 @@ namespace DreamSongs.MongoRepository
         T GetById(string id);
 
         /// <summary>
-        /// Returns the T by its given ObjectId
-        /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
-        /// <returns>The Entity T</returns>
-        T GetById(ObjectId id);
-
-
-        /// <summary>
         /// Returns a single T by the given criteria
         /// </summary>
         /// <param name="criteria">The expression</param>
@@ -89,12 +81,6 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <param name="id">The string representation of the entity's id</param>
         void Delete(string id);
-
-        /// <summary>
-        /// Deletes an entity from the repository by its id
-        /// </summary>
-        /// <param name="id">The entity's id</param>
-        void Delete(ObjectId id);
 
         /// <summary>
         /// Deletes the given entity

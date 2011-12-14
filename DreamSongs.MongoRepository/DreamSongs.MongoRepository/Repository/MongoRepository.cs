@@ -63,17 +63,7 @@ namespace DreamSongs.MongoRepository
         public T GetById(string id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
-                return this.GetById(new ObjectId(id));
-            return _collection.FindOneByIdAs<T>(id);
-        }
-
-        /// <summary>
-        /// Returns the T by its given ObjectId
-        /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
-        /// <returns>The Entity T</returns>
-        public T GetById(ObjectId id)
-        {
+                return _collection.FindOneByIdAs<T>(new ObjectId(id));
             return _collection.FindOneByIdAs<T>(id);
         }
 
@@ -155,16 +145,10 @@ namespace DreamSongs.MongoRepository
         /// <param name="id">The string representation of the entity's id</param>
         public void Delete(string id)
         {
-            this.Delete(new ObjectId(id));
-        }
-
-        /// <summary>
-        /// Deletes an entity from the repository by its id
-        /// </summary>
-        /// <param name="id">The entity's id</param>
-        public void Delete(ObjectId id)
-        {
-            _collection.Remove(Query.EQ("_id", id));
+            if (typeof(T).IsSubclassOf(typeof(Entity)))
+                _collection.Remove(Query.EQ("_id", new ObjectId(id)));
+            else
+                _collection.Remove(Query.EQ("_id", id));
         }
 
         /// <summary>
@@ -183,7 +167,7 @@ namespace DreamSongs.MongoRepository
         public void Delete(Expression<Func<T, bool>> criteria)
         {
             foreach (T entity in _collection.AsQueryable().Where(criteria))
-                _collection.Remove(Query.EQ("_id", new ObjectId(entity.Id)));
+                this.Delete(entity.Id);
         }
 
         /// <summary>
