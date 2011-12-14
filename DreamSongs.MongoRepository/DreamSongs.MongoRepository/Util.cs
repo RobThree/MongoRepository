@@ -21,16 +21,36 @@ namespace DreamSongs.MongoRepository
         }
 
         public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionstring)
-            where T : Entity
+            where T : IEntity
         {
-            var collectionName = GetCollectioNameFromEntity(typeof(T));
+            string collectionName;
+            if (typeof(T).BaseType.Equals(typeof(System.Object)))
+                collectionName = GetCollectioNameFromInterface<T>();
+            else
+                collectionName = GetCollectioNameFromType(typeof(T));
+
             if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentException("Collection name cannot be empty for this entity");
 
             return Util.GetDatabaseFromConnectionString(connectionstring).GetCollection<T>(collectionName);
         }
 
-        private static string GetCollectioNameFromEntity(Type entitytype)
+        private static string GetCollectioNameFromInterface<T>()
+        {
+            string collectionname;
+
+            //Check to see if the object (inherited from Entity) has a CollectionName attribute
+            var att = Attribute.GetCustomAttribute(typeof(T), typeof(CollectionName));
+            if (att != null)
+                //It does! Return the value specified by the CollectionName attribute
+                collectionname = ((CollectionName)att).Name;
+            else
+                collectionname = typeof(T).Name;
+            return collectionname;
+        }
+
+
+        private static string GetCollectioNameFromType(Type entitytype)
         {
             string collectionname;
 
@@ -48,5 +68,6 @@ namespace DreamSongs.MongoRepository
             }
             return collectionname;
         }
+
     }
 }

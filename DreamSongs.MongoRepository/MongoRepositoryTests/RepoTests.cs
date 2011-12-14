@@ -263,5 +263,28 @@ namespace MongoRepositoryTests
             Assert.AreEqual(wm.Name, "Whale");
 
         }
+
+        [TestMethod]
+        public void CustomIDTest()
+        {
+            var x = new MongoRepository<CustomIDEntity>();
+            var xm = new MongoRepositoryManager<CustomIDEntity>();
+
+            x.Add(new CustomIDEntity() { Id = "aaa" });
+
+            Assert.IsTrue(xm.Exists);
+            Assert.IsInstanceOfType(x.GetById("aaa"), typeof(CustomIDEntity));
+
+            var y = new MongoRepository<CustomIDEntityCustomCollection>();
+            var ym = new MongoRepositoryManager<CustomIDEntityCustomCollection>();
+
+            y.Add(new CustomIDEntityCustomCollection() { Id = "xyz" });
+
+            Assert.IsTrue(ym.Exists);
+            Assert.AreEqual(ym.Name, "MyTestCollection");
+            Assert.IsInstanceOfType(y.GetById("xyz"), typeof(CustomIDEntityCustomCollection));
+        }
+
+        
     }
 }

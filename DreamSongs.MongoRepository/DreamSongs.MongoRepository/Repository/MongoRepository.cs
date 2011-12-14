@@ -14,7 +14,7 @@ namespace DreamSongs.MongoRepository
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MongoRepository<T> : IRepository<T>
-        where T : Entity
+        where T : IEntity
     {
         /// <summary>
         /// MongoCollection field
@@ -62,7 +62,9 @@ namespace DreamSongs.MongoRepository
         /// <returns>The Entity T</returns>
         public T GetById(string id)
         {
-            return this.GetById(new ObjectId(id));
+            if (typeof(T).IsSubclassOf(typeof(Entity)))
+                return this.GetById(new ObjectId(id));
+            return _collection.FindOneByIdAs<T>(id);
         }
 
         /// <summary>

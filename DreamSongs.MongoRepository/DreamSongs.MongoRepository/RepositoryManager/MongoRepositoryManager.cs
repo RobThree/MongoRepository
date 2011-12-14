@@ -20,7 +20,7 @@ namespace DreamSongs.MongoRepository
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MongoRepositoryManager<T> : IRepositoryManager<T>
-        where T : Entity
+        where T : IEntity
     {
         /// <summary>
         /// MongoCollection field

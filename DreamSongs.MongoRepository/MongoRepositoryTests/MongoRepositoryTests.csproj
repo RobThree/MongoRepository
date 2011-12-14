@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Entities\Animals.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\CustomIDEntity.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="MongoRepositoryManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

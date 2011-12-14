@@ -11,7 +11,7 @@ namespace DreamSongs.MongoRepository
     /// IRepository definition
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : IEntity
     {
         /// <summary>
         /// Gets the Mongo collection (to perform advanced operations)

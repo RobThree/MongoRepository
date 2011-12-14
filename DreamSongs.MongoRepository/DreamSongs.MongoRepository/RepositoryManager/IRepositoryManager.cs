@@ -7,7 +7,7 @@ namespace DreamSongs.MongoRepository
     /// IRepositoryManager definition
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepositoryManager<T> where T : Entity
+    public interface IRepositoryManager<T> where T : IEntity
     {
         /// <summary>
         /// Drops the repository

@@ -5,14 +5,22 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace DreamSongs.MongoRepository
 {
     /// <summary>
+    /// Entity interface
+    /// </summary>
+    public interface IEntity
+    {
+        [BsonId]
+        string Id { get; set; }
+    }
+
+    /// <summary>
     /// Abstract Entity for all the BusinessEntities
     /// </summary>
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         /// <summary>
         /// Gets or sets the id for this object (the primary record for an entity)
         /// </summary>
-        [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
     }
