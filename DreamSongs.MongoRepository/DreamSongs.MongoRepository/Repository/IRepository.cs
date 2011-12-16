@@ -1,115 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using MongoDB.Bson;
-using MongoDB.Driver;
-
-namespace DreamSongs.MongoRepository
+﻿namespace DreamSongs.MongoRepository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+
     /// <summary>
-    /// IRepository definition
+    /// IRepository definition.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type contained in the repository.</typeparam>
     public interface IRepository<T> where T : IEntity
     {
         /// <summary>
-        /// Gets the Mongo collection (to perform advanced operations)
+        /// Gets the Mongo collection (to perform advanced operations).
         /// </summary>
         /// <remarks>
         /// One can argue that exposing this property (and with that, access to it's Database property for instance
         /// (which is a "parent")) is not the responsibility of this class.
         /// </remarks>
+        /// <value>The Mongo collection (to perform advanced operations).</value>
         [Obsolete("This property will be removed in future releases.")]
         MongoCollection<T> Collection { get; }
 
         /// <summary>
-        /// Returns the T by its given id
+        /// Returns the T by its given id.
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
-        /// <returns>The Entity T</returns>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
         T GetById(string id);
 
         /// <summary>
-        /// Returns a single T by the given criteria
+        /// Returns a single T by the given criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>The T</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>A single T matching the criteria.</returns>
         T GetSingle(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Returns All the records of T
+        /// Returns All the records of T.
         /// </summary>
-        /// <returns>IQueryable of T</returns>
+        /// <returns>IQueryable of T.</returns>
         IQueryable<T> All();
 
         /// <summary>
-        /// Returns the list of T where it matches the criteria
+        /// Returns the list of T where it matches the criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>IQueryable of T</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>IQueryable of T.</returns>
         IQueryable<T> All(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Adds the new entity in the repository
+        /// Adds the new entity in the repository.
         /// </summary>
-        /// <param name="entity">The entity to add</param>
-        /// <returns>The added entity including its new ObjectId</returns>
+        /// <param name="entity">The entity to add.</param>
+        /// <returns>The added entity including its new ObjectId.</returns>
         T Add(T entity);
 
         /// <summary>
-        /// Adds the new entities in the repository
+        /// Adds the new entities in the repository.
         /// </summary>
-        /// <param name="entities">The entities of type T</param>
+        /// <param name="entities">The entities of type T.</param>
         void Add(IEnumerable<T> entities);
 
         /// <summary>
-        /// Upserts an entity
+        /// Upserts an entity.
         /// </summary>
-        /// <param name="entity">The entity</param>
-        /// <returns>The updated entity</returns>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
         T Update(T entity);
 
         /// <summary>
-        /// Upserts the entities
+        /// Upserts the entities.
         /// </summary>
-        /// <param name="entities">The entities to update</param>
+        /// <param name="entities">The entities to update.</param>
         void Update(IEnumerable<T> entities);
 
         /// <summary>
-        /// Deletes an entity from the repository by its id
+        /// Deletes an entity from the repository by its id.
         /// </summary>
-        /// <param name="id">The string representation of the entity's id</param>
+        /// <param name="id">The string representation of the entity's id.</param>
         void Delete(string id);
 
         /// <summary>
-        /// Deletes the given entity
+        /// Deletes the given entity.
         /// </summary>
-        /// <param name="entity">The entity to delete</param>
+        /// <param name="entity">The entity to delete.</param>
         void Delete(T entity);
 
         /// <summary>
-        /// Deletes the entities matching the criteria
+        /// Deletes the entities matching the criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
+        /// <param name="criteria">The expression.</param>
         void Delete(Expression<Func<T, bool>> criteria);
 
         /// <summary>
-        /// Deletes all entities in the repository
+        /// Deletes all entities in the repository.
         /// </summary>
         void DeleteAll();
 
         /// <summary>
-        /// Counts the total entities in the repository
+        /// Counts the total entities in the repository.
         /// </summary>
-        /// <returns>Count of entities in the repository</returns>
+        /// <returns>Count of entities in the repository.</returns>
         long Count();
 
         /// <summary>
-        /// Checks if the entity exists for given criteria
+        /// Checks if the entity exists for given criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>true when an entity matching the criteria exists, false otherwise</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
         bool Exists(Expression<Func<T, bool>> criteria);
 
         /// <summary>

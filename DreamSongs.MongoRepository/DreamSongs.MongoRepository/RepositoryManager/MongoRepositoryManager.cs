@@ -1,100 +1,119 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-
-namespace DreamSongs.MongoRepository
+﻿namespace DreamSongs.MongoRepository
 {
-    //TODO: Code coverage here is near-zero. A new RepoManagerTests.cs class needs to be created and we need to
+    using System.Collections.Generic;
+    using System.Linq;
+    using MongoDB.Driver;
+    using MongoDB.Driver.Builders;
+
+    // TODO: Code coverage here is near-zero. A new RepoManagerTests.cs class needs to be created and we need to
     //      test these methods. Ofcourse we also need to update codeplex documentation on this entirely new object.
     //      This is a work-in-progress.
 
-    //TODO: GetStats(), Validate(), GetIndexes and EnsureIndexes(IMongoIndexKeys, IMongoIndexOptions) "leak"
+    // TODO: GetStats(), Validate(), GetIndexes and EnsureIndexes(IMongoIndexKeys, IMongoIndexOptions) "leak"
     //      MongoDb-specific details. These probably need to get wrapped in MongoRepository specific objects to hide
     //      MongoDb.
 
     /// <summary>
     /// Deals with the collections of entities in MongoDb. This class tries to hide as much MongoDb-specific details
     /// as possible but it's not 100% *yet*. It is a very thin wrapper around most methods on MongoDb's MongoCollection
-    /// objects
+    /// objects.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
     public class MongoRepositoryManager<T> : IRepositoryManager<T>
         where T : IEntity
     {
         /// <summary>
-        /// MongoCollection field
+        /// MongoCollection field.
         /// </summary>
-        private MongoCollection<T> _collection;
+        private MongoCollection<T> collection;
 
         /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
-        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name.
         /// </summary>
-        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring</remarks>
+        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepositoryManager()
             : this(Util.GetDefaultConnectionString())
-        { }
-
-        /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
-        /// </summary>
-        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB</param>
-        public MongoRepositoryManager(string connectionString)
         {
-            _collection = Util.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
-        /// Drops the collection
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        public MongoRepositoryManager(string connectionString)
+        {
+            this.collection = Util.GetCollectionFromConnectionString<T>(connectionString);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection already exists.
+        /// </summary>
+        /// <value>Returns true when the collection already exists, false otherwise.</value>
+        public bool Exists
+        {
+            get { return this.collection.Exists(); }
+        }
+
+        /// <summary>
+        /// Gets the name of the collection as Mongo uses.
+        /// </summary>
+        /// <value>The name of the collection as Mongo uses.</value>
+        public string Name
+        {
+            get { return this.collection.Name; }
+        }
+
+        /// <summary>
+        /// Drops the collection.
         /// </summary>
         public void Drop()
         {
-            _collection.Drop();
+            this.collection.Drop();
         }
 
         /// <summary>
-        /// Tests whether the repository is capped
+        /// Tests whether the repository is capped.
         /// </summary>
-        /// <returns>Returns true when the repository is capped, false otherwise</returns>
+        /// <returns>Returns true when the repository is capped, false otherwise.</returns>
         public bool IsCapped()
         {
-            return _collection.IsCapped();
+            return this.collection.IsCapped();
         }
 
         /// <summary>
-        /// Drops specified index on the repository
+        /// Drops specified index on the repository.
         /// </summary>
-        /// <param name="keyname">The name of the indexed field</param>
+        /// <param name="keyname">The name of the indexed field.</param>
         public void DropIndex(string keyname)
         {
             this.DropIndexes(new string[] { keyname });
         }
 
         /// <summary>
-        /// Drops specified indexes on the repository
+        /// Drops specified indexes on the repository.
         /// </summary>
-        /// <param name="keynames">The names of the indexed fields</param>
+        /// <param name="keynames">The names of the indexed fields.</param>
         public void DropIndexes(IEnumerable<string> keynames)
         {
-            _collection.DropIndex(keynames.ToArray());
+            this.collection.DropIndex(keynames.ToArray());
         }
 
         /// <summary>
-        /// Drops all indexes on this repository
+        /// Drops all indexes on this repository.
         /// </summary>
         public void DropAllIndexes()
         {
-            _collection.DropAllIndexes();
+            this.collection.DropAllIndexes();
         }
 
         /// <summary>
-        /// Ensures that the desired index exist and creates it if it doesn't exist
+        /// Ensures that the desired index exist and creates it if it doesn't exist.
         /// </summary>
-        /// <param name="keyname">The indexed field</param>
+        /// <param name="keyname">The indexed field.</param>
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
-        /// Index will be ascending order, non-unique, non-sparse
+        /// Index will be ascending order, non-unique, non-sparse.
         /// </remarks>
         public void EnsureIndex(string keyname)
         {
@@ -102,12 +121,12 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Ensures that the desired index exist and creates it if it doesn't exist
+        /// Ensures that the desired index exist and creates it if it doesn't exist.
         /// </summary>
-        /// <param name="keyname">The indexed field</param>
-        /// <param name="descending">Set to true to make index descending, false for ascending</param>
-        /// <param name="unique">Set to true to ensure index enforces unique values</param>
-        /// <param name="sparse">Set to true to specify the index is sparse</param>
+        /// <param name="keyname">The indexed field.</param>
+        /// <param name="descending">Set to true to make index descending, false for ascending.</param>
+        /// <param name="unique">Set to true to ensure index enforces unique values.</param>
+        /// <param name="sparse">Set to true to specify the index is sparse.</param>
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// </remarks>
@@ -117,12 +136,12 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Ensures that the desired indexes exist and creates them if they don't exist
+        /// Ensures that the desired indexes exist and creates them if they don't exist.
         /// </summary>
-        /// <param name="keynames">The indexed fields</param>
+        /// <param name="keynames">The indexed fields.</param>
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
-        /// Index will be ascending order, non-unique, non-sparse
+        /// Index will be ascending order, non-unique, non-sparse.
         /// </remarks>
         public void EnsureIndexes(IEnumerable<string> keynames)
         {
@@ -130,12 +149,12 @@ namespace DreamSongs.MongoRepository
         }
 
         /// <summary>
-        /// Ensures that the desired indexes exist and creates them if they don't exist
+        /// Ensures that the desired indexes exist and creates them if they don't exist.
         /// </summary>
-        /// <param name="keynames">The indexed fields</param>
-        /// <param name="descending">Set to true to make index descending, false for ascending</param>
-        /// <param name="unique">Set to true to ensure index enforces unique values</param>
-        /// <param name="sparse">Set to true to specify the index is sparse</param>
+        /// <param name="keynames">The indexed fields.</param>
+        /// <param name="descending">Set to true to make index descending, false for ascending.</param>
+        /// <param name="unique">Set to true to ensure index enforces unique values.</param>
+        /// <param name="sparse">Set to true to specify the index is sparse.</param>
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// </remarks>
@@ -143,57 +162,58 @@ namespace DreamSongs.MongoRepository
         {
             var ixk = new IndexKeysBuilder();
             if (descending)
+            {
                 ixk.Descending(keynames.ToArray());
+            }
             else
+            {
                 ixk.Ascending(keynames.ToArray());
+            }
 
             this.EnsureIndexes(
                 ixk,
-                new IndexOptionsBuilder()
-                    .SetUnique(unique)
-                    .SetSparse(sparse)
-            );
+                new IndexOptionsBuilder().SetUnique(unique).SetSparse(sparse));
         }
 
         /// <summary>
-        /// Ensures that the desired indexes exist and creates them if they don't exist
+        /// Ensures that the desired indexes exist and creates them if they don't exist.
         /// </summary>
-        /// <param name="keys">The indexed fields</param>
-        /// <param name="options">The index options</param>
+        /// <param name="keys">The indexed fields.</param>
+        /// <param name="options">The index options.</param>
         /// <remarks>
-        /// This method allows ultimate control but does "leak" some MongoDb specific implementation details
+        /// This method allows ultimate control but does "leak" some MongoDb specific implementation details.
         /// </remarks>
         public void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
         {
-            _collection.EnsureIndex(keys, options);
+            this.collection.EnsureIndex(keys, options);
         }
 
         /// <summary>
-        /// Tests whether indexes exist
+        /// Tests whether indexes exist.
         /// </summary>
-        /// <param name="keyname">The indexed fields</param>
-        /// <returns>Returns true when the indexes exist, false otherwise</returns>
+        /// <param name="keyname">The indexed fields.</param>
+        /// <returns>Returns true when the indexes exist, false otherwise.</returns>
         public bool IndexExists(string keyname)
         {
             return this.IndexesExists(new string[] { keyname });
         }
 
         /// <summary>
-        /// Tests whether indexes exist
+        /// Tests whether indexes exist.
         /// </summary>
-        /// <param name="keynames">The indexed fields</param>
-        /// <returns>Returns true when the indexes exist, false otherwise</returns>
+        /// <param name="keynames">The indexed fields.</param>
+        /// <returns>Returns true when the indexes exist, false otherwise.</returns>
         public bool IndexesExists(IEnumerable<string> keynames)
         {
-            return _collection.IndexExists(keynames.ToArray());
+            return this.collection.IndexExists(keynames.ToArray());
         }
 
         /// <summary>
-        /// Runs the ReIndex command on this repository
+        /// Runs the ReIndex command on this repository.
         /// </summary>
         public void ReIndex()
         {
-            _collection.ReIndex();
+            this.collection.ReIndex();
         }
 
         /// <summary>
@@ -201,77 +221,60 @@ namespace DreamSongs.MongoRepository
         /// </summary>
         /// <remarks>
         /// Call this method when you know (or suspect) that a process other than this one may
-        /// have dropped one or more indexes
+        /// have dropped one or more indexes.
         /// </remarks>
         public void ResetIndexCache()
         {
-            _collection.ResetIndexCache();
+            this.collection.ResetIndexCache();
 
-            _collection.GetIndexes();
+            this.collection.GetIndexes();
         }
 
         /// <summary>
-        /// Gets the total size for the repository (data + indexes)
+        /// Gets the total size for the repository (data + indexes).
         /// </summary>
-        /// <returns>Returns total size for the repository (data + indexes)</returns>
+        /// <returns>Returns total size for the repository (data + indexes).</returns>
         public long GetTotalDataSize()
         {
-            return _collection.GetTotalDataSize();
+            return this.collection.GetTotalDataSize();
         }
 
         /// <summary>
-        /// Gets the total storage size for the repository (data + indexes)
+        /// Gets the total storage size for the repository (data + indexes).
         /// </summary>
-        /// <returns>Returns total storage size for the repository (data + indexes)</returns>
+        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
         public long GetTotalStorageSize()
         {
-            return _collection.GetTotalStorageSize();
+            return this.collection.GetTotalStorageSize();
         }
 
         /// <summary>
-        /// Validates the integrity of the repository
+        /// Validates the integrity of the repository.
         /// </summary>
-        /// <returns>Returns a ValidateCollectionResult</returns>
-        /// <remarks>You will need to reference MongoDb.Driver</remarks>
+        /// <returns>Returns a ValidateCollectionResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
         public ValidateCollectionResult Validate()
         {
-            return _collection.Validate();
+            return this.collection.Validate();
         }
 
         /// <summary>
-        /// Gets stats for this repository
+        /// Gets stats for this repository.
         /// </summary>
-        /// <returns>Returns a CollectionStatsResult</returns>
-        /// <remarks>You will need to reference MongoDb.Driver</remarks>
+        /// <returns>Returns a CollectionStatsResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
         public CollectionStatsResult GetStats()
         {
-            return _collection.GetStats();
+            return this.collection.GetStats();
         }
 
         /// <summary>
-        /// Gets the indexes for this repository
+        /// Gets the indexes for this repository.
         /// </summary>
-        /// <returns>Returns the indexes for this repository</returns>
+        /// <returns>Returns the indexes for this repository.</returns>
         public GetIndexesResult GetIndexes()
         {
-            return _collection.GetIndexes();
-        }
-
-        /// <summary>
-        /// Tests whether the collection already exists
-        /// </summary>
-        /// <returns>Returns true when the collection already exists, false otherwise</returns>
-        public bool Exists
-        {
-            get { return _collection.Exists(); }
-        }
-
-        /// <summary>
-        /// Returns the name of the collection as Mongo uses.
-        /// </summary>
-        public string Name
-        {
-            get { return _collection.Name; }
+            return this.collection.GetIndexes();
         }
     }
 }

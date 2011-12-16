@@ -1,200 +1,213 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using FluentMongo.Linq;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-
-namespace DreamSongs.MongoRepository
+﻿namespace DreamSongs.MongoRepository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using FluentMongo.Linq;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using MongoDB.Driver.Builders;
+
     /// <summary>
-    /// Deals with entities in MongoDb
+    /// Deals with entities in MongoDb.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type contained in the repository.</typeparam>
     public class MongoRepository<T> : IRepository<T>
         where T : IEntity
     {
         /// <summary>
-        /// MongoCollection field
+        /// MongoCollection field.
         /// </summary>
-        private MongoCollection<T> _collection;
+        private MongoCollection<T> collection;
 
         /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
-        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name
+        /// Initializes a new instance of the MongoRepository class.
+        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name.
         /// </summary>
-        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring</remarks>
+        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepository()
             : this(Util.GetDefaultConnectionString())
-        { }
-
-        /// <summary>
-        /// Initilizes the instance of MongoRepository, Setups the MongoDB and the repository (i.e T)
-        /// </summary>
-        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB</param>
-        public MongoRepository(string connectionString)
         {
-            _collection = Util.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
-        /// Gets the Mongo collection (to perform advanced operations)
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        public MongoRepository(string connectionString)
+        {
+            this.collection = Util.GetCollectionFromConnectionString<T>(connectionString);
+        }
+
+        /// <summary>
+        /// Gets the Mongo collection (to perform advanced operations).
         /// </summary>
         /// <remarks>
         /// One can argue that exposing this property (and with that, access to it's Database property for instance
         /// (which is a "parent")) is not the responsibility of this class.
         /// </remarks>
+        /// <value>The Mongo collection (to perform advanced operations).</value>
         [Obsolete("This property will be removed in future releases; for most purposes you can use the MongoRepositoryManager<T>.")]
         public MongoCollection<T> Collection
         {
             get
             {
-                return _collection;
+                return this.collection;
             }
         }
 
         /// <summary>
-        /// Returns the T by its given id
+        /// Returns the T by its given id.
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve</param>
-        /// <returns>The Entity T</returns>
+        /// <param name="id">The string representing the ObjectId of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
         public T GetById(string id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
-                return _collection.FindOneByIdAs<T>(new ObjectId(id));
-            return _collection.FindOneByIdAs<T>(id);
+            {
+                return this.collection.FindOneByIdAs<T>(new ObjectId(id));
+            }
+
+            return this.collection.FindOneByIdAs<T>(id);
         }
 
         /// <summary>
-        /// Returns a single T by the given criteria
+        /// Returns a single T by the given criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>The T</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>A single T matching the criteria.</returns>
         public T GetSingle(Expression<Func<T, bool>> criteria)
         {
-            return _collection.AsQueryable().Where(criteria).FirstOrDefault();
+            return this.collection.AsQueryable().Where(criteria).FirstOrDefault();
         }
 
         /// <summary>
-        /// Returns the list of T where it matches the criteria
+        /// Returns the list of T where it matches the criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>IQueryable of T</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>IQueryable of T.</returns>
         public IQueryable<T> All(Expression<Func<T, bool>> criteria)
         {
-            return _collection.AsQueryable().Where(criteria);
+            return this.collection.AsQueryable().Where(criteria);
         }
 
         /// <summary>
-        /// Returns All the records of T
+        /// Returns All the records of T.
         /// </summary>
-        /// <returns>IQueryable of T</returns>
+        /// <returns>IQueryable of T.</returns>
         public IQueryable<T> All()
         {
-            return _collection.AsQueryable();
+            return this.collection.AsQueryable();
         }
 
         /// <summary>
-        /// Adds the new entity in the repository
+        /// Adds the new entity in the repository.
         /// </summary>
-        /// <param name="entity">The entity T</param>
-        /// <returns>The added entity including its new ObjectId</returns>
+        /// <param name="entity">The entity T.</param>
+        /// <returns>The added entity including its new ObjectId.</returns>
         public T Add(T entity)
         {
-            _collection.Insert<T>(entity);
+            this.collection.Insert<T>(entity);
 
             return entity;
         }
 
         /// <summary>
-        /// Adds the new entities in the repository
+        /// Adds the new entities in the repository.
         /// </summary>
-        /// <param name="entities">The entities of type T</param>
+        /// <param name="entities">The entities of type T.</param>
         public void Add(IEnumerable<T> entities)
         {
-            _collection.InsertBatch<T>(entities);
+            this.collection.InsertBatch<T>(entities);
         }
 
         /// <summary>
-        /// Upserts an entity
+        /// Upserts an entity.
         /// </summary>
-        /// <param name="entity">The entity</param>
-        /// <returns>The updated entity</returns>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
         public T Update(T entity)
         {
-            _collection.Save<T>(entity);
+            this.collection.Save<T>(entity);
 
             return entity;
         }
 
         /// <summary>
-        /// Upserts the entities
+        /// Upserts the entities.
         /// </summary>
-        /// <param name="entities">The entities to update</param>
+        /// <param name="entities">The entities to update.</param>
         public void Update(IEnumerable<T> entities)
         {
             foreach (T entity in entities)
-                _collection.Save<T>(entity);
+            {
+                this.collection.Save<T>(entity);
+            }
         }
 
         /// <summary>
-        /// Deletes an entity from the repository by its id
+        /// Deletes an entity from the repository by its id.
         /// </summary>
-        /// <param name="id">The string representation of the entity's id</param>
+        /// <param name="id">The string representation of the entity's id.</param>
         public void Delete(string id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
-                _collection.Remove(Query.EQ("_id", new ObjectId(id)));
+            {
+                this.collection.Remove(Query.EQ("_id", new ObjectId(id)));
+            }
             else
-                _collection.Remove(Query.EQ("_id", id));
+            {
+                this.collection.Remove(Query.EQ("_id", id));
+            }
         }
 
         /// <summary>
-        /// Deletes the given entity
+        /// Deletes the given entity.
         /// </summary>
-        /// <param name="entity">The entity to delete</param>
+        /// <param name="entity">The entity to delete.</param>
         public void Delete(T entity)
         {
             this.Delete(entity.Id);
         }
 
         /// <summary>
-        /// Deletes the entities matching the criteria
+        /// Deletes the entities matching the criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
+        /// <param name="criteria">The expression.</param>
         public void Delete(Expression<Func<T, bool>> criteria)
         {
-            foreach (T entity in _collection.AsQueryable().Where(criteria))
+            foreach (T entity in this.collection.AsQueryable().Where(criteria))
+            {
                 this.Delete(entity.Id);
+            }
         }
 
         /// <summary>
-        /// Deletes all entities in the repository
+        /// Deletes all entities in the repository.
         /// </summary>
         public void DeleteAll()
         {
-            _collection.RemoveAll();
+            this.collection.RemoveAll();
         }
 
         /// <summary>
-        /// Counts the total entities in the repository
+        /// Counts the total entities in the repository.
         /// </summary>
-        /// <returns>Count of entities in the collection</returns>
+        /// <returns>Count of entities in the collection.</returns>
         public long Count()
         {
-            return _collection.Count();
+            return this.collection.Count();
         }
 
         /// <summary>
-        /// Checks if the entity exists for given criteria
+        /// Checks if the entity exists for given criteria.
         /// </summary>
-        /// <param name="criteria">The expression</param>
-        /// <returns>true when an entity matching the criteria exists, false otherwise</returns>
+        /// <param name="criteria">The expression.</param>
+        /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
         public bool Exists(Expression<Func<T, bool>> criteria)
         {
-            return _collection.AsQueryable().Any(criteria);
+            return this.collection.AsQueryable().Any(criteria);
         }
 
         /// <summary>
@@ -245,7 +258,7 @@ namespace DreamSongs.MongoRepository
         /// </remarks>
         public IDisposable RequestStart(bool slaveOk)
         {
-            return _collection.Database.RequestStart(slaveOk);
+            return this.collection.Database.RequestStart(slaveOk);
         }
 
         /// <summary>
@@ -256,8 +269,7 @@ namespace DreamSongs.MongoRepository
         /// </remarks>
         public void RequestDone()
         {
-            _collection.Database.RequestDone();
+            this.collection.Database.RequestDone();
         }
     }
 }
-
