@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -11,7 +11,7 @@
     <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
     <tags>mongo mongodb repository</tags>
     <releaseNotes>
-      It is now possible to implement IEntity as opposed to inheriting from Entity to override the Object ID generation for use with custom keys (for example: natural keys). V1.2.1 is mostly a bugfix.
+      Entity from now on igonores extra elements when deserializing
     </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.

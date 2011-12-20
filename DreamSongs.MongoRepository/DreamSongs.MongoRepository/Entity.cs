@@ -1,12 +1,12 @@
 ﻿namespace DreamSongs.MongoRepository
 {
-    using System;
     using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;
 
     /// <summary>
     /// Abstract Entity for all the BusinessEntities.
     /// </summary>
+    [BsonIgnoreExtraElements]
     public abstract class Entity : IEntity
     {
         /// <summary>
