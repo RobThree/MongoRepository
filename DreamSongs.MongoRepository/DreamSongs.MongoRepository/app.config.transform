@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <connectionStrings>
+    <!-- See http://www.mongodb.org/display/DOCS/CSharp+Driver+Tutorial#CSharpDriverTutorial-Connectionstrings for more info -->
+    <add name="MongoServerSettings"
+         connectionString="mongodb://localhost/MyDatabase" />
+  </connectionStrings>
+</configuration>
