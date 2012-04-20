@@ -24,15 +24,14 @@
         }
 
         /// <summary>
-        /// Creates and returns a MongoDatabase from the specified connectionstring.
+        /// Creates and returns a MongoDatabase from the specified url.
         /// </summary>
-        /// <param name="connectionstring">The connectionstring to use to get the database from.</param>
-        /// <returns>Returns a MongoDatabase from the specified connectionstring.</returns>
-        public static MongoDatabase GetDatabaseFromConnectionString(string connectionstring)
+        /// <param name="url">The url to use to get the database from.</param>
+        /// <returns>Returns a MongoDatabase from the specified url.</returns>
+        private static MongoDatabase GetDatabaseFromUrl(MongoUrl url)
         {
-            var cnn = new MongoUrl(connectionstring);
-            var server = MongoServer.Create(cnn.ToServerSettings());
-            return server.GetDatabase(cnn.DatabaseName);
+            var server = MongoServer.Create(url.ToServerSettings());
+            return server.GetDatabase(url.DatabaseName);
         }
 
         /// <summary>
@@ -43,6 +42,30 @@
         /// <returns>Returns a MongoCollection from the specified type and connectionstring.</returns>
         public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionstring)
             where T : IEntity
+        {
+            return Util.GetDatabaseFromUrl(new MongoUrl(connectionstring))
+                .GetCollection<T>(GetCollectionName<T>());
+        }
+
+        /// <summary>
+        /// Creates and returns a MongoCollection from the specified type and url.
+        /// </summary>
+        /// <typeparam name="T">The type to get the collection of.</typeparam>
+        /// <param name="url">The url to use to get the collection from.</param>
+        /// <returns>Returns a MongoCollection from the specified type and url.</returns>
+        public static MongoCollection<T> GetCollectionFromUrl<T>(MongoUrl url)
+            where T : IEntity
+        {
+            return Util.GetDatabaseFromUrl(url)
+                .GetCollection<T>(GetCollectionName<T>());
+        }
+
+        /// <summary>
+        /// Determines the collectionname for T and assures it is not empty
+        /// </summary>
+        /// <typeparam name="T">The type to determine the collectionname for.</typeparam>
+        /// <returns>Returns the collectionname for T.</returns>
+        private static string GetCollectionName<T>() where T : IEntity
         {
             string collectionName;
             if (typeof(T).BaseType.Equals(typeof(object)))
@@ -58,9 +81,10 @@
             {
                 throw new ArgumentException("Collection name cannot be empty for this entity");
             }
-
-            return Util.GetDatabaseFromConnectionString(connectionstring).GetCollection<T>(collectionName);
+            return collectionName;
         }
+
+
 
         /// <summary>
         /// Determines the collectionname from the specified type.

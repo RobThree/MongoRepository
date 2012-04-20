@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.2.4</version>
+    <version>1.3</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -12,14 +12,14 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download.codeplex.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=18365</iconUrl>
     <releaseNotes>
-      Added transforms for app.config and web.config. Now references FluentMongo 1.3.1.1 or higher.
+      FluentMongo no longer required; LINQ is now natively supported by the C# driver. Also the Entity now ignores, by default, extra elements in the BSON that are not in the entity.
     </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="fluentmongo" version="1.3.1.1" />
+      <dependency id="mongocsharpdriver" version="1.4.1" />
     </dependencies>
   </metadata>
   <files>

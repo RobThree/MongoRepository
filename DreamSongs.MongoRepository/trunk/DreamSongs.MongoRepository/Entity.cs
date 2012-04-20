@@ -6,7 +6,7 @@
     /// <summary>
     /// Abstract Entity for all the BusinessEntities.
     /// </summary>
-    [BsonIgnoreExtraElements]
+    [BsonIgnoreExtraElements(Inherited = true)]
     public abstract class Entity : IEntity
     {
         /// <summary>

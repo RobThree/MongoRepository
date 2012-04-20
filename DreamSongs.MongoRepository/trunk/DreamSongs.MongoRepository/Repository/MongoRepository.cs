@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using FluentMongo.Linq;
     using MongoDB.Bson;
     using MongoDB.Driver;
     using MongoDB.Driver.Builders;
+    using MongoDB.Driver.Linq;
 
     /// <summary>
     /// Deals with entities in MongoDb.
@@ -38,6 +38,15 @@
         public MongoRepository(string connectionString)
         {
             this.collection = Util.GetCollectionFromConnectionString<T>(connectionString);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="url">Url to use for connecting to MongoDB.</param>
+        public MongoRepository(MongoUrl url)
+        {
+            this.collection = Util.GetCollectionFromUrl<T>(url);
         }
 
         /// <summary>
@@ -79,7 +88,7 @@
         /// <returns>A single T matching the criteria.</returns>
         public T GetSingle(Expression<Func<T, bool>> criteria)
         {
-            return this.collection.AsQueryable().Where(criteria).FirstOrDefault();
+            return this.collection.AsQueryable<T>().Where(criteria).FirstOrDefault();
         }
 
         /// <summary>
@@ -89,7 +98,7 @@
         /// <returns>IQueryable of T.</returns>
         public IQueryable<T> All(Expression<Func<T, bool>> criteria)
         {
-            return this.collection.AsQueryable().Where(criteria);
+            return this.collection.AsQueryable<T>().Where(criteria);
         }
 
         /// <summary>
@@ -98,7 +107,7 @@
         /// <returns>IQueryable of T.</returns>
         public IQueryable<T> All()
         {
-            return this.collection.AsQueryable();
+            return this.collection.AsQueryable<T>();
         }
 
         /// <summary>
@@ -177,7 +186,7 @@
         /// <param name="criteria">The expression.</param>
         public void Delete(Expression<Func<T, bool>> criteria)
         {
-            foreach (T entity in this.collection.AsQueryable().Where(criteria))
+            foreach (T entity in this.collection.AsQueryable<T>().Where(criteria))
             {
                 this.Delete(entity.Id);
             }
@@ -207,7 +216,7 @@
         /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
         public bool Exists(Expression<Func<T, bool>> criteria)
         {
-            return this.collection.AsQueryable().Any(criteria);
+            return this.collection.AsQueryable<T>().Any(criteria);
         }
 
         /// <summary>
