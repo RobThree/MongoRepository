@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamSongs.MongoRepository", "DreamSongs.MongoRepository\DreamSongs.MongoRepository.csproj", "{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "MongoRepositoryTests\MongoRepositoryTests.csproj", "{7C8276C3-819A-4EA1-BFDA-64C3760B0037}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D62DDBAF-08C6-4130-890A-888910785B65}"
+	ProjectSection(SolutionItems) = preProject
+		DreamSongs.MongoRepository.vsmdi = DreamSongs.MongoRepository.vsmdi
+		Local.testsettings = Local.testsettings
+		MongoRepository.nuspec = MongoRepository.nuspec
+		mongorepositorylogo.png = mongorepositorylogo.png
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FE712165-2F92-4E6E-A177-D155F6EB876B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DreamSongs.MongoRepository\\DreamSongs.MongoRepository.csproj
+		SccProjectName1 = DreamSongs.MongoRepository
+		SccLocalPath1 = DreamSongs.MongoRepository
+		SccProjectUniqueName2 = MongoRepositoryTests\\MongoRepositoryTests.csproj
+		SccProjectName2 = MongoRepositoryTests
+		SccLocalPath2 = MongoRepositoryTests
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = DreamSongs.MongoRepository.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C8276C3-819A-4EA1-BFDA-64C3760B0037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8276C3-819A-4EA1-BFDA-64C3760B0037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8276C3-819A-4EA1-BFDA-64C3760B0037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8276C3-819A-4EA1-BFDA-64C3760B0037}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

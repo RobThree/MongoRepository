@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>MongoRepository</id>
+    <version>1.3</version>
+    <authors>tgeek, RobIII</authors>
+    <owners>tgeek</owners>
+    <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
+    <projectUrl>http://mongorepository.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
+    <tags>mongo mongodb repository</tags>
+    <iconUrl>http://download.codeplex.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=18365</iconUrl>
+    <releaseNotes>
+      FluentMongo no longer required; LINQ is now natively supported by the C# driver. Also the Entity now ignores, by default, extra elements in the BSON that are not in the entity.
+    </releaseNotes>
+    <summary>
+      Provides a repository on top of the 10gen driver and FluentMongo.
+    </summary>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="mongocsharpdriver" version="1.4.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="\DreamSongs.MongoRepository\bin\Release\DreamSongs.MongoRepository.dll" target="lib" />
+    <file src="\DreamSongs.MongoRepository\bin\Release\DreamSongs.MongoRepository.XML" target="lib" />
+    <file src="\DreamSongs.MongoRepository\app.config.transform" target="content" />
+    <file src="\DreamSongs.MongoRepository\web.config.transform" target="content" />
+  </files>
+</package>
