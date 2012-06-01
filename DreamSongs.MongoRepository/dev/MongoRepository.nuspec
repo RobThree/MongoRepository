@@ -12,7 +12,7 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download.codeplex.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=18365</iconUrl>
     <releaseNotes>
-      FluentMongo no longer required; LINQ is now natively supported by the C# driver. Also the Entity now ignores, by default, extra elements in the BSON that are not in the entity.
+      Added [DataContract] to Entity, [DataMember] to it's Id property. Also updated to 1.4.2 MongoDB driver (requiring, from now on, a specific version).
     </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
