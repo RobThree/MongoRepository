@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DreamSongs.MongoRepository;
+using MongoRepository;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace MongoRepositoryTests.Entities

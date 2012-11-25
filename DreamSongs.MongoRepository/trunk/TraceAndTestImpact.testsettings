@@ -25,7 +25,7 @@
           <Configuration>
             <CodeCoverage xmlns="">
               <Regular>
-                <CodeCoverageItem binaryFile="DreamSongs.MongoRepository\bin\Debug\DreamSongs.MongoRepository.dll" pdbFile="DreamSongs.MongoRepository\bin\Debug\DreamSongs.MongoRepository.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="MongoRepository\bin\Debug\MongoRepository.dll" pdbFile="MongoRepository\bin\Debug\MongoRepository.pdb" instrumentInPlace="true" />
               </Regular>
             </CodeCoverage>
           </Configuration>
