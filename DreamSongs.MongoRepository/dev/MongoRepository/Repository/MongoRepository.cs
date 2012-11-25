@@ -1,4 +1,4 @@
-﻿namespace DreamSongs.MongoRepository
+﻿namespace MongoRepository
 {
     using MongoDB.Bson;
     using MongoDB.Driver;
@@ -54,10 +54,10 @@
         /// </summary>
         /// <remarks>
         /// One can argue that exposing this property (and with that, access to it's Database property for instance
-        /// (which is a "parent")) is not the responsibility of this class.
+        /// (which is a "parent")) is not the responsibility of this class. Use of this property is highly discouraged;
+        /// for most purposes you can use the MongoRepositoryManager<T>
         /// </remarks>
         /// <value>The Mongo collection (to perform advanced operations).</value>
-        [Obsolete("This property will be removed in future releases; for most purposes you can use the MongoRepositoryManager<T>.")]
         public MongoCollection<T> Collection
         {
             get

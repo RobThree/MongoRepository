@@ -1,4 +1,4 @@
-﻿namespace DreamSongs.MongoRepository
+﻿namespace MongoRepository
 {
     using System;
     using System.Collections.Generic;

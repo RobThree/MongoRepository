@@ -1,4 +1,4 @@
-﻿namespace DreamSongs.MongoRepository
+﻿namespace MongoRepository
 {
     using System.Runtime.Serialization;
     using MongoDB.Bson;

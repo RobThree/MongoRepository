@@ -1,5 +1,5 @@
 ﻿using System;
-using DreamSongs.MongoRepository;
+using MongoRepository;
 
 namespace MongoRepositoryTests.Entities
 {

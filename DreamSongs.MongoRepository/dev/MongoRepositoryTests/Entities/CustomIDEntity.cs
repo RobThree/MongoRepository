@@ -1,4 +1,4 @@
-﻿using DreamSongs.MongoRepository;
+﻿using MongoRepository;
 using System;
 using MongoDB.Bson.Serialization.Attributes;
 

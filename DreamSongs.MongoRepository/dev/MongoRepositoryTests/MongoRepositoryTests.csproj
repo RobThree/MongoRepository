@@ -71,9 +71,9 @@
     <Compile Include="RepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DreamSongs.MongoRepository\DreamSongs.MongoRepository.csproj">
+    <ProjectReference Include="..\MongoRepository\MongoRepository.csproj">
       <Project>{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}</Project>
-      <Name>DreamSongs.MongoRepository</Name>
+      <Name>MongoRepository</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

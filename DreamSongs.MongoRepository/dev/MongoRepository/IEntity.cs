@@ -1,4 +1,4 @@
-namespace DreamSongs.MongoRepository
+namespace MongoRepository
 {
     using MongoDB.Bson.Serialization.Attributes;
 

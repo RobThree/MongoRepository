@@ -1,4 +1,4 @@
-﻿using DreamSongs.MongoRepository;
+﻿using MongoRepository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
