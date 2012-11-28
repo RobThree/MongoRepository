@@ -28,10 +28,9 @@ namespace MongoRepositoryTests
 
         private void DropDB()
         {
-            var x = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
-            var s = new MongoServer(x.ToServerSettings());
-            var d = s.GetDatabase(x.DatabaseName);
-            d.Drop();
+            var url = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
+            var client = new MongoClient(url);
+            client.GetServer().DropDatabase(url.DatabaseName);
         }
 
         [TestMethod]

@@ -30,8 +30,9 @@
         /// <returns>Returns a MongoDatabase from the specified url.</returns>
         private static MongoDatabase GetDatabaseFromUrl(MongoUrl url)
         {
-            var server = MongoServer.Create(url.ToServerSettings());
-            return server.GetDatabase(url.DatabaseName);
+            var client = new MongoClient(url);
+            var server = client.GetServer();
+            return server.GetDatabase(url.DatabaseName); // WriteConcern defaulted to Acknowledged
         }
 
         /// <summary>
