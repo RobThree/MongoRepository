@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.4.0</version>
+    <version>1.4.2</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -10,17 +10,16 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
     <tags>mongo mongodb repository</tags>
-    <iconUrl>http://download.codeplex.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=18365</iconUrl>
+    <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      Dropped the "Dreamsongs" part of the namespace. Also the Collection-property is no longer deprecated in favour of mimicing functionality in a RepoManager. The RepoManager class
-      will, however, not be dropped and stay supported for more consistent access to helper methods.
+      Updated to 1.8.0 MongoDB driver; from now on revisions of the driver will not require MongoRepository updates
     </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.6.1]" />
+      <dependency id="mongocsharpdriver" version="[1.8.0,1.9.0)" />
     </dependencies>
   </metadata>
   <files>

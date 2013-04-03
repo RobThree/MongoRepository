@@ -55,7 +55,7 @@
         /// <remarks>
         /// One can argue that exposing this property (and with that, access to it's Database property for instance
         /// (which is a "parent")) is not the responsibility of this class. Use of this property is highly discouraged;
-        /// for most purposes you can use the MongoRepositoryManager<T>
+        /// for most purposes you can use the MongoRepositoryManager&lt;T&gt;
         /// </remarks>
         /// <value>The Mongo collection (to perform advanced operations).</value>
         public MongoCollection<T> Collection
