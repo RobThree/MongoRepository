@@ -7,11 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "Mon
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D62DDBAF-08C6-4130-890A-888910785B65}"
 	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
 		MongoRepository.nuspec = MongoRepository.nuspec
-		MongoRepository.vsmdi = MongoRepository.vsmdi
 		mongorepositorylogo.png = mongorepositorylogo.png
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FE712165-2F92-4E6E-A177-D155F6EB876B}"
@@ -25,16 +22,13 @@ Global
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
-		SccProjectUniqueName0 = MongoRepositoryTests\\MongoRepositoryTests.csproj
-		SccProjectName0 = MongoRepositoryTests
-		SccLocalPath0 = MongoRepositoryTests
-		SccProjectUniqueName1 = MongoRepository\\MongoRepository.csproj
-		SccProjectName1 = MongoRepository
-		SccLocalPath1 = MongoRepository
-		SccLocalPath2 = .
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = MongoRepository.vsmdi
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MongoRepositoryTests\\MongoRepositoryTests.csproj
+		SccProjectName1 = MongoRepositoryTests
+		SccLocalPath1 = MongoRepositoryTests
+		SccProjectUniqueName2 = MongoRepository\\MongoRepository.csproj
+		SccProjectName2 = MongoRepository
+		SccLocalPath2 = MongoRepository
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
