@@ -130,7 +130,7 @@ namespace MongoRepositoryTests
             Assert.IsNotNull(customer.Orders[0].Items[0].Product.Id);
 
             // get the orders  
-            var theOrders = _customerRepo.All(c => c.Id == customer.Id).Select(c => c.Orders).ToList();
+            var theOrders = _customerRepo.Where(c => c.Id == customer.Id).Select(c => c.Orders).ToList();
             var theOrderItems = theOrders[0].Select(o => o.Items);
 
             Assert.IsNotNull(theOrders);
@@ -166,7 +166,7 @@ namespace MongoRepositoryTests
                 c.LastName = c.FirstName;
             _customerRepo.Update(custlist);
 
-            foreach (Customer c in _customerRepo.All())
+            foreach (Customer c in _customerRepo)
                 Assert.AreEqual(c.FirstName, c.LastName);
 
             //Delete by criteria
@@ -179,7 +179,7 @@ namespace MongoRepositoryTests
             _customerRepo.Delete(custlist[0]);
 
             //Test AsQueryable
-            var selectedcustomers = from cust in _customerRepo.All()
+            var selectedcustomers = from cust in _customerRepo
                                     where cust.LastName.EndsWith("C") || cust.LastName.EndsWith("G")
                                     select cust;
 

@@ -11,7 +11,8 @@
     /// IRepository definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> : IQueryable<T>
+        where T : IEntity
     {
         /// <summary>
         /// Gets the Mongo collection (to perform advanced operations).
