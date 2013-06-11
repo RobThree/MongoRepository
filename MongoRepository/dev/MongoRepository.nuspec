@@ -15,7 +15,7 @@
       .All() method is now obsolete; MongoRepository itself implements IQueryable&lt;T&gt;
     </releaseNotes>
     <summary>
-      Provides a repository on top of the 10gen driver and FluentMongo.
+      Provides a repository pattern on top of 10gen's MongoDB C# driver.
     </summary>
     <language>en-US</language>
     <dependencies>
