@@ -96,7 +96,7 @@
         /// </summary>
         /// <param name="criteria">The expression.</param>
         /// <returns>IQueryable of T.</returns>
-        [Obsolete()]
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         public IQueryable<T> All(Expression<Func<T, bool>> criteria)
         {
             return this.collection.AsQueryable<T>().Where(criteria);
@@ -106,7 +106,7 @@
         /// Returns All the records of T.
         /// </summary>
         /// <returns>IQueryable of T.</returns>
-        [Obsolete()]
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         public IQueryable<T> All()
         {
             return this.collection.AsQueryable<T>();
@@ -215,7 +215,7 @@
         /// Checks if the entity exists for given criteria.
         /// </summary>
         /// <param name="criteria">The expression.</param>
-        /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
+        /// <returns>True when an entity matching the criteria exists, false otherwise.</returns>
         public bool Exists(Expression<Func<T, bool>> criteria)
         {
             return this.collection.AsQueryable<T>().Any(criteria);

@@ -8,11 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D62DDBAF-08C6-4130-890A-888910785B65}"
 	ProjectSection(SolutionItems) = preProject
 		MongoRepository.nuspec = MongoRepository.nuspec
+		Help\MongoRepository.shfbproj = Help\MongoRepository.shfbproj
 		mongorepositorylogo.png = mongorepositorylogo.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FE712165-2F92-4E6E-A177-D155F6EB876B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{288E6547-DDFC-459F-8BF8-5225F06085FC}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection

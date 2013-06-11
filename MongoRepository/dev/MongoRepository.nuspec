@@ -2,24 +2,24 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.4.3</version>
+    <version>1.5.0</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
     <projectUrl>http://mongorepository.codeplex.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>An easy to use library to use MongoDB with .NET. (Implements Repository pattern on top of Official MongoDB C# driver with use of FluentMongo).</description>
+    <description>This easy to use library implements the repository pattern on top of Official MongoDB C# driver.</description>
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      Updated to 1.8.1 MongoDB driver; should not cause any more version problems with minor updates.
+      .All() method is now obsolete; MongoRepository itself implements IQueryable&lt;T&gt;
     </releaseNotes>
     <summary>
       Provides a repository on top of the 10gen driver and FluentMongo.
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.8.0,1.9.0)" />
+      <dependency id="mongocsharpdriver" version="[1.8.1,1.9.0)" />
     </dependencies>
   </metadata>
   <files>
@@ -27,5 +27,6 @@
     <file src="\MongoRepository\bin\Release\MongoRepository.XML" target="lib" />
     <file src="\MongoRepository\app.config.transform" target="content" />
     <file src="\MongoRepository\web.config.transform" target="content" />
+    <file src="\Help\Output\Documentation.chm" target="content" />
   </files>
 </package>
