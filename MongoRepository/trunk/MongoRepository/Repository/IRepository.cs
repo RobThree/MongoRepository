@@ -11,7 +11,8 @@
     /// IRepository definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> : IQueryable<T>
+        where T : IEntity
     {
         /// <summary>
         /// Gets the Mongo collection (to perform advanced operations).
@@ -42,6 +43,7 @@
         /// Returns All the records of T.
         /// </summary>
         /// <returns>IQueryable of T.</returns>
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         IQueryable<T> All();
 
         /// <summary>
@@ -49,6 +51,7 @@
         /// </summary>
         /// <param name="criteria">The expression.</param>
         /// <returns>IQueryable of T.</returns>
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         IQueryable<T> All(Expression<Func<T, bool>> criteria);
 
         /// <summary>
@@ -110,7 +113,7 @@
         /// Checks if the entity exists for given criteria.
         /// </summary>
         /// <param name="criteria">The expression.</param>
-        /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
+        /// <returns>True when an entity matching the criteria exists, false otherwise.</returns>
         bool Exists(Expression<Func<T, bool>> criteria);
 
         /// <summary>

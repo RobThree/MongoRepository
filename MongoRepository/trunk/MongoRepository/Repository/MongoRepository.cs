@@ -96,6 +96,7 @@
         /// </summary>
         /// <param name="criteria">The expression.</param>
         /// <returns>IQueryable of T.</returns>
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         public IQueryable<T> All(Expression<Func<T, bool>> criteria)
         {
             return this.collection.AsQueryable<T>().Where(criteria);
@@ -105,6 +106,7 @@
         /// Returns All the records of T.
         /// </summary>
         /// <returns>IQueryable of T.</returns>
+        [Obsolete("The repository itself now implements IQueryable<T>")]
         public IQueryable<T> All()
         {
             return this.collection.AsQueryable<T>();
@@ -213,7 +215,7 @@
         /// Checks if the entity exists for given criteria.
         /// </summary>
         /// <param name="criteria">The expression.</param>
-        /// <returns>true when an entity matching the criteria exists, false otherwise.</returns>
+        /// <returns>True when an entity matching the criteria exists, false otherwise.</returns>
         public bool Exists(Expression<Func<T, bool>> criteria)
         {
             return this.collection.AsQueryable<T>().Any(criteria);
@@ -289,5 +291,49 @@
         {
             this.collection.Database.RequestDone();
         }
+
+        #region IQueryable<T>
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>An IEnumerator&lt;T&gt; object that can be used to iterate through the collection.</returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this.collection.AsQueryable<T>().GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.collection.AsQueryable<T>().GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
+        /// </summary>
+        public Type ElementType
+        {
+            get { return this.collection.AsQueryable<T>().ElementType; }
+        }
+
+        /// <summary>
+        /// Gets the expression tree that is associated with the instance of IQueryable.
+        /// </summary>
+        public Expression Expression
+        {
+            get { return this.collection.AsQueryable<T>().Expression; }
+        }
+
+        /// <summary>
+        /// Gets the query provider that is associated with this data source.
+        /// </summary>
+        public IQueryProvider Provider
+        {
+            get { return this.collection.AsQueryable<T>().Provider; }
+        }
+        #endregion
     }
 }
