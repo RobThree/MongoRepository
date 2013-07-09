@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MongoDB.Driver;
+using MongoRepository;
+using MongoRepositoryTests.Entities;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using MongoRepository;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MongoDB.Driver;
-using MongoRepositoryTests.Entities;
 
 namespace MongoRepositoryTests
 {
-    //TODO: Tests here might need a little more logical grouping
+    //TODO: Decent tests
 
     [TestClass]
     public class RepoTests
@@ -62,7 +62,7 @@ namespace MongoRepositoryTests
             Assert.IsNotNull(customer.Id);
 
             // fetch it back 
-            var alreadyAddedCustomer = _customerRepo.GetSingle(c => c.FirstName == "Bob");
+            var alreadyAddedCustomer = _customerRepo.Where(c => c.FirstName == "Bob").Single();
 
             Assert.IsNotNull(alreadyAddedCustomer);
             Assert.AreEqual(customer.FirstName, alreadyAddedCustomer.FirstName);

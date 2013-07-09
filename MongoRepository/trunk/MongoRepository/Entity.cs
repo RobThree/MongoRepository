@@ -1,13 +1,15 @@
 ﻿namespace MongoRepository
 {
-    using System.Runtime.Serialization;
     using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;
+    using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Abstract Entity for all the BusinessEntities.
     /// </summary>
     [DataContract]
+    [Serializable]
     [BsonIgnoreExtraElements(Inherited = true)]
     public abstract class Entity : IEntity
     {
