@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -12,7 +12,7 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      .All() method is now obsolete; MongoRepository itself implements IQueryable&lt;T&gt;
+      Removed obsoleted methods All(), All(Expression&lt;Func&lt;T, bool&gt;&gt;) and RequestStart(bool), Obsoleted GetSingle(), Entity class is now (also) marked as Serializable
     </releaseNotes>
     <summary>
       Provides a repository pattern on top of 10gen's MongoDB C# driver.
