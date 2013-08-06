@@ -274,6 +274,8 @@ namespace MongoRepositoryTests
             Assert.IsTrue(xm.Exists);
             Assert.IsInstanceOfType(x.GetById("aaa"), typeof(CustomIDEntity));
 
+            Assert.AreEqual("aaa", x.GetById("aaa").Id);
+
             x.Delete("aaa");
             Assert.AreEqual(0, x.Count());
 
