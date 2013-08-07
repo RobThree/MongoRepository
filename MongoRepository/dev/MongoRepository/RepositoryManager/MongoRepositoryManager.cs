@@ -4,6 +4,7 @@
     using System.Linq;
     using MongoDB.Driver;
     using MongoDB.Driver.Builders;
+    using System;
 
     // TODO: Code coverage here is near-zero. A new RepoManagerTests.cs class needs to be created and we need to
     //      test these methods. Ofcourse we also need to update codeplex documentation on this entirely new object.
@@ -223,10 +224,9 @@
         /// Call this method when you know (or suspect) that a process other than this one may
         /// have dropped one or more indexes.
         /// </remarks>
+        [Obsolete("mongo-csharp-driver 1.8.2.34 doesn't use index caches anymore (see https://jira.mongodb.org/browse/CSHARP-736)")]
         public void ResetIndexCache()
         {
-            this.collection.ResetIndexCache();
-
             this.collection.GetIndexes();
         }
 

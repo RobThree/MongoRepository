@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using MongoDB.Driver;
+    using System;
 
     /// <summary>
     /// IRepositoryManager definition.
@@ -130,6 +131,7 @@
         /// Call this method when you know (or suspect) that a process other than this one may
         /// have dropped one or more indexes.
         /// </remarks>
+        [Obsolete("mongo-csharp-driver 1.8.2.34 doesn't use index caches anymore (see https://jira.mongodb.org/browse/CSHARP-736)")]
         void ResetIndexCache();
 
         /// <summary>
