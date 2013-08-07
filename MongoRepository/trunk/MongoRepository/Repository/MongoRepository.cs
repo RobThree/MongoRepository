@@ -75,9 +75,19 @@
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
-                return this.collection.FindOneByIdAs<T>(new ObjectId(id));
+                return this.GetById(new ObjectId(id));
             }
 
+            return this.collection.FindOneByIdAs<T>(id);
+        }
+
+        /// <summary>
+        /// Returns the T by its given ObjectId.
+        /// </summary>
+        /// <param name="id">The ObjectId of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
+        public T GetById(ObjectId id)
+        {
             return this.collection.FindOneByIdAs<T>(id);
         }
 
@@ -145,12 +155,21 @@
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
-                this.collection.Remove(Query.EQ("_id", new ObjectId(id)));
+                this.Delete(new ObjectId(id));
             }
             else
             {
                 this.collection.Remove(Query.EQ("_id", id));
             }
+        }
+
+        /// <summary>
+        /// Deletes an entity from the repository by its ObjectId.
+        /// </summary>
+        /// <param name="id">The ObjectId of the entity.</param>
+        public void Delete(ObjectId id)
+        {
+            this.collection.Remove(Query.EQ("_id", id));
         }
 
         /// <summary>
