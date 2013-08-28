@@ -7,7 +7,7 @@
     /// <summary>
     /// Internal miscellaneous utility functions.
     /// </summary>
-    internal static class Util
+    internal static class Util<U>
     {
         /// <summary>
         /// The default key MongoRepository will look for in the App.config or Web.config file.
@@ -42,9 +42,9 @@
         /// <param name="connectionstring">The connectionstring to use to get the collection from.</param>
         /// <returns>Returns a MongoCollection from the specified type and connectionstring.</returns>
         public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionstring)
-            where T : IEntity
+            where T : IEntity<U>
         {
-            return Util.GetDatabaseFromUrl(new MongoUrl(connectionstring))
+            return Util<U>.GetDatabaseFromUrl(new MongoUrl(connectionstring))
                 .GetCollection<T>(GetCollectionName<T>());
         }
 
@@ -55,9 +55,9 @@
         /// <param name="url">The url to use to get the collection from.</param>
         /// <returns>Returns a MongoCollection from the specified type and url.</returns>
         public static MongoCollection<T> GetCollectionFromUrl<T>(MongoUrl url)
-            where T : IEntity
+            where T : IEntity<U>
         {
-            return Util.GetDatabaseFromUrl(url)
+            return Util<U>.GetDatabaseFromUrl(url)
                 .GetCollection<T>(GetCollectionName<T>());
         }
 
@@ -66,7 +66,7 @@
         /// </summary>
         /// <typeparam name="T">The type to determine the collectionname for.</typeparam>
         /// <returns>Returns the collectionname for T.</returns>
-        private static string GetCollectionName<T>() where T : IEntity
+        private static string GetCollectionName<T>() where T : IEntity<U>
         {
             string collectionName;
             if (typeof(T).BaseType.Equals(typeof(object)))

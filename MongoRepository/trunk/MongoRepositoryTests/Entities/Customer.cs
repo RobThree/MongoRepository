@@ -61,4 +61,10 @@ namespace MongoRepositoryTests.Entities
         [BsonIgnoreIfNull]
         public string Country { get; set; }
     }
+
+    public class IntCustomer : IEntity<int>
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

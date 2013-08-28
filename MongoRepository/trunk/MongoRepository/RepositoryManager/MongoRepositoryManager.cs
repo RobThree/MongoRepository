@@ -20,8 +20,8 @@
     /// objects.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
-    public class MongoRepositoryManager<T> : IRepositoryManager<T>
-        where T : IEntity
+    public class MongoRepositoryManager<T, U> : IRepositoryManager<T, U>
+        where T : IEntity<U>
     {
         /// <summary>
         /// MongoCollection field.
@@ -34,7 +34,7 @@
         /// </summary>
         /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepositoryManager()
-            : this(Util.GetDefaultConnectionString())
+            : this(Util<U>.GetDefaultConnectionString())
         {
         }
 
@@ -44,7 +44,7 @@
         /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
         public MongoRepositoryManager(string connectionString)
         {
-            this.collection = Util.GetCollectionFromConnectionString<T>(connectionString);
+            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
@@ -218,19 +218,6 @@
         }
 
         /// <summary>
-        /// Removes all entries for this repository in the index cache used by EnsureIndex.
-        /// </summary>
-        /// <remarks>
-        /// Call this method when you know (or suspect) that a process other than this one may
-        /// have dropped one or more indexes.
-        /// </remarks>
-        [Obsolete("mongo-csharp-driver 1.8.2.34 doesn't use index caches anymore (see https://jira.mongodb.org/browse/CSHARP-736)")]
-        public void ResetIndexCache()
-        {
-            this.collection.GetIndexes();
-        }
-
-        /// <summary>
         /// Gets the total size for the repository (data + indexes).
         /// </summary>
         /// <returns>Returns total size for the repository (data + indexes).</returns>
@@ -276,5 +263,11 @@
         {
             return this.collection.GetIndexes();
         }
+    }
+
+    //TODO: Update documentation
+    public class MongoRepositoryManager<T> : MongoRepositoryManager<T, string>, IRepositoryManager<T, string>
+        where T : IEntity<string>
+    {
     }
 }
