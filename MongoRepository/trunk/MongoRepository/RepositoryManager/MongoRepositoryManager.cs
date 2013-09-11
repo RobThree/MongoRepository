@@ -48,6 +48,16 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        public MongoRepositoryManager(string connectionString, string collectionName)
+        {
+            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the collection already exists.
         /// </summary>
         /// <value>Returns true when the collection already exists, false otherwise.</value>
@@ -269,5 +279,13 @@
     public class MongoRepositoryManager<T> : MongoRepositoryManager<T, string>, IRepositoryManager<T, string>
         where T : IEntity<string>
     {
+        public MongoRepositoryManager()
+            : base() { }
+
+        public MongoRepositoryManager(string connectionString)
+            : base(connectionString) { }
+
+        public MongoRepositoryManager(string connectionString, string collectionName)
+            : base(connectionString, collectionName) { }
     }
 }

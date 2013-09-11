@@ -44,10 +44,30 @@
         /// <summary>
         /// Initializes a new instance of the MongoRepository class.
         /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        public MongoRepository(string connectionString, string collectionName)
+        {
+            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
         /// <param name="url">Url to use for connecting to MongoDB.</param>
         public MongoRepository(MongoUrl url)
         {
             this.collection = Util<U>.GetCollectionFromUrl<T>(url);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="url">Url to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        public MongoRepository(MongoUrl url, string collectionName)
+        {
+            this.collection = Util<U>.GetCollectionFromUrl<T>(url, collectionName);
         }
 
         /// <summary>
@@ -296,5 +316,19 @@
     public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T, string>
         where T : IEntity<string>
     {
+        public MongoRepository()
+            : base() { }
+
+        public MongoRepository(MongoUrl url)
+            : base(url) { }
+
+        public MongoRepository(MongoUrl url, string collectionName)
+            : base(url, collectionName) { }
+
+        public MongoRepository(string connectionString)
+            : base(connectionString) { }
+
+        public MongoRepository(string connectionString, string collectionName)
+            : base(connectionString, collectionName) { }
     }
 }

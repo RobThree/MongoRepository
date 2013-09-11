@@ -39,13 +39,26 @@
         /// Creates and returns a MongoCollection from the specified type and connectionstring.
         /// </summary>
         /// <typeparam name="T">The type to get the collection of.</typeparam>
-        /// <param name="connectionstring">The connectionstring to use to get the collection from.</param>
+        /// <param name="connectionString">The connectionstring to use to get the collection from.</param>
         /// <returns>Returns a MongoCollection from the specified type and connectionstring.</returns>
-        public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionstring)
+        public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionString)
             where T : IEntity<U>
         {
-            return Util<U>.GetDatabaseFromUrl(new MongoUrl(connectionstring))
-                .GetCollection<T>(GetCollectionName<T>());
+            return Util<U>.GetCollectionFromConnectionString<T>(connectionString, GetCollectionName<T>());
+        }
+
+        /// <summary>
+        /// Creates and returns a MongoCollection from the specified type and connectionstring.
+        /// </summary>
+        /// <typeparam name="T">The type to get the collection of.</typeparam>
+        /// <param name="connectionString">The connectionstring to use to get the collection from.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        /// <returns>Returns a MongoCollection from the specified type and connectionstring.</returns>
+        public static MongoCollection<T> GetCollectionFromConnectionString<T>(string connectionString, string collectionName)
+            where T : IEntity<U>
+        {
+            return Util<U>.GetDatabaseFromUrl(new MongoUrl(connectionString))
+                .GetCollection<T>(collectionName);
         }
 
         /// <summary>
@@ -57,8 +70,21 @@
         public static MongoCollection<T> GetCollectionFromUrl<T>(MongoUrl url)
             where T : IEntity<U>
         {
+            return Util<U>.GetCollectionFromUrl<T>(url, GetCollectionName<T>());
+        }
+
+        /// <summary>
+        /// Creates and returns a MongoCollection from the specified type and url.
+        /// </summary>
+        /// <typeparam name="T">The type to get the collection of.</typeparam>
+        /// <param name="url">The url to use to get the collection from.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        /// <returns>Returns a MongoCollection from the specified type and url.</returns>
+        public static MongoCollection<T> GetCollectionFromUrl<T>(MongoUrl url, string collectionName)
+            where T : IEntity<U>
+        {
             return Util<U>.GetDatabaseFromUrl(url)
-                .GetCollection<T>(GetCollectionName<T>());
+                .GetCollection<T>(collectionName);
         }
 
         /// <summary>

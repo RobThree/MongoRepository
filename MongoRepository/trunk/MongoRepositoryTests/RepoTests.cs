@@ -313,5 +313,17 @@ namespace MongoRepositoryTests
             xint.Delete(2);
             Assert.AreEqual(1, xint.Count());
         }
+
+        [TestMethod]
+        public void OverrideCollectionName()
+        {
+            IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
+            _customerRepo.Add(new Customer() { FirstName = "Test" });
+            Assert.IsTrue(_customerRepo.Single().FirstName.Equals("Test"));
+            Assert.AreEqual("TestCustomers123", _customerRepo.Collection.Name);
+
+            IRepositoryManager<Customer, string> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
+            Assert.AreEqual("TestCustomers123", _curstomerRepoManager.Name);
+        }
     }
 }
