@@ -11,8 +11,9 @@
     /// IRepository definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
-    public interface IRepository<T> : IQueryable<T>
-        where T : IEntity
+    //TODO: Update documentation
+    public interface IRepository<T, U> : IQueryable<T>
+        where T : IEntity<U>
     {
         /// <summary>
         /// Gets the Mongo collection (to perform advanced operations).
@@ -30,15 +31,8 @@
         /// </summary>
         /// <param name="id">The string representing the ObjectId of the entity to retrieve.</param>
         /// <returns>The Entity T.</returns>
-        T GetById(string id);
-
-        /// <summary>
-        /// Returns a single T by the given criteria.
-        /// </summary>
-        /// <param name="criteria">The expression.</param>
-        /// <returns>A single T matching the criteria.</returns>
-        [Obsolete("The repository itself now implements IQueryable<T>; use .Where(criteria).FirstOrDefault() or .Where(criteria).Single() etc.")]
-        T GetSingle(Expression<Func<T, bool>> criteria);
+        //TODO: Update documentation
+        T GetById(U id);
 
         /// <summary>
         /// Adds the new entity in the repository.
@@ -70,7 +64,8 @@
         /// Deletes an entity from the repository by its id.
         /// </summary>
         /// <param name="id">The string representation of the entity's id.</param>
-        void Delete(string id);
+        //TODO: Update documentation
+        void Delete(U id);
 
         /// <summary>
         /// Deletes the given entity.
@@ -131,5 +126,11 @@
         /// Instead of calling this method it is better to put the return value of RequestStart in a using statement.
         /// </remarks>
         void RequestDone();
+    }
+
+    //TODO: Add documentation
+    public interface IRepository<T> : IRepository<T, string>
+        where T : IEntity<string>
+    {
     }
 }

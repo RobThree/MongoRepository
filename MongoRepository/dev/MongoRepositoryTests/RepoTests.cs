@@ -36,8 +36,11 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void AddAndUpdateTest()
         {
-            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
-            IRepositoryManager<Customer> _customerMan = new MongoRepositoryManager<Customer>();
+            //TODO: Bring below code back to commented code if possible
+            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            //IRepositoryManager<Customer> _customerMan = new MongoRepositoryManager<Customer>();
+            IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
+            IRepositoryManager<Customer, string> _customerMan = new MongoRepositoryManager<Customer>();
 
             Assert.IsFalse(_customerMan.Exists);
 
@@ -86,8 +89,11 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void ComplexEntityTest()
         {
-            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
-            IRepository<Product> _productRepo = new MongoRepository<Product>();
+            //TODO: Bring below code back to commented code if possible
+            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            //IRepository<Product> _productRepo = new MongoRepository<Product>();
+            IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
+            IRepository<Product, string> _productRepo = new MongoRepository<Product>();
 
             var customer = new Customer();
             customer.FirstName = "Erik";
@@ -141,7 +147,9 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void BatchTest()
         {
-            IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            //TODO: Bring below code back to commented code if possible
+            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
+            IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
 
             var custlist = new List<Customer>(new Customer[] {
                 new Customer() { FirstName = "Customer A" },
@@ -292,6 +300,30 @@ namespace MongoRepositoryTests
             Assert.AreEqual(0, y.Count());
         }
 
-        
+        [TestMethod]
+        public void CustomIDTypeTest()
+        {
+            var xint = new MongoRepository<IntCustomer, int>();
+            xint.Add(new IntCustomer() { Id = 1, Name = "Test A" });
+            xint.Add(new IntCustomer() { Id = 2, Name = "Test B" });
+
+            var yint = xint.GetById(2);
+            Assert.AreEqual(yint.Name, "Test B");
+
+            xint.Delete(2);
+            Assert.AreEqual(1, xint.Count());
+        }
+
+        [TestMethod]
+        public void OverrideCollectionName()
+        {
+            IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
+            _customerRepo.Add(new Customer() { FirstName = "Test" });
+            Assert.IsTrue(_customerRepo.Single().FirstName.Equals("Test"));
+            Assert.AreEqual("TestCustomers123", _customerRepo.Collection.Name);
+
+            IRepositoryManager<Customer, string> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
+            Assert.AreEqual("TestCustomers123", _curstomerRepoManager.Name);
+        }
     }
 }

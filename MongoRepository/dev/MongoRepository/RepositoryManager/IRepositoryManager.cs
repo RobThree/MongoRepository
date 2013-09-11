@@ -8,7 +8,9 @@
     /// IRepositoryManager definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
-    public interface IRepositoryManager<T> where T : IEntity
+    //TODO: Update documentation
+    public interface IRepositoryManager<T, U> 
+        where T : IEntity<U>
     {
         /// <summary>
         /// Gets a value indicating whether the collection already exists.
@@ -125,16 +127,6 @@
         void ReIndex();
 
         /// <summary>
-        /// Removes all entries for this repository in the index cache used by EnsureIndex.
-        /// </summary>
-        /// <remarks>
-        /// Call this method when you know (or suspect) that a process other than this one may
-        /// have dropped one or more indexes.
-        /// </remarks>
-        [Obsolete("mongo-csharp-driver 1.8.2.34 doesn't use index caches anymore (see https://jira.mongodb.org/browse/CSHARP-736)")]
-        void ResetIndexCache();
-
-        /// <summary>
         /// Gets the total size for the repository (data + indexes).
         /// </summary>
         /// <returns>Returns total size for the repository (data + indexes).</returns>
@@ -165,5 +157,11 @@
         /// </summary>
         /// <returns>Returns the indexes for this repository.</returns>
         GetIndexesResult GetIndexes();
+    }
+
+    //TODO: Update documentation
+    public interface IRepositoryManager<T> : IRepositoryManager<T, string>
+        where T : IEntity<string>
+    {
     }
 }
