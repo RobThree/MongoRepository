@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.5.2</version>
+    <version>1.6.0</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -12,7 +12,9 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      Updated to MongoCSharp driver 1.8.3.9
+      Updated to MongoCSharp driver 1.8.3.9 (discussion 461602),
+      added constructor parameters to override collectionnames (discussion 456452),
+      IEntity&lt;T&gt; support (discussion 454482)
     </releaseNotes>
     <summary>
       Provides a repository pattern on top of 10gen's MongoDB C# driver.
