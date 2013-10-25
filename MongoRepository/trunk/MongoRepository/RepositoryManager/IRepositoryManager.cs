@@ -8,9 +8,9 @@
     /// IRepositoryManager definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
-    //TODO: Update documentation
-    public interface IRepositoryManager<T, U> 
-        where T : IEntity<U>
+    /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
+    public interface IRepositoryManager<T, TKey> 
+        where T : IEntity<TKey>
     {
         /// <summary>
         /// Gets a value indicating whether the collection already exists.
@@ -159,9 +159,4 @@
         GetIndexesResult GetIndexes();
     }
 
-    //TODO: Update documentation
-    public interface IRepositoryManager<T> : IRepositoryManager<T, string>
-        where T : IEntity<string>
-    {
-    }
 }

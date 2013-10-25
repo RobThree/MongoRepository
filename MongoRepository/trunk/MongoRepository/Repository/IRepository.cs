@@ -11,9 +11,9 @@
     /// IRepository definition.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
-    //TODO: Update documentation
-    public interface IRepository<T, U> : IQueryable<T>
-        where T : IEntity<U>
+    /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
+    public interface IRepository<T, TKey> : IQueryable<T>
+        where T : IEntity<TKey>
     {
         /// <summary>
         /// Gets the Mongo collection (to perform advanced operations).
@@ -29,10 +29,9 @@
         /// <summary>
         /// Returns the T by its given id.
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve.</param>
+        /// <param name="id">The value representing the ObjectId of the entity to retrieve.</param>
         /// <returns>The Entity T.</returns>
-        //TODO: Update documentation
-        T GetById(U id);
+        T GetById(TKey id);
 
         /// <summary>
         /// Adds the new entity in the repository.
@@ -63,9 +62,8 @@
         /// <summary>
         /// Deletes an entity from the repository by its id.
         /// </summary>
-        /// <param name="id">The string representation of the entity's id.</param>
-        //TODO: Update documentation
-        void Delete(U id);
+        /// <param name="id">The entity's id.</param>
+        void Delete(TKey id);
 
         /// <summary>
         /// Deletes the given entity.
@@ -74,10 +72,10 @@
         void Delete(T entity);
 
         /// <summary>
-        /// Deletes the entities matching the criteria.
+        /// Deletes the entities matching the predicate.
         /// </summary>
-        /// <param name="criteria">The expression.</param>
-        void Delete(Expression<Func<T, bool>> criteria);
+        /// <param name="predicate">The expression.</param>
+        void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Deletes all entities in the repository.
@@ -91,11 +89,11 @@
         long Count();
 
         /// <summary>
-        /// Checks if the entity exists for given criteria.
+        /// Checks if the entity exists for given predicate.
         /// </summary>
-        /// <param name="criteria">The expression.</param>
-        /// <returns>True when an entity matching the criteria exists, false otherwise.</returns>
-        bool Exists(Expression<Func<T, bool>> criteria);
+        /// <param name="predicate">The expression.</param>
+        /// <returns>True when an entity matching the predicate exists, false otherwise.</returns>
+        bool Exists(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Lets the server know that this thread is about to begin a series of related operations that must all occur
@@ -128,9 +126,4 @@
         void RequestDone();
     }
 
-    //TODO: Add documentation
-    public interface IRepository<T> : IRepository<T, string>
-        where T : IEntity<string>
-    {
-    }
 }

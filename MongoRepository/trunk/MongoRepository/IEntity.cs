@@ -5,19 +5,21 @@ namespace MongoRepository
     /// <summary>
     /// Generic Entity interface.
     /// </summary>
-    public interface IEntity<T>
+    /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
+    public interface IEntity<TKey>
     {
         /// <summary>
         /// Gets or sets the Id of the Entity.
         /// </summary>
         /// <value>Id of the Entity.</value>
         [BsonId]
-        T Id { get; set; }
+        TKey Id { get; set; }
     }
 
     /// <summary>
     /// "Default" Entity interface.
     /// </summary>
+    /// <remarks>Entities are assumed to use strings for Id's.</remarks>
     public interface IEntity : IEntity<string>
     {
     }

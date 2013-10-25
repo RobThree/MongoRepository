@@ -20,8 +20,9 @@
     /// objects.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
-    public class MongoRepositoryManager<T, U> : IRepositoryManager<T, U>
-        where T : IEntity<U>
+    /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
+    public class MongoRepositoryManager<T, TKey> : IRepositoryManager<T, TKey>
+        where T : IEntity<TKey>
     {
         /// <summary>
         /// MongoCollection field.
@@ -34,7 +35,7 @@
         /// </summary>
         /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepositoryManager()
-            : this(Util<U>.GetDefaultConnectionString())
+            : this(Util<TKey>.GetDefaultConnectionString())
         {
         }
 
@@ -44,7 +45,7 @@
         /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
         public MongoRepositoryManager(string connectionString)
         {
-            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString);
+            this.collection = Util<TKey>.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
@@ -54,7 +55,7 @@
         /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepositoryManager(string connectionString, string collectionName)
         {
-            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
+            this.collection = Util<TKey>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
         }
 
         /// <summary>
@@ -275,16 +276,36 @@
         }
     }
 
-    //TODO: Update documentation
+    /// <summary>
+    /// Deals with the collections of entities in MongoDb. This class tries to hide as much MongoDb-specific details
+    /// as possible but it's not 100% *yet*. It is a very thin wrapper around most methods on MongoDb's MongoCollection
+    /// objects.
+    /// </summary>
+    /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
+    /// <remarks>Entities are assumed to use strings for Id's.</remarks>
     public class MongoRepositoryManager<T> : MongoRepositoryManager<T, string>, IRepositoryManager<T, string>
         where T : IEntity<string>
     {
+        /// <summary>
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name.
+        /// </summary>
+        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepositoryManager()
             : base() { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
         public MongoRepositoryManager(string connectionString)
             : base(connectionString) { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepositoryManager class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepositoryManager(string connectionString, string collectionName)
             : base(connectionString, collectionName) { }
     }
