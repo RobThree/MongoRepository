@@ -18,11 +18,12 @@
     <OutputPath>Output\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
-    <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>MongoRepository documentation</HelpTitle>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.dll" />
-<DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.xml" />
+    </DocumentationSources>
     <ProjectSummary>&amp;lt%3bp&amp;gt%3bThis library provides a thin abstraction layer implementing the repository pattern on top of the &amp;lt%3ba href=&amp;quot%3bhttp://nuget.org/packages/mongocsharpdriver&amp;quot%3b&amp;gt%3bOfficial MongoDB C# driver&amp;lt%3b/a&amp;gt%3b.&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <CopyrightText>&amp;#169%3b2013</CopyrightText>
     <CopyrightHref>https://mongorepository.codeplex.com</CopyrightHref>
@@ -37,6 +38,14 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
     <HelpFileVersion>1.6.0.0</HelpFileVersion>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

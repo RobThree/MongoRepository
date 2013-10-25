@@ -33,12 +33,10 @@ namespace MongoRepositoryTests
             client.GetServer().DropDatabase(url.DatabaseName);
         }
 
+
         [TestMethod]
         public void AddAndUpdateTest()
         {
-            //TODO: Bring below code back to commented code if possible
-            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
-            //IRepositoryManager<Customer> _customerMan = new MongoRepositoryManager<Customer>();
             IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
             IRepositoryManager<Customer, string> _customerMan = new MongoRepositoryManager<Customer>();
 
@@ -89,9 +87,6 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void ComplexEntityTest()
         {
-            //TODO: Bring below code back to commented code if possible
-            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
-            //IRepository<Product> _productRepo = new MongoRepository<Product>();
             IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
             IRepository<Product, string> _productRepo = new MongoRepository<Product>();
 
@@ -147,8 +142,6 @@ namespace MongoRepositoryTests
         [TestMethod]
         public void BatchTest()
         {
-            //TODO: Bring below code back to commented code if possible
-            //IRepository<Customer> _customerRepo = new MongoRepository<Customer>();
             IRepository<Customer, string> _customerRepo = new MongoRepository<Customer>();
 
             var custlist = new List<Customer>(new Customer[] {

@@ -13,9 +13,9 @@
     /// Deals with entities in MongoDb.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
-    //TODO: Update documentation
-    public class MongoRepository<T, U> : IRepository<T, U>
-        where T : IEntity<U>
+    /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
+    public class MongoRepository<T, TKey> : IRepository<T, TKey>
+        where T : IEntity<TKey>
     {
         /// <summary>
         /// MongoCollection field.
@@ -28,7 +28,7 @@
         /// </summary>
         /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepository()
-            : this(Util<U>.GetDefaultConnectionString())
+            : this(Util<TKey>.GetDefaultConnectionString())
         {
         }
 
@@ -38,7 +38,7 @@
         /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
         public MongoRepository(string connectionString)
         {
-            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString);
+            this.collection = Util<TKey>.GetCollectionFromConnectionString<T>(connectionString);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@
         /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepository(string connectionString, string collectionName)
         {
-            this.collection = Util<U>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
+            this.collection = Util<TKey>.GetCollectionFromConnectionString<T>(connectionString, collectionName);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@
         /// <param name="url">Url to use for connecting to MongoDB.</param>
         public MongoRepository(MongoUrl url)
         {
-            this.collection = Util<U>.GetCollectionFromUrl<T>(url);
+            this.collection = Util<TKey>.GetCollectionFromUrl<T>(url);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@
         /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepository(MongoUrl url, string collectionName)
         {
-            this.collection = Util<U>.GetCollectionFromUrl<T>(url, collectionName);
+            this.collection = Util<TKey>.GetCollectionFromUrl<T>(url, collectionName);
         }
 
         /// <summary>
@@ -90,10 +90,9 @@
         /// <summary>
         /// Returns the T by its given id.
         /// </summary>
-        /// <param name="id">The string representing the ObjectId of the entity to retrieve.</param>
+        /// <param name="id">The Id of the entity to retrieve.</param>
         /// <returns>The Entity T.</returns>
-        //TODO: Update documentation
-        public T GetById(U id)
+        public T GetById(TKey id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
@@ -151,9 +150,8 @@
         /// <summary>
         /// Deletes an entity from the repository by its id.
         /// </summary>
-        /// <param name="id">The string representation of the entity's id.</param>
-        //TODO: Update documentation
-        public void Delete(U id)
+        /// <param name="id">The entity's id.</param>
+        public void Delete(TKey id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
@@ -184,12 +182,12 @@
         }
 
         /// <summary>
-        /// Deletes the entities matching the criteria.
+        /// Deletes the entities matching the predicate.
         /// </summary>
-        /// <param name="criteria">The expression.</param>
-        public void Delete(Expression<Func<T, bool>> criteria)
+        /// <param name="predicate">The expression.</param>
+        public void Delete(Expression<Func<T, bool>> predicate)
         {
-            foreach (T entity in this.collection.AsQueryable<T>().Where(criteria))
+            foreach (T entity in this.collection.AsQueryable<T>().Where(predicate))
             {
                 this.Delete(entity.Id);
             }
@@ -213,13 +211,13 @@
         }
 
         /// <summary>
-        /// Checks if the entity exists for given criteria.
+        /// Checks if the entity exists for given predicate.
         /// </summary>
-        /// <param name="criteria">The expression.</param>
-        /// <returns>True when an entity matching the criteria exists, false otherwise.</returns>
-        public bool Exists(Expression<Func<T, bool>> criteria)
+        /// <param name="predicate">The expression.</param>
+        /// <returns>True when an entity matching the predicate exists, false otherwise.</returns>
+        public bool Exists(Expression<Func<T, bool>> predicate)
         {
-            return this.collection.AsQueryable<T>().Any(criteria);
+            return this.collection.AsQueryable<T>().Any(predicate);
         }
 
         /// <summary>
@@ -312,22 +310,49 @@
         #endregion
     }
 
-    //TODO: Update documentation
+    /// <summary>
+    /// Deals with entities in MongoDb.
+    /// </summary>
+    /// <typeparam name="T">The type contained in the repository.</typeparam>
+    /// <remarks>Entities are assumed to use strings for Id's.</remarks>
     public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T, string>
         where T : IEntity<string>
     {
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// Uses the Default App/Web.Config connectionstrings to fetch the connectionString and Database name.
+        /// </summary>
+        /// <remarks>Default constructor defaults to "MongoServerSettings" key for connectionstring.</remarks>
         public MongoRepository()
             : base() { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="url">Url to use for connecting to MongoDB.</param>
         public MongoRepository(MongoUrl url)
             : base(url) { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="url">Url to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepository(MongoUrl url, string collectionName)
             : base(url, collectionName) { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
         public MongoRepository(string connectionString)
             : base(connectionString) { }
 
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        /// <param name="collectionName">The name of the collection to use.</param>
         public MongoRepository(string connectionString, string collectionName)
             : base(connectionString, collectionName) { }
     }

@@ -13,7 +13,7 @@
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
       Updated to MongoCSharp driver 1.8.3.9 (discussion 461602),
-      added constructor parameters to override collectionnames (discussion 456452),
+      Added constructor parameters to override collectionnames (discussion 456452),
       IEntity&lt;T&gt; support (discussion 454482)
     </releaseNotes>
     <summary>
