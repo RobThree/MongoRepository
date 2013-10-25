@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository", "MongoRepository\MongoRepository.csproj", "{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "MongoRepositoryTests\MongoRepositoryTests.csproj", "{7C8276C3-819A-4EA1-BFDA-64C3760B0037}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D62DDBAF-08C6-4130-890A-888910785B65}"
 	ProjectSection(SolutionItems) = preProject
+		buildnugetpackage.cmd = buildnugetpackage.cmd
 		MongoRepository.nuspec = MongoRepository.nuspec
 		Help\MongoRepository.shfbproj = Help\MongoRepository.shfbproj
 		mongorepositorylogo.png = mongorepositorylogo.png

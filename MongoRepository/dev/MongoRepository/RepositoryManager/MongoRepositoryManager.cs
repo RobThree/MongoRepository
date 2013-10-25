@@ -283,7 +283,7 @@
     /// </summary>
     /// <typeparam name="T">The type contained in the repository to manage.</typeparam>
     /// <remarks>Entities are assumed to use strings for Id's.</remarks>
-    public class MongoRepositoryManager<T> : MongoRepositoryManager<T, string>, IRepositoryManager<T, string>
+    public class MongoRepositoryManager<T> : MongoRepositoryManager<T, string>, IRepositoryManager<T>
         where T : IEntity<string>
     {
         /// <summary>

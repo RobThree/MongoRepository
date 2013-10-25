@@ -315,7 +315,7 @@
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
     /// <remarks>Entities are assumed to use strings for Id's.</remarks>
-    public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T, string>
+    public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T>
         where T : IEntity<string>
     {
         /// <summary>
