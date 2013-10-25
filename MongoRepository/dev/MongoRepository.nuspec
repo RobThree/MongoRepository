@@ -21,7 +21,7 @@
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.8.3.9]" />
+      <dependency id="mongocsharpdriver" version="[1.8.3]" />
     </dependencies>
   </metadata>
   <files>
