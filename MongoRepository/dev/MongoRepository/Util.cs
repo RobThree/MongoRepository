@@ -1,8 +1,8 @@
 ﻿namespace MongoRepository
 {
+    using MongoDB.Driver;
     using System;
     using System.Configuration;
-    using MongoDB.Driver;
 
     /// <summary>
     /// Internal miscellaneous utility functions.
@@ -110,8 +110,6 @@
             }
             return collectionName;
         }
-
-
 
         /// <summary>
         /// Determines the collectionname from the specified type.

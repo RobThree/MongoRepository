@@ -30,6 +30,6 @@
         /// Gets the name of the collection.
         /// </summary>
         /// <value>The name of the collection.</value>
-        public string Name { get; private set; }
+        public virtual string Name { get; private set; }
     }
 }

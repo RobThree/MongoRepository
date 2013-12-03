@@ -1,10 +1,9 @@
 ﻿namespace MongoRepository
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using MongoDB.Driver;
     using MongoDB.Driver.Builders;
-    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     // TODO: Code coverage here is near-zero. A new RepoManagerTests.cs class needs to be created and we need to
     //      test these methods. Ofcourse we also need to update codeplex documentation on this entirely new object.
@@ -62,7 +61,7 @@
         /// Gets a value indicating whether the collection already exists.
         /// </summary>
         /// <value>Returns true when the collection already exists, false otherwise.</value>
-        public bool Exists
+        public virtual bool Exists
         {
             get { return this.collection.Exists(); }
         }
@@ -71,7 +70,7 @@
         /// Gets the name of the collection as Mongo uses.
         /// </summary>
         /// <value>The name of the collection as Mongo uses.</value>
-        public string Name
+        public virtual string Name
         {
             get { return this.collection.Name; }
         }
@@ -79,7 +78,7 @@
         /// <summary>
         /// Drops the collection.
         /// </summary>
-        public void Drop()
+        public virtual void Drop()
         {
             this.collection.Drop();
         }
@@ -88,7 +87,7 @@
         /// Tests whether the repository is capped.
         /// </summary>
         /// <returns>Returns true when the repository is capped, false otherwise.</returns>
-        public bool IsCapped()
+        public virtual bool IsCapped()
         {
             return this.collection.IsCapped();
         }
@@ -97,7 +96,7 @@
         /// Drops specified index on the repository.
         /// </summary>
         /// <param name="keyname">The name of the indexed field.</param>
-        public void DropIndex(string keyname)
+        public virtual void DropIndex(string keyname)
         {
             this.DropIndexes(new string[] { keyname });
         }
@@ -106,7 +105,7 @@
         /// Drops specified indexes on the repository.
         /// </summary>
         /// <param name="keynames">The names of the indexed fields.</param>
-        public void DropIndexes(IEnumerable<string> keynames)
+        public virtual void DropIndexes(IEnumerable<string> keynames)
         {
             this.collection.DropIndex(keynames.ToArray());
         }
@@ -114,7 +113,7 @@
         /// <summary>
         /// Drops all indexes on this repository.
         /// </summary>
-        public void DropAllIndexes()
+        public virtual void DropAllIndexes()
         {
             this.collection.DropAllIndexes();
         }
@@ -127,7 +126,7 @@
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// Index will be ascending order, non-unique, non-sparse.
         /// </remarks>
-        public void EnsureIndex(string keyname)
+        public virtual void EnsureIndex(string keyname)
         {
             this.EnsureIndexes(new string[] { keyname });
         }
@@ -142,7 +141,7 @@
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// </remarks>
-        public void EnsureIndex(string keyname, bool descending, bool unique, bool sparse)
+        public virtual void EnsureIndex(string keyname, bool descending, bool unique, bool sparse)
         {
             this.EnsureIndexes(new string[] { keyname }, descending, unique, sparse);
         }
@@ -155,7 +154,7 @@
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// Index will be ascending order, non-unique, non-sparse.
         /// </remarks>
-        public void EnsureIndexes(IEnumerable<string> keynames)
+        public virtual void EnsureIndexes(IEnumerable<string> keynames)
         {
             this.EnsureIndexes(keynames, false, false, false);
         }
@@ -170,7 +169,7 @@
         /// <remarks>
         /// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
         /// </remarks>
-        public void EnsureIndexes(IEnumerable<string> keynames, bool descending, bool unique, bool sparse)
+        public virtual void EnsureIndexes(IEnumerable<string> keynames, bool descending, bool unique, bool sparse)
         {
             var ixk = new IndexKeysBuilder();
             if (descending)
@@ -195,7 +194,7 @@
         /// <remarks>
         /// This method allows ultimate control but does "leak" some MongoDb specific implementation details.
         /// </remarks>
-        public void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
+        public virtual void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
         {
             this.collection.EnsureIndex(keys, options);
         }
@@ -205,7 +204,7 @@
         /// </summary>
         /// <param name="keyname">The indexed fields.</param>
         /// <returns>Returns true when the indexes exist, false otherwise.</returns>
-        public bool IndexExists(string keyname)
+        public virtual bool IndexExists(string keyname)
         {
             return this.IndexesExists(new string[] { keyname });
         }
@@ -215,7 +214,7 @@
         /// </summary>
         /// <param name="keynames">The indexed fields.</param>
         /// <returns>Returns true when the indexes exist, false otherwise.</returns>
-        public bool IndexesExists(IEnumerable<string> keynames)
+        public virtual bool IndexesExists(IEnumerable<string> keynames)
         {
             return this.collection.IndexExists(keynames.ToArray());
         }
@@ -223,7 +222,7 @@
         /// <summary>
         /// Runs the ReIndex command on this repository.
         /// </summary>
-        public void ReIndex()
+        public virtual void ReIndex()
         {
             this.collection.ReIndex();
         }
@@ -232,7 +231,7 @@
         /// Gets the total size for the repository (data + indexes).
         /// </summary>
         /// <returns>Returns total size for the repository (data + indexes).</returns>
-        public long GetTotalDataSize()
+        public virtual long GetTotalDataSize()
         {
             return this.collection.GetTotalDataSize();
         }
@@ -241,7 +240,7 @@
         /// Gets the total storage size for the repository (data + indexes).
         /// </summary>
         /// <returns>Returns total storage size for the repository (data + indexes).</returns>
-        public long GetTotalStorageSize()
+        public virtual long GetTotalStorageSize()
         {
             return this.collection.GetTotalStorageSize();
         }
@@ -251,7 +250,7 @@
         /// </summary>
         /// <returns>Returns a ValidateCollectionResult.</returns>
         /// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        public ValidateCollectionResult Validate()
+        public virtual ValidateCollectionResult Validate()
         {
             return this.collection.Validate();
         }
@@ -261,7 +260,7 @@
         /// </summary>
         /// <returns>Returns a CollectionStatsResult.</returns>
         /// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        public CollectionStatsResult GetStats()
+        public virtual CollectionStatsResult GetStats()
         {
             return this.collection.GetStats();
         }
@@ -270,7 +269,7 @@
         /// Gets the indexes for this repository.
         /// </summary>
         /// <returns>Returns the indexes for this repository.</returns>
-        public GetIndexesResult GetIndexes()
+        public virtual GetIndexesResult GetIndexes()
         {
             return this.collection.GetIndexes();
         }
