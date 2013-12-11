@@ -16,13 +16,13 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>Output\</OutputPath>
-    <HtmlHelpName>Documentation</HtmlHelpName>
+    <HtmlHelpName>MongoRepository</HtmlHelpName>
     <Language>en-US</Language>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>MongoRepository documentation</HelpTitle>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.dll" />
-      <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.xml" />
+      <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.Net45.dll" />
+      <DocumentationSource sourceFile="..\MongoRepository\bin\Release\MongoRepository.Net45.xml" />
     </DocumentationSources>
     <ProjectSummary>&amp;lt%3bp&amp;gt%3bThis library provides a thin abstraction layer implementing the repository pattern on top of the &amp;lt%3ba href=&amp;quot%3bhttp://nuget.org/packages/mongocsharpdriver&amp;quot%3b&amp;gt%3bOfficial MongoDB C# driver&amp;lt%3b/a&amp;gt%3b.&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <CopyrightText>&amp;#169%3b2013</CopyrightText>
@@ -37,7 +37,7 @@
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
-    <HelpFileVersion>1.6.1.0</HelpFileVersion>
+    <HelpFileVersion>1.6.2.0</HelpFileVersion>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <IndentHtml>False</IndentHtml>

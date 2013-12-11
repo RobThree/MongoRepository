@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -12,10 +12,7 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      Updated to MongoCSharp driver 1.8.3.9 (discussion 461602),
-      Added constructor parameters to override collectionnames (discussion 456452),
-      IEntity&lt;T&gt; support (discussion 454482)
-      Hotfix for 1.6.0: Added back IRepository&lt;T&gt; and IRepositoryManager&lt;T&gt; interfaces to restore backward compatibility
+      Many methods made virtual for overriding.
     </releaseNotes>
     <summary>
       Provides a repository pattern on top of 10gen's MongoDB C# driver.
@@ -26,10 +23,14 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="\MongoRepository\bin\Release\MongoRepository.dll" target="lib" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.XML" target="lib" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.dll" target="lib\net35" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.XML" target="lib\net35" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.dll" target="lib\net40" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.XML" target="lib\net40" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net45.dll" target="lib\net45" />
+    <file src="\MongoRepository\bin\Release\MongoRepository.Net45.XML" target="lib\net45" />
     <file src="\MongoRepository\app.config.transform" target="content" />
     <file src="\MongoRepository\web.config.transform" target="content" />
-    <file src="\Help\Output\Documentation.chm" target="content" />
+    <file src="\Help\Output\MongoRepository.chm" target="content" />
   </files>
 </package>

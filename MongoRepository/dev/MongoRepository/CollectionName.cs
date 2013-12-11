@@ -18,10 +18,12 @@
         /// <param name="value">Name of the collection.</param>
         public CollectionName(string value)
         {
+#if NET35
+            if (string.IsNullOrEmpty(value) || value.Trim().Length == 0)
+#else
             if (string.IsNullOrWhiteSpace(value))
-            {
+#endif
                 throw new ArgumentException("Empty collectionname not allowed", "value");
-            }
 
             this.Name = value;
         }
