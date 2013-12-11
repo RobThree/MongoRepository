@@ -20,7 +20,7 @@
         /// <summary>
         /// MongoCollection field.
         /// </summary>
-        private MongoCollection<T> collection;
+        protected internal MongoCollection<T> collection;
 
         /// <summary>
         /// Initializes a new instance of the MongoRepository class.
@@ -92,7 +92,7 @@
         /// </summary>
         /// <param name="id">The Id of the entity to retrieve.</param>
         /// <returns>The Entity T.</returns>
-        public T GetById(TKey id)
+        public virtual T GetById(TKey id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
@@ -107,7 +107,7 @@
         /// </summary>
         /// <param name="entity">The entity T.</param>
         /// <returns>The added entity including its new ObjectId.</returns>
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             this.collection.Insert<T>(entity);
 
@@ -118,7 +118,7 @@
         /// Adds the new entities in the repository.
         /// </summary>
         /// <param name="entities">The entities of type T.</param>
-        public void Add(IEnumerable<T> entities)
+        public virtual void Add(IEnumerable<T> entities)
         {
             this.collection.InsertBatch<T>(entities);
         }
@@ -128,7 +128,7 @@
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>The updated entity.</returns>
-        public T Update(T entity)
+        public virtual T Update(T entity)
         {
             this.collection.Save<T>(entity);
 
@@ -139,7 +139,7 @@
         /// Upserts the entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
-        public void Update(IEnumerable<T> entities)
+        public virtual void Update(IEnumerable<T> entities)
         {
             foreach (T entity in entities)
             {
@@ -151,7 +151,7 @@
         /// Deletes an entity from the repository by its id.
         /// </summary>
         /// <param name="id">The entity's id.</param>
-        public void Delete(TKey id)
+        public virtual void Delete(TKey id)
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
@@ -167,7 +167,7 @@
         /// Deletes an entity from the repository by its ObjectId.
         /// </summary>
         /// <param name="id">The ObjectId of the entity.</param>
-        public void Delete(ObjectId id)
+        public virtual void Delete(ObjectId id)
         {
             this.collection.Remove(Query.EQ("_id", id));
         }
@@ -176,7 +176,7 @@
         /// Deletes the given entity.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             this.Delete(entity.Id);
         }
@@ -185,7 +185,7 @@
         /// Deletes the entities matching the predicate.
         /// </summary>
         /// <param name="predicate">The expression.</param>
-        public void Delete(Expression<Func<T, bool>> predicate)
+        public virtual void Delete(Expression<Func<T, bool>> predicate)
         {
             foreach (T entity in this.collection.AsQueryable<T>().Where(predicate))
             {
@@ -196,7 +196,7 @@
         /// <summary>
         /// Deletes all entities in the repository.
         /// </summary>
-        public void DeleteAll()
+        public virtual void DeleteAll()
         {
             this.collection.RemoveAll();
         }
@@ -205,7 +205,7 @@
         /// Counts the total entities in the repository.
         /// </summary>
         /// <returns>Count of entities in the collection.</returns>
-        public long Count()
+        public virtual long Count()
         {
             return this.collection.Count();
         }
@@ -215,7 +215,7 @@
         /// </summary>
         /// <param name="predicate">The expression.</param>
         /// <returns>True when an entity matching the predicate exists, false otherwise.</returns>
-        public bool Exists(Expression<Func<T, bool>> predicate)
+        public virtual bool Exists(Expression<Func<T, bool>> predicate)
         {
             return this.collection.AsQueryable<T>().Any(predicate);
         }
@@ -249,7 +249,7 @@
         ///         See http://docs.mongodb.org/manual/applications/replication/#read-preference
         ///     </para>
         /// </remarks>
-        public IDisposable RequestStart()
+        public virtual IDisposable RequestStart()
         {
             return this.collection.Database.RequestStart();
         }
@@ -260,7 +260,7 @@
         /// <remarks>
         /// Instead of calling this method it is better to put the return value of RequestStart in a using statement.
         /// </remarks>
-        public void RequestDone()
+        public virtual void RequestDone()
         {
             this.collection.Database.RequestDone();
         }
@@ -270,7 +270,7 @@
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An IEnumerator&lt;T&gt; object that can be used to iterate through the collection.</returns>
-        public IEnumerator<T> GetEnumerator()
+        public virtual IEnumerator<T> GetEnumerator()
         {
             return this.collection.AsQueryable<T>().GetEnumerator();
         }
@@ -287,7 +287,7 @@
         /// <summary>
         /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
         /// </summary>
-        public Type ElementType
+        public virtual Type ElementType
         {
             get { return this.collection.AsQueryable<T>().ElementType; }
         }
@@ -295,7 +295,7 @@
         /// <summary>
         /// Gets the expression tree that is associated with the instance of IQueryable.
         /// </summary>
-        public Expression Expression
+        public virtual Expression Expression
         {
             get { return this.collection.AsQueryable<T>().Expression; }
         }
@@ -303,7 +303,7 @@
         /// <summary>
         /// Gets the query provider that is associated with this data source.
         /// </summary>
-        public IQueryProvider Provider
+        public virtual IQueryProvider Provider
         {
             get { return this.collection.AsQueryable<T>().Provider; }
         }
@@ -315,7 +315,7 @@
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
     /// <remarks>Entities are assumed to use strings for Id's.</remarks>
-    public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T, string>
+    public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T>
         where T : IEntity<string>
     {
         /// <summary>
