@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace MongoRepositoryTests
 {
-    //TODO: Decent tests
+    //TODO: We REALLY need some decent tests and cleanup this mess.
 
     [TestClass]
     public class RepoTests
@@ -318,5 +318,25 @@ namespace MongoRepositoryTests
             IRepositoryManager<Customer> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
             Assert.AreEqual("TestCustomers123", _curstomerRepoManager.Name);
         }
+
+        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/433878
+        public abstract class BaseItem : IEntity
+        {
+            public string Id { get; set; }
+        }
+
+        public abstract class BaseA : BaseItem
+        { }
+
+        public class SpecialA : BaseA
+        { }
+        
+        [TestMethod]
+        public void Discussion433878()
+        {
+            var specialRepository = new MongoRepository<SpecialA>();
+        }
+        #endregion
+
     }
 }
