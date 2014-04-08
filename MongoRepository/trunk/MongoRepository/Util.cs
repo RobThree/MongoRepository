@@ -153,12 +153,14 @@
             }
             else
             {
-                // No attribute found, get the basetype
-                while (!entitytype.BaseType.Equals(typeof(Entity)))
+                if (entitytype.Equals(typeof(Entity)))
                 {
-                    entitytype = entitytype.BaseType;
+                    // No attribute found, get the basetype
+                    while (!entitytype.BaseType.Equals(typeof(Entity)))
+                    {
+                        entitytype = entitytype.BaseType;
+                    }
                 }
-
                 collectionname = entitytype.Name;
             }
 
