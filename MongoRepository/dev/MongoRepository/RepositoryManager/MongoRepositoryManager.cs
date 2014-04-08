@@ -196,7 +196,7 @@
         /// </remarks>
         public virtual void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
         {
-            this.collection.EnsureIndex(keys, options);
+            this.collection.CreateIndex(keys, options);
         }
 
         /// <summary>
