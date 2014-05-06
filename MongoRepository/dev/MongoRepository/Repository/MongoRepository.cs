@@ -84,6 +84,11 @@
             get { return this.collection; }
         }
 
+        public string CollectionName
+        {
+            get { return this.collection.Name; }
+        }
+
         /// <summary>
         /// Returns the T by its given id.
         /// </summary>
