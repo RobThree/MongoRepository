@@ -81,10 +81,12 @@
         /// <value>The Mongo collection (to perform advanced operations).</value>
         public MongoCollection<T> Collection
         {
-            get
-            {
-                return this.collection;
-            }
+            get { return this.collection; }
+        }
+
+        public string CollectionName
+        {
+            get { return this.collection.Name; }
         }
 
         /// <summary>
@@ -96,10 +98,20 @@
         {
             if (typeof(T).IsSubclassOf(typeof(Entity)))
             {
-                return this.collection.FindOneByIdAs<T>(new ObjectId(id as string));
+                return this.GetById(new ObjectId(id as string));
             }
 
             return this.collection.FindOneByIdAs<T>(BsonValue.Create(id));
+        }
+
+        /// <summary>
+        /// Returns the T by its given id.
+        /// </summary>
+        /// <param name="id">The Id of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
+        public virtual T GetById(ObjectId id)
+        {
+            return this.collection.FindOneByIdAs<T>(id);
         }
 
         /// <summary>

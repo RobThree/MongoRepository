@@ -207,6 +207,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(am.Exists);
             Assert.IsInstanceOfType(a.GetById(va.Id), typeof(Dog));
             Assert.AreEqual(am.Name, "AnimalsTest");
+            Assert.AreEqual(a.CollectionName, "AnimalsTest");
 
             var cl = new MongoRepository<CatLike>();
             var clm = new MongoRepositoryManager<CatLike>();
@@ -216,6 +217,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(clm.Exists);
             Assert.IsInstanceOfType(cl.GetById(vcl.Id), typeof(Lion));
             Assert.AreEqual(clm.Name, "Catlikes");
+            Assert.AreEqual(cl.CollectionName, "Catlikes");
 
             var b = new MongoRepository<Bird>();
             var bm = new MongoRepositoryManager<Bird>();
@@ -225,6 +227,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(bm.Exists);
             Assert.IsInstanceOfType(b.GetById(vb.Id), typeof(Bird));
             Assert.AreEqual(bm.Name, "Birds");
+            Assert.AreEqual(b.CollectionName, "Birds");
 
             var l = new MongoRepository<Lion>();
             var lm = new MongoRepositoryManager<Lion>();
@@ -234,6 +237,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(lm.Exists);
             Assert.IsInstanceOfType(l.GetById(vl.Id), typeof(Lion));
             Assert.AreEqual(lm.Name, "Catlikes");
+            Assert.AreEqual(l.CollectionName, "Catlikes");
 
             var d = new MongoRepository<Dog>();
             var dm = new MongoRepositoryManager<Dog>();
@@ -243,6 +247,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(dm.Exists);
             Assert.IsInstanceOfType(d.GetById(vd.Id), typeof(Dog));
             Assert.AreEqual(dm.Name, "AnimalsTest");
+            Assert.AreEqual(d.CollectionName, "AnimalsTest");
 
             var m = new MongoRepository<Bird>();
             var mm = new MongoRepositoryManager<Bird>();
@@ -252,6 +257,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(mm.Exists);
             Assert.IsInstanceOfType(m.GetById(vm.Id), typeof(Macaw));
             Assert.AreEqual(mm.Name, "Birds");
+            Assert.AreEqual(m.CollectionName, "Birds");
 
             var w = new MongoRepository<Whale>();
             var wm = new MongoRepositoryManager<Whale>();
@@ -261,7 +267,7 @@ namespace MongoRepositoryTests
             Assert.IsTrue(wm.Exists);
             Assert.IsInstanceOfType(w.GetById(vw.Id), typeof(Whale));
             Assert.AreEqual(wm.Name, "Whale");
-
+            Assert.AreEqual(w.CollectionName, "Whale");
         }
 
         [TestMethod]
@@ -287,6 +293,7 @@ namespace MongoRepositoryTests
 
             Assert.IsTrue(ym.Exists);
             Assert.AreEqual(ym.Name, "MyTestCollection");
+            Assert.AreEqual(y.CollectionName, "MyTestCollection");
             Assert.IsInstanceOfType(y.GetById("xyz"), typeof(CustomIDEntityCustomCollection));
 
             y.Delete("xyz");
@@ -314,6 +321,7 @@ namespace MongoRepositoryTests
             _customerRepo.Add(new Customer() { FirstName = "Test" });
             Assert.IsTrue(_customerRepo.Single().FirstName.Equals("Test"));
             Assert.AreEqual("TestCustomers123", _customerRepo.Collection.Name);
+            Assert.AreEqual("TestCustomers123", ((MongoRepository<Customer>)_customerRepo).CollectionName);
 
             IRepositoryManager<Customer> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
             Assert.AreEqual("TestCustomers123", _curstomerRepoManager.Name);
