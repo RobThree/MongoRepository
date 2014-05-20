@@ -26,8 +26,6 @@
         /// <value>The Mongo collection (to perform advanced operations).</value>
         MongoCollection<T> Collection { get; }
 
-        string CollectionName { get; }
-
         /// <summary>
         /// Returns the T by its given id.
         /// </summary>

@@ -321,7 +321,7 @@ namespace MongoRepositoryTests
             _customerRepo.Add(new Customer() { FirstName = "Test" });
             Assert.IsTrue(_customerRepo.Single().FirstName.Equals("Test"));
             Assert.AreEqual("TestCustomers123", _customerRepo.Collection.Name);
-            Assert.AreEqual("TestCustomers123", _customerRepo.CollectionName);
+            Assert.AreEqual("TestCustomers123", ((MongoRepository<Customer>)_customerRepo).CollectionName);
 
             IRepositoryManager<Customer> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
             Assert.AreEqual("TestCustomers123", _curstomerRepoManager.Name);
