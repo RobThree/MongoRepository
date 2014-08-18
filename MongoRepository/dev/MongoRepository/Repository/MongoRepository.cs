@@ -84,6 +84,9 @@
             get { return this.collection; }
         }
 
+        /// <summary>
+        /// Gets the name of the collection
+        /// </summary>
         public string CollectionName
         {
             get { return this.collection.Name; }
