@@ -338,11 +338,43 @@ namespace MongoRepositoryTests
 
         public class SpecialA : BaseA
         { }
-        
+
         [TestMethod]
         public void Discussion433878()
         {
             var specialRepository = new MongoRepository<SpecialA>();
+        }
+        #endregion
+
+        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/572382
+        public abstract class ClassA : Entity
+        {
+            public string Prop1 { get; set; }
+        }
+
+        public class ClassB : ClassA
+        {
+            public string Prop2 { get; set; }
+        }
+
+        public class ClassC : ClassA
+        {
+            public string Prop3 { get; set; }
+        }
+
+        [TestMethod]
+        public void Discussion572382()
+        {
+            var repo = new MongoRepository<ClassA>() { 
+                new ClassB() { Prop1 = "A", Prop2 = "B" } ,
+                new ClassC() { Prop1 = "A", Prop3 = "C" }
+            };
+
+            Assert.AreEqual(2, repo.Count());
+
+            Assert.AreEqual(2, repo.OfType<ClassA>().Count());
+            Assert.AreEqual(1, repo.OfType<ClassB>().Count());
+            Assert.AreEqual(1, repo.OfType<ClassC>().Count());
         }
         #endregion
 
