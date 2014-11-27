@@ -153,7 +153,7 @@
             }
             else
             {
-                if (entitytype.Equals(typeof(Entity)))
+                if (typeof(Entity).IsAssignableFrom(entitytype))
                 {
                     // No attribute found, get the basetype
                     while (!entitytype.BaseType.Equals(typeof(Entity)))
