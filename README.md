@@ -1,9 +1,8 @@
 # Project Description
 
-
 An easy to use library to use MongoDB with .NET. It implements a Repository pattern on top of Official MongoDB C# driver. This project is now available as a [NuGet](https://www.nuget.org) package for your convenience. If you're new to NuGet, [check it out](http://docs.nuget.org/); it's painless, easy and fast. You can find this project by [searching for MongoRepository](https://www.nuget.org/packages?q=mongorepository) in NuGet (or [simply clicking here](http://nuget.org/packages/MongoRepository)).
 
-Check the documentation for a step-by-step example and more advanced usage.
+Check the [documentation](https://github.com/RobThree/MongoRepository/wiki) for a step-by-step example and more advanced usage.
 
 ## Example:
 
@@ -39,5 +38,4 @@ public class CustomerRepoTest
         }
 }
 ```
-
-![Productivity Visual Studio add-in for C#, VB.NET, XML, XAML, ASP.NET and more](http://i.imgur.com/2yf60gf.png|http://www.jetbrains.com/resharper/features/index.html)
+[<img src="http://i.imgur.com/2yf60gf.png" alt="Productivity Visual Studio add-in for C#, VB.NET, XML, XAML, ASP.NET and more">](http://www.jetbrains.com/resharper/features/index.html)
