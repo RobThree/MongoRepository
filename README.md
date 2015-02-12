@@ -7,9 +7,9 @@ Check the [documentation](https://github.com/RobThree/MongoRepository/wiki/Docum
 ## Example:
 
 ```c#
-public class Customer : Entity 
 // The Entity base-class is provided by MongoRepository
 // for all entities you want to use in MongoDb
+public class Customer : Entity 
 {
         public string FirstName { get; set; }
         public string LastName { get; set; }
