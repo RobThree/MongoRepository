@@ -30,9 +30,36 @@
         /// <returns>Returns a MongoDatabase from the specified url.</returns>
         private static MongoDatabase GetDatabaseFromUrl(MongoUrl url)
         {
+#if NET35
+            if (string.IsNullOrEmpty(url.DatabaseName) || url.DatabaseName.Trim().Length == 0)
+#else
+            if (string.IsNullOrWhiteSpace(url.DatabaseName))
+#endif
+                throw new ArgumentException("The database name was not specified in mongo connectionString/Url");
+            
             var client = new MongoClient(url);
+            return GetDatabaseByClientAndDatabaseName(client, url.DatabaseName); // WriteConcern defaulted to Acknowledged
+        }
+
+        /// <summary>
+        /// Creates and returns a MongoDatabase from the specified databasename
+        /// and using MongoClientSettings from Url in order to create a MongoClient instance
+        /// </summary>
+        /// <param name="url">The url to use to get the database from.</param>
+        /// <param name="databaseName">Database name</param>
+        /// <returns>Returns a MongoDatabase from the specified url.</returns>
+        private static MongoDatabase GetDatabaseFromDatabaseName(MongoUrl url, string databaseName)
+        {
+            var settings = MongoClientSettings.FromUrl(url);
+            var client = new MongoClient(settings);
+            return GetDatabaseByClientAndDatabaseName(client, databaseName);
+        }
+
+
+        private static MongoDatabase GetDatabaseByClientAndDatabaseName(MongoClient client, string databaseName)
+        {
             var server = client.GetServer();
-            return server.GetDatabase(url.DatabaseName); // WriteConcern defaulted to Acknowledged
+            return server.GetDatabase(databaseName);
         }
 
         /// <summary>
@@ -72,6 +99,23 @@
         {
             return Util<U>.GetCollectionFromUrl<T>(url, GetCollectionName<T>());
         }
+
+        /// <summary>
+        /// Creates and returns a MongoCollection from the specified type, url and databaseName.
+        /// </summary>
+        /// <typeparam name="T">The type to get the collection of.</typeparam>
+        /// <param name="url">The url to use to get the collection from.</param>
+        /// <param name="connectionString"></param>
+        /// <param name="databaseName"></param>
+        /// <param name="collectionName"></param>
+        /// <returns>Returns a MongoCollection from the specified type and url.</returns>
+        public static MongoCollection<T> GetCollectionFromConnectionStringAndDatabaseName<T>(string connectionString, string databaseName, string collectionName)
+            where T : IEntity<U>
+        {
+
+            return GetDatabaseFromDatabaseName(new MongoUrl(connectionString), databaseName).GetCollection<T>(collectionName);
+        }
+
 
         /// <summary>
         /// Creates and returns a MongoCollection from the specified type and url.

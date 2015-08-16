@@ -53,6 +53,18 @@
 
         /// <summary>
         /// Initializes a new instance of the MongoRepository class.
+        /// Using default credentials
+        /// </summary>
+        /// <param name="connectionString">Connectionstring to use for connecting to MongoDB.</param>
+        /// <param name="databaseName"></param>
+        /// <param name="collectionName">The name of the collection to use.</param>
+        public MongoRepository(string connectionString, string databaseName, string collectionName)
+        {
+            this.collection = Util<TKey>.GetCollectionFromConnectionStringAndDatabaseName<T>(connectionString, databaseName, collectionName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MongoRepository class.
         /// </summary>
         /// <param name="url">Url to use for connecting to MongoDB.</param>
         public MongoRepository(MongoUrl url)
