@@ -229,6 +229,27 @@
         }
 
         /// <summary>
+        /// Gets the total size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes).</returns>
+        [Obsolete("This method will be removed in the next version of the driver")]
+        public virtual long GetTotalDataSize()
+        {
+            var stats = this.collection.GetStats();
+            return stats.DataSize + stats.TotalIndexSize;            
+        }
+
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
+        [Obsolete("This method will be removed in the next version of the driver")]
+        public virtual long GetTotalStorageSize()
+        {
+            return this.collection.GetStats().StorageSize;
+        }
+
+        /// <summary>
         /// Validates the integrity of the repository.
         /// </summary>
         /// <returns>Returns a ValidateCollectionResult.</returns>

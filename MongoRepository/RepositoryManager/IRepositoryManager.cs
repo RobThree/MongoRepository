@@ -125,7 +125,19 @@
         /// Runs the ReIndex command on this repository.
         /// </summary>
         void ReIndex();
-        
+
+        /// <summary>
+        /// Gets the total size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes).</returns>
+        long GetTotalDataSize();
+
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
+        long GetTotalStorageSize();
+
         /// <summary>
         /// Validates the integrity of the repository.
         /// </summary>
