@@ -20,7 +20,7 @@
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.10]" />
+      <dependency id="mongocsharpdriver" version="[2.0]" />
     </dependencies>
   </metadata>
   <files>
