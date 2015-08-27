@@ -3,7 +3,7 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
     <title>MongoRepository</title>
-    <version>1.6.8</version>
+    <version>1.7.0</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
@@ -13,21 +13,18 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
     <releaseNotes>
-      Updated to MongoCSharp driver 1.10
+      Updated to MongoCSharp legacy driver 2.0
+      Removed support for net3.5 and net4.0
     </releaseNotes>
     <summary>
       Provides a repository pattern on top of 10gen's MongoDB C# driver.
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.10]" />
+      <dependency id="mongocsharpdriver" version="[2.0]" />
     </dependencies>
   </metadata>
   <files>
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.dll" target="lib\net35" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.XML" target="lib\net35" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.dll" target="lib\net40" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.XML" target="lib\net40" />
     <file src="\MongoRepository\bin\Release\MongoRepository.Net45.dll" target="lib\net45" />
     <file src="\MongoRepository\bin\Release\MongoRepository.Net45.XML" target="lib\net45" />
     <file src="\MongoRepository\app.config.transform" target="content" />
