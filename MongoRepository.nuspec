@@ -6,12 +6,12 @@
     <version>1.6.10</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
-    <licenseUrl>http://mongorepository.codeplex.com/license</licenseUrl>
-    <projectUrl>http://mongorepository.codeplex.com</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/RobThree/MongoRepository</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This easy to use library implements the repository pattern on top of Official MongoDB C# driver.</description>
     <tags>mongo mongodb repository</tags>
-    <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=mongorepository&amp;DownloadId=334950&amp;Build=19692</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/mongorepositorylogo.png</iconUrl>
     <releaseNotes>
       Documentation no longer installs in solution directory, from now on only a shortcut is created.
     </releaseNotes>
