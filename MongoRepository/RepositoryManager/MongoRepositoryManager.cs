@@ -1,7 +1,7 @@
 ﻿namespace MongoRepository
 {
+    using MongoDB.Bson;
     using MongoDB.Driver;
-    using MongoDB.Driver.Builders;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,7 +27,7 @@
         /// <summary>
         /// MongoCollection field.
         /// </summary>
-        private MongoCollection<T> collection;
+        private IMongoCollection<T> collection;
 
         /// <summary>
         /// Initializes a new instance of the MongoRepositoryManager class.
@@ -64,7 +64,7 @@
         /// <value>Returns true when the collection already exists, false otherwise.</value>
         public virtual bool Exists
         {
-            get { return this.collection.Exists(); }
+            get { return this.collection.Database.GetCollection<T>(this.Name) != null; }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@
         /// <value>The name of the collection as Mongo uses.</value>
         public virtual string Name
         {
-            get { return this.collection.Name; }
+            get { return this.collection.CollectionNamespace.CollectionName; }
         }
 
         /// <summary>
@@ -81,17 +81,17 @@
         /// </summary>
         public virtual void Drop()
         {
-            this.collection.Drop();
+            this.collection.Database.DropCollection(this.Name);
         }
 
-        /// <summary>
-        /// Tests whether the repository is capped.
-        /// </summary>
-        /// <returns>Returns true when the repository is capped, false otherwise.</returns>
-        public virtual bool IsCapped()
-        {
-            return this.collection.IsCapped();
-        }
+        ///// <summary>
+        ///// Tests whether the repository is capped.
+        ///// </summary>
+        ///// <returns>Returns true when the repository is capped, false otherwise.</returns>
+        //public virtual bool IsCapped()
+        //{
+        //    return this.collection.IsCapped();
+        //}
 
         /// <summary>
         /// Drops specified index on the repository.
@@ -108,7 +108,8 @@
         /// <param name="keynames">The names of the indexed fields.</param>
         public virtual void DropIndexes(IEnumerable<string> keynames)
         {
-            this.collection.DropIndex(keynames.ToArray());
+            foreach (var k in keynames)
+                this.collection.Indexes.DropOne(k);
         }
 
         /// <summary>
@@ -116,7 +117,7 @@
         /// </summary>
         public virtual void DropAllIndexes()
         {
-            this.collection.DropAllIndexes();
+            this.collection.Indexes.DropAll();
         }
 
         /// <summary>
@@ -172,33 +173,34 @@
         /// </remarks>
         public virtual void EnsureIndexes(IEnumerable<string> keynames, bool descending, bool unique, bool sparse)
         {
-            var ixk = new IndexKeysBuilder();
-            if (descending)
-            {
-                ixk.Descending(keynames.ToArray());
-            }
-            else
-            {
-                ixk.Ascending(keynames.ToArray());
-            }
 
-            this.EnsureIndexes(
-                ixk,
-                new IndexOptionsBuilder().SetUnique(unique).SetSparse(sparse));
+            //var ixk = new IndexKeysBuilder();
+            //if (descending)
+            //{
+            //    ixk.Descending(keynames.ToArray());
+            //}
+            //else
+            //{
+            //    ixk.Ascending(keynames.ToArray());
+            //}
+
+            //this.EnsureIndexes(
+            //    ixk,
+            //    new IndexOptionsBuilder().SetUnique(unique).SetSparse(sparse));
         }
 
-        /// <summary>
-        /// Ensures that the desired indexes exist and creates them if they don't exist.
-        /// </summary>
-        /// <param name="keys">The indexed fields.</param>
-        /// <param name="options">The index options.</param>
-        /// <remarks>
-        /// This method allows ultimate control but does "leak" some MongoDb specific implementation details.
-        /// </remarks>
-        public virtual void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
-        {
-            this.collection.CreateIndex(keys, options);
-        }
+        ///// <summary>
+        ///// Ensures that the desired indexes exist and creates them if they don't exist.
+        ///// </summary>
+        ///// <param name="keys">The indexed fields.</param>
+        ///// <param name="options">The index options.</param>
+        ///// <remarks>
+        ///// This method allows ultimate control but does "leak" some MongoDb specific implementation details.
+        ///// </remarks>
+        //public virtual void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
+        //{
+        //    this.collection.CreateIndex(keys, options);
+        //}
 
         /// <summary>
         /// Tests whether indexes exist.
@@ -217,65 +219,38 @@
         /// <returns>Returns true when the indexes exist, false otherwise.</returns>
         public virtual bool IndexesExists(IEnumerable<string> keynames)
         {
-            return this.collection.IndexExists(keynames.ToArray());
+            var ix = this.collection.Indexes.List().ToList();
+            return keynames.All(k => ix.Contains(BsonValue.Create(k)));
         }
 
-        /// <summary>
-        /// Runs the ReIndex command on this repository.
-        /// </summary>
-        public virtual void ReIndex()
-        {
-            this.collection.ReIndex();
-        }
+        ///// <summary>
+        ///// Validates the integrity of the repository.
+        ///// </summary>
+        ///// <returns>Returns a ValidateCollectionResult.</returns>
+        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        //public virtual ValidateCollectionResult Validate()
+        //{
+        //    return this.collection.Validate();
+        //}
 
-        /// <summary>
-        /// Gets the total size for the repository (data + indexes).
-        /// </summary>
-        /// <returns>Returns total size for the repository (data + indexes).</returns>
-        [Obsolete("This method will be removed in the next version of the driver")]
-        public virtual long GetTotalDataSize()
-        {
-            return this.collection.GetTotalDataSize();
-        }
+        ///// <summary>
+        ///// Gets stats for this repository.
+        ///// </summary>
+        ///// <returns>Returns a CollectionStatsResult.</returns>
+        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        //public virtual CollectionStatsResult GetStats()
+        //{
+        //    return this.collection.GetStats();
+        //}
 
-        /// <summary>
-        /// Gets the total storage size for the repository (data + indexes).
-        /// </summary>
-        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
-        [Obsolete("This method will be removed in the next version of the driver")]
-        public virtual long GetTotalStorageSize()
-        {
-            return this.collection.GetTotalStorageSize();
-        }
-
-        /// <summary>
-        /// Validates the integrity of the repository.
-        /// </summary>
-        /// <returns>Returns a ValidateCollectionResult.</returns>
-        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        public virtual ValidateCollectionResult Validate()
-        {
-            return this.collection.Validate();
-        }
-
-        /// <summary>
-        /// Gets stats for this repository.
-        /// </summary>
-        /// <returns>Returns a CollectionStatsResult.</returns>
-        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        public virtual CollectionStatsResult GetStats()
-        {
-            return this.collection.GetStats();
-        }
-
-        /// <summary>
-        /// Gets the indexes for this repository.
-        /// </summary>
-        /// <returns>Returns the indexes for this repository.</returns>
-        public virtual GetIndexesResult GetIndexes()
-        {
-            return this.collection.GetIndexes();
-        }
+        ///// <summary>
+        ///// Gets the indexes for this repository.
+        ///// </summary>
+        ///// <returns>Returns the indexes for this repository.</returns>
+        //public virtual GetIndexesResult GetIndexes()
+        //{
+        //    return this.collection.GetIndexes();
+        //}
     }
 
     /// <summary>

@@ -30,7 +30,7 @@ namespace MongoRepositoryTests
         {
             var url = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
             var client = new MongoClient(url);
-            client.GetServer().DropDatabase(url.DatabaseName);
+            client.DropDatabase(url.DatabaseName);
         }
 
 
@@ -320,7 +320,7 @@ namespace MongoRepositoryTests
             IRepository<Customer> _customerRepo = new MongoRepository<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
             _customerRepo.Add(new Customer() { FirstName = "Test" });
             Assert.IsTrue(_customerRepo.Single().FirstName.Equals("Test"));
-            Assert.AreEqual("TestCustomers123", _customerRepo.Collection.Name);
+            Assert.AreEqual("TestCustomers123", _customerRepo.Collection.CollectionNamespace.CollectionName);
             Assert.AreEqual("TestCustomers123", ((MongoRepository<Customer>)_customerRepo).CollectionName);
 
             IRepositoryManager<Customer> _curstomerRepoManager = new MongoRepositoryManager<Customer>("mongodb://localhost/MongoRepositoryTests", "TestCustomers123");
