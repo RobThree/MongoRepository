@@ -97,12 +97,7 @@
         /// <returns>The Entity T.</returns>
         public virtual T GetById(TKey id)
         {
-            if (typeof(T).IsSubclassOf(typeof(Entity)))
-            {
-                return this.GetById(new ObjectId(id as string));
-            }
-
-            return this.collection.FindSync<T>(i => i.Id.Equals(BsonValue.Create(id))).Single();
+            return this.collection.FindSync<T>(GetIDFilter(id)).Single();
         }
 
         /// <summary>
@@ -112,7 +107,7 @@
         /// <returns>The Entity T.</returns>
         public virtual T GetById(ObjectId id)
         {
-            return this.collection.FindSync<T>(i => i.Id.Equals(id)).Single();
+            return this.collection.FindSync<T>(GetIDFilter(id)).Single();
         }
 
         /// <summary>
@@ -143,7 +138,10 @@
         /// <returns>The updated entity.</returns>
         public virtual T Update(T entity)
         {
-            this.collection.ReplaceOne(i => i.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+            if (entity.Id == null)
+                this.Add(entity);
+            else
+                this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
             return entity;
         }
 
@@ -154,9 +152,7 @@
         public virtual void Update(IEnumerable<T> entities)
         {
             foreach (T entity in entities)
-            {
-                this.collection.ReplaceOne(i => i.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });
-            }
+                this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
         }
 
         /// <summary>
@@ -165,14 +161,7 @@
         /// <param name="id">The entity's id.</param>
         public virtual void Delete(TKey id)
         {
-            if (typeof(T).IsSubclassOf(typeof(Entity)))
-            {
-                this.collection.DeleteOne<T>(i => i.Id.Equals(new ObjectId(id as string)));
-            }
-            else
-            {
-                this.collection.DeleteOne<T>(i => i.Id.Equals(BsonValue.Create(id)));
-            }
+            this.collection.DeleteOne(GetIDFilter(id));
         }
 
         /// <summary>
@@ -181,7 +170,7 @@
         /// <param name="id">The ObjectId of the entity.</param>
         public virtual void Delete(ObjectId id)
         {
-            this.collection.DeleteOne<T>(i => i.Id.Equals(BsonValue.Create(id)));
+            this.collection.DeleteOne(GetIDFilter(id));
         }
 
         /// <summary>
@@ -227,6 +216,18 @@
         public virtual bool Exists(Expression<Func<T, bool>> predicate)
         {
             return this.collection.AsQueryable<T>().Any(predicate);
+        }
+
+        private static FilterDefinition<T> GetIDFilter(ObjectId id)
+        {
+            return Builders<T>.Filter.Eq("_id", id);
+        }
+
+        private static FilterDefinition<T> GetIDFilter(TKey id)
+        {
+            if (typeof(T).IsSubclassOf(typeof(Entity)))
+                return GetIDFilter(new ObjectId(id as string));
+            return Builders<T>.Filter.Eq("_id", id);
         }
 
         #region IQueryable<T>

@@ -126,17 +126,17 @@
         ///// </summary>
         //void ReIndex();
 
-        ///// <summary>
-        ///// Gets the total size for the repository (data + indexes).
-        ///// </summary>
-        ///// <returns>Returns total size for the repository (data + indexes).</returns>
-        //long GetTotalDataSize();
+        /// <summary>
+        /// Gets the total size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes).</returns>
+        long GetTotalDataSize();
 
-        ///// <summary>
-        ///// Gets the total storage size for the repository (data + indexes).
-        ///// </summary>
-        ///// <returns>Returns total storage size for the repository (data + indexes).</returns>
-        //long GetTotalStorageSize();
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
+        long GetTotalStorageSize();
 
         ///// <summary>
         ///// Validates the integrity of the repository.
@@ -145,12 +145,12 @@
         ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
         //ValidateCollectionResult Validate();
 
-        ///// <summary>
-        ///// Gets stats for this repository.
-        ///// </summary>
-        ///// <returns>Returns a CollectionStatsResult.</returns>
-        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        //CollectionStatsResult GetStats();
+        /// <summary>
+        /// Gets stats for this repository.
+        /// </summary>
+        /// <returns>Returns a CollectionStatsResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        CollectionStatsResult GetStats();
 
         ///// <summary>
         ///// Gets the indexes for this repository.

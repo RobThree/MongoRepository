@@ -62,6 +62,7 @@
     <Compile Include="CollectionName.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="RepositoryManager\CollectionStatsResult.cs" />
     <Compile Include="RepositoryManager\IRepositoryManager.cs" />
     <Compile Include="RepositoryManager\MongoRepositoryManager.cs" />
     <Compile Include="Repository\IRepository.cs" />

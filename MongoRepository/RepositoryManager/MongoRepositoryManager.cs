@@ -64,7 +64,7 @@
         /// <value>Returns true when the collection already exists, false otherwise.</value>
         public virtual bool Exists
         {
-            get { return this.collection.Database.GetCollection<T>(this.Name) != null; }
+            get { return this.collection.Database.ListCollections(new ListCollectionsOptions { Filter = new BsonDocument("name", this.Name) }).ToList().Any(); }
         }
 
         /// <summary>
@@ -84,14 +84,14 @@
             this.collection.Database.DropCollection(this.Name);
         }
 
-        ///// <summary>
-        ///// Tests whether the repository is capped.
-        ///// </summary>
-        ///// <returns>Returns true when the repository is capped, false otherwise.</returns>
-        //public virtual bool IsCapped()
-        //{
-        //    return this.collection.IsCapped();
-        //}
+        /// <summary>
+        /// Tests whether the repository is capped.
+        /// </summary>
+        /// <returns>Returns true when the repository is capped, false otherwise.</returns>
+        public virtual bool IsCapped()
+        {
+            return this.GetStats().IsCapped;
+        }
 
         /// <summary>
         /// Drops specified index on the repository.
@@ -223,6 +223,26 @@
             return keynames.All(k => ix.Contains(BsonValue.Create(k)));
         }
 
+        /// <summary>
+        /// Gets the total size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total size for the repository (data + indexes).</returns>
+        [Obsolete("This method will be removed in the next version of the driver")]
+        public virtual long GetTotalDataSize()
+        {
+            return this.GetStats().DataSize;
+        }
+
+        /// <summary>
+        /// Gets the total storage size for the repository (data + indexes).
+        /// </summary>
+        /// <returns>Returns total storage size for the repository (data + indexes).</returns>
+        [Obsolete("This method will be removed in the next version of the driver")]
+        public virtual long GetTotalStorageSize()
+        {
+            return this.GetStats().StorageSize;
+        }
+
         ///// <summary>
         ///// Validates the integrity of the repository.
         ///// </summary>
@@ -233,15 +253,17 @@
         //    return this.collection.Validate();
         //}
 
-        ///// <summary>
-        ///// Gets stats for this repository.
-        ///// </summary>
-        ///// <returns>Returns a CollectionStatsResult.</returns>
-        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        //public virtual CollectionStatsResult GetStats()
-        //{
-        //    return this.collection.GetStats();
-        //}
+        /// <summary>
+        /// Gets stats for this repository.
+        /// </summary>
+        /// <returns>Returns a CollectionStatsResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        public virtual CollectionStatsResult GetStats()
+        {
+            return new CollectionStatsResult(
+                this.collection.Database.RunCommand(new BsonDocumentCommand<BsonDocument>(new BsonDocument { { "collstats", this.Name } }))
+            );
+        }
 
         ///// <summary>
         ///// Gets the indexes for this repository.
