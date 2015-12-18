@@ -65,6 +65,7 @@
     <Compile Include="RepositoryManager\CollectionStatsResult.cs" />
     <Compile Include="RepositoryManager\IRepositoryManager.cs" />
     <Compile Include="RepositoryManager\MongoRepositoryManager.cs" />
+    <Compile Include="RepositoryManager\ValidateCollectionResult.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\MongoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

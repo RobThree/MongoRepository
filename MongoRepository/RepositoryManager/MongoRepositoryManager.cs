@@ -2,17 +2,14 @@
 {
     using MongoDB.Bson;
     using MongoDB.Driver;
+    using MongoDB.Driver.Core.Operations;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     // TODO: Code coverage here is near-zero. A new RepoManagerTests.cs class needs to be created and we need to
-    //      test these methods. Ofcourse we also need to update codeplex documentation on this entirely new object.
+    //      test these methods. Ofcourse we also need to update documentation.
     //      This is a work-in-progress.
-
-    // TODO: GetStats(), Validate(), GetIndexes and EnsureIndexes(IMongoIndexKeys, IMongoIndexOptions) "leak"
-    //      MongoDb-specific details. These probably need to get wrapped in MongoRepository specific objects to hide
-    //      MongoDb.
 
     /// <summary>
     /// Deals with the collections of entities in MongoDb. This class tries to hide as much MongoDb-specific details
@@ -173,34 +170,16 @@
         /// </remarks>
         public virtual void EnsureIndexes(IEnumerable<string> keynames, bool descending, bool unique, bool sparse)
         {
-
-            //var ixk = new IndexKeysBuilder();
-            //if (descending)
-            //{
-            //    ixk.Descending(keynames.ToArray());
-            //}
-            //else
-            //{
-            //    ixk.Ascending(keynames.ToArray());
-            //}
-
-            //this.EnsureIndexes(
-            //    ixk,
-            //    new IndexOptionsBuilder().SetUnique(unique).SetSparse(sparse));
+            foreach (var k in keynames)
+            {
+                var opt = new CreateIndexOptions { Unique = unique, Sparse = sparse };
+                var builder = Builders<T>.IndexKeys;
+                if (descending)
+                    this.collection.Indexes.CreateOne(builder.Descending(k), opt);
+                else
+                    this.collection.Indexes.CreateOne(builder.Descending(k), opt);
+            }
         }
-
-        ///// <summary>
-        ///// Ensures that the desired indexes exist and creates them if they don't exist.
-        ///// </summary>
-        ///// <param name="keys">The indexed fields.</param>
-        ///// <param name="options">The index options.</param>
-        ///// <remarks>
-        ///// This method allows ultimate control but does "leak" some MongoDb specific implementation details.
-        ///// </remarks>
-        //public virtual void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options)
-        //{
-        //    this.collection.CreateIndex(keys, options);
-        //}
 
         /// <summary>
         /// Tests whether indexes exist.
@@ -224,6 +203,14 @@
         }
 
         /// <summary>
+        /// Runs the ReIndex command on this repository.
+        /// </summary>
+        public virtual void ReIndex()
+        {
+            this.collection.Database.RunCommand(new BsonDocumentCommand<BsonDocument>(new BsonDocument { { "reIndex", this.Name } }));
+        }
+
+        /// <summary>
         /// Gets the total size for the repository (data + indexes).
         /// </summary>
         /// <returns>Returns total size for the repository (data + indexes).</returns>
@@ -243,15 +230,17 @@
             return this.GetStats().StorageSize;
         }
 
-        ///// <summary>
-        ///// Validates the integrity of the repository.
-        ///// </summary>
-        ///// <returns>Returns a ValidateCollectionResult.</returns>
-        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        //public virtual ValidateCollectionResult Validate()
-        //{
-        //    return this.collection.Validate();
-        //}
+        /// <summary>
+        /// Validates the integrity of the repository.
+        /// </summary>
+        /// <returns>Returns a ValidateCollectionResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        public virtual ValidateCollectionResult Validate()
+        {
+            return new ValidateCollectionResult(
+                this.collection.Database.RunCommand(new BsonDocumentCommand<BsonDocument>(new BsonDocument { { "validate", this.Name } }))
+            );
+        }
 
         /// <summary>
         /// Gets stats for this repository.
@@ -265,14 +254,14 @@
             );
         }
 
-        ///// <summary>
-        ///// Gets the indexes for this repository.
-        ///// </summary>
-        ///// <returns>Returns the indexes for this repository.</returns>
-        //public virtual GetIndexesResult GetIndexes()
-        //{
-        //    return this.collection.GetIndexes();
-        //}
+        /// <summary>
+        /// Gets the indexes for this repository.
+        /// </summary>
+        /// <returns>Returns the indexes for this repository.</returns>
+        public virtual List<BsonDocument> GetIndexes()
+        {
+            return this.collection.Indexes.List().ToList();
+        }
     }
 
     /// <summary>

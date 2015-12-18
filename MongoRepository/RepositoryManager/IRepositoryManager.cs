@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using MongoDB.Driver;
     using System;
+    using MongoDB.Bson;
 
     /// <summary>
     /// IRepositoryManager definition.
@@ -29,11 +30,11 @@
         /// </summary>
         void Drop();
 
-        ///// <summary>
-        ///// Tests whether the repository is capped.
-        ///// </summary>
-        ///// <returns>Returns true when the repository is capped, false otherwise.</returns>
-        //bool IsCapped();
+        /// <summary>
+        /// Tests whether the repository is capped.
+        /// </summary>
+        /// <returns>Returns true when the repository is capped, false otherwise.</returns>
+        bool IsCapped();
 
         /// <summary>
         /// Drops specified index on the repository.
@@ -96,17 +97,6 @@
         /// </remarks>
         void EnsureIndexes(IEnumerable<string> keynames, bool descending, bool unique, bool sparse);
 
-        ///// <summary>
-        ///// Ensures that the desired indexes exist and creates them if they don't exist.
-        ///// </summary>
-        ///// <param name="keys">The indexed fields.</param>
-        ///// <param name="options">The index options.</param>
-        ///// <remarks>
-        ///// This is a convenience method for EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options).
-        ///// Index will be ascending order, non-unique, non-sparse.
-        ///// </remarks>
-        //void EnsureIndexes(IMongoIndexKeys keys, IMongoIndexOptions options);
-
         /// <summary>
         /// Tests whether indexes exist.
         /// </summary>
@@ -121,10 +111,10 @@
         /// <returns>Returns true when the indexes exist, false otherwise.</returns>
         bool IndexesExists(IEnumerable<string> keynames);
 
-        ///// <summary>
-        ///// Runs the ReIndex command on this repository.
-        ///// </summary>
-        //void ReIndex();
+        /// <summary>
+        /// Runs the ReIndex command on this repository.
+        /// </summary>
+        void ReIndex();
 
         /// <summary>
         /// Gets the total size for the repository (data + indexes).
@@ -138,12 +128,12 @@
         /// <returns>Returns total storage size for the repository (data + indexes).</returns>
         long GetTotalStorageSize();
 
-        ///// <summary>
-        ///// Validates the integrity of the repository.
-        ///// </summary>
-        ///// <returns>Returns a ValidateCollectionResult.</returns>
-        ///// <remarks>You will need to reference MongoDb.Driver.</remarks>
-        //ValidateCollectionResult Validate();
+        /// <summary>
+        /// Validates the integrity of the repository.
+        /// </summary>
+        /// <returns>Returns a ValidateCollectionResult.</returns>
+        /// <remarks>You will need to reference MongoDb.Driver.</remarks>
+        ValidateCollectionResult Validate();
 
         /// <summary>
         /// Gets stats for this repository.
@@ -152,11 +142,11 @@
         /// <remarks>You will need to reference MongoDb.Driver.</remarks>
         CollectionStatsResult GetStats();
 
-        ///// <summary>
-        ///// Gets the indexes for this repository.
-        ///// </summary>
-        ///// <returns>Returns the indexes for this repository.</returns>
-        //GetIndexesResult GetIndexes();
+        /// <summary>
+        /// Gets the indexes for this repository.
+        /// </summary>
+        /// <returns>Returns the indexes for this repository.</returns>
+        List<BsonDocument> GetIndexes();
     }
 
     /// <summary>
