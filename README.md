@@ -37,5 +37,3 @@ public class CustomerRepoTest
             repo.Update(newCustomer);
         }
 }
-```
-[<img src="http://i.imgur.com/2yf60gf.png" alt="Productivity Visual Studio add-in for C#, VB.NET, XML, XAML, ASP.NET and more">](http://www.jetbrains.com/resharper/features/index.html)

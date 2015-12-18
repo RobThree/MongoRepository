@@ -3,9 +3,9 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
     <title>MongoRepository</title>
-    <version>1.6.10</version>
-    <authors>tgeek, RobIII</authors>
-    <owners>tgeek</owners>
+    <version>2.0.0-alpha</version>
+    <authors>RobIII</authors>
+    <owners>RobIII</owners>
     <licenseUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/RobThree/MongoRepository</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -20,14 +20,10 @@
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.10.1]" />
+      <dependency id="MongoDB.Driver" version="2.2.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.dll" target="lib\net35" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net35.XML" target="lib\net35" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.dll" target="lib\net40" />
-    <file src="\MongoRepository\bin\Release\MongoRepository.Net40.XML" target="lib\net40" />
     <file src="\MongoRepository\bin\Release\MongoRepository.Net45.dll" target="lib\net45" />
     <file src="\MongoRepository\bin\Release\MongoRepository.Net45.XML" target="lib\net45" />
     <file src="\MongoRepository\app.config.transform" target="content" />
