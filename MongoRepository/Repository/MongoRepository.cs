@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Deals with entities in MongoDb.
@@ -132,6 +133,26 @@
         }
 
         /// <summary>
+        /// Adds the new entity in the repository asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity T.</param>
+        /// <returns>The added entity including its new ObjectId.</returns>
+        public virtual async Task<T> AddAsync(T entity)
+        {
+            await this.collection.InsertOneAsync(entity);
+            return entity;
+        }
+
+        /// <summary>
+        /// Adds the new entities in the repository asynchronously.
+        /// </summary>
+        /// <param name="entities">The entities of type T.</param>
+        public virtual async Task AddAsync(IEnumerable<T> entities)
+        {
+            await this.collection.InsertManyAsync(entities);
+        }
+
+        /// <summary>
         /// Upserts an entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -156,12 +177,44 @@
         }
 
         /// <summary>
+        /// asynchronously Updates  entities that match the expression
+        /// </summary>
+        /// <param name="predicate">The expression.</param>
+        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
+        /// <returns>Modified count.</returns>
+        public virtual async Task<long> UpdateAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition)
+        {
+            var result = await this.collection.UpdateManyAsync(predicate, updateDefinition);
+            return result.ModifiedCount;
+        }
+
+        /// <summary>
+        /// Updates one entity asynchronously.
+        /// </summary>
+        /// <param name="predicate">The expression.</param>
+        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
+        public virtual async Task UpdateOneAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition)
+        {
+            await this.collection.UpdateOneAsync(predicate, updateDefinition);            
+        }
+                      
+        /// <summary>
         /// Deletes an entity from the repository by its id.
         /// </summary>
         /// <param name="id">The entity's id.</param>
         public virtual void Delete(TKey id)
         {
             this.collection.DeleteOne(GetIDFilter(id));
+        }
+
+        /// <summary>
+        /// asynchronously Deletes an entity from the repository by its ObjectId.
+        /// </summary>
+        /// <param name="id">The ObjectId of the entity.</param>
+        public virtual void DeleteAsync(TKey id)
+        {
+            var filter = Builders<T>.Filter.Where(x => x.Id.Equals(id));
+            this.collection.DeleteOneAsync(filter);
         }
 
         /// <summary>
@@ -172,7 +225,7 @@
         {
             this.collection.DeleteOne(GetIDFilter(id));
         }
-
+                
         /// <summary>
         /// Deletes the given entity.
         /// </summary>
@@ -180,6 +233,15 @@
         public virtual void Delete(T entity)
         {
             this.Delete(entity.Id);
+        }
+
+        /// <summary>
+        /// asynchronously Deletes the given entity.
+        /// </summary>
+        /// <param name="entity">The entity to delete.</param>
+        public virtual async Task DeleteAsync(T entity)
+        {
+            await DeleteAsync(x => x.Id.Equals(entity.Id));
         }
 
         /// <summary>
@@ -192,6 +254,16 @@
         }
 
         /// <summary>
+        /// asynchronously Deletes the entities matching the predicate.
+        /// </summary>
+        /// <param name="predicate">The expression.</param>
+        public virtual async Task DeleteAsync(Expression<Func<T, bool>> predicate)
+        {
+            var filter = Builders<T>.Filter.Where(predicate);
+            await this.collection.DeleteManyAsync(filter);
+        }
+
+        /// <summary>
         /// Deletes all entities in the repository.
         /// </summary>
         public virtual void DeleteAll()
@@ -199,6 +271,14 @@
             this.collection.DeleteMany<T>(t => true);
         }
 
+        /// <summary>
+        /// asynchronously Deletes all entities in the repository.
+        /// </summary>
+        public virtual async void DeleteAllAsync()
+        {
+            await this.collection.DeleteManyAsync(x => true);
+        }
+        
         /// <summary>
         /// Counts the total entities in the repository.
         /// </summary>
