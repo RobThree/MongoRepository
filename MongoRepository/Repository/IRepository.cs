@@ -67,25 +67,23 @@
         T Update(T entity);
 
         /// <summary>
+        /// Upserts an entity asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
+        Task<T> UpdateAsync(T entity);
+
+        /// <summary>
         /// Upserts the entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
         void Update(IEnumerable<T> entities);
 
         /// <summary>
-        /// asynchronously Updates  entities that match the expression
+        /// Upserts the entities asynchronously.
         /// </summary>
-        /// <param name="predicate">The expression.</param>
-        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
-        /// <returns>Modified count.</returns>
-        Task<long> UpdateAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition);
-
-        /// <summary>
-        /// Updates one entity asynchronously.
-        /// </summary>
-        /// <param name="predicate">The expression.</param>
-        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
-        Task UpdateOneAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition);
+        /// <param name="entities">The entities to update.</param>
+        Task UpdateAsync(IEnumerable<T> entities);
 
 
         /// <summary>
@@ -95,7 +93,7 @@
         void Delete(TKey id);
 
         /// <summary>
-        /// asynchronously Deletes an entity from the repository by its ObjectId.
+        /// Deletes an entity from the repository by its ObjectId asynchronously.
         /// </summary>
         /// <param name="id">The ObjectId of the entity.</param>
         void DeleteAsync(TKey id);
@@ -107,7 +105,7 @@
         void Delete(T entity);
 
         /// <summary>
-        /// asynchronously Deletes the given entity.
+        /// Deletes the given entity asynchronously.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
         Task DeleteAsync(T entity);
@@ -119,7 +117,7 @@
         void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
-        /// asynchronously Deletes the entities matching the predicate.
+        /// Deletes the entities matching the predicate asynchronously.
         /// </summary>
         /// <param name="predicate">The expression.</param>
         Task DeleteAsync(Expression<Func<T, bool>> predicate);
@@ -128,9 +126,9 @@
         /// Deletes all entities in the repository.
         /// </summary>
         void DeleteAll();
-               
+
         /// <summary>
-        /// asynchronously Deletes all entities in the repository.
+        /// Deletes all entities in the repository asynchronously.
         /// </summary>
         void DeleteAllAsync();
 

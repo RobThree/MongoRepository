@@ -167,6 +167,21 @@
         }
 
         /// <summary>
+        /// Upserts an entity asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
+        public virtual async Task<T> UpdateAsync(T entity)
+        {
+            if (entity.Id == null)
+                await this.AddAsync(entity);
+            else
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+            return entity;
+
+        }
+
+        /// <summary>
         /// Upserts the entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
@@ -176,28 +191,20 @@
                 this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
         }
 
-        /// <summary>
-        /// asynchronously Updates  entities that match the expression
-        /// </summary>
-        /// <param name="predicate">The expression.</param>
-        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
-        /// <returns>Modified count.</returns>
-        public virtual async Task<long> UpdateAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition)
-        {
-            var result = await this.collection.UpdateManyAsync(predicate, updateDefinition);
-            return result.ModifiedCount;
-        }
+
 
         /// <summary>
-        /// Updates one entity asynchronously.
+        /// Upserts the entities asynchronously
         /// </summary>
-        /// <param name="predicate">The expression.</param>
-        /// <param name="updateDefinition">UpdateDefinition object for the entity</param>
-        public virtual async Task UpdateOneAsync(Expression<Func<T, bool>> predicate, UpdateDefinition<T> updateDefinition)
+        /// <param name="entities">The entities to update</param>
+        public virtual async Task UpdateAsync(IEnumerable<T> entities)
         {
-            await this.collection.UpdateOneAsync(predicate, updateDefinition);            
+            foreach (T entity in entities)
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
         }
-                      
+
+
+
         /// <summary>
         /// Deletes an entity from the repository by its id.
         /// </summary>
@@ -208,7 +215,7 @@
         }
 
         /// <summary>
-        /// asynchronously Deletes an entity from the repository by its ObjectId.
+        /// Deletes an entity from the repository by its ObjectId asynchronously.
         /// </summary>
         /// <param name="id">The ObjectId of the entity.</param>
         public virtual void DeleteAsync(TKey id)
@@ -225,7 +232,7 @@
         {
             this.collection.DeleteOne(GetIDFilter(id));
         }
-                
+
         /// <summary>
         /// Deletes the given entity.
         /// </summary>
@@ -236,7 +243,7 @@
         }
 
         /// <summary>
-        /// asynchronously Deletes the given entity.
+        /// Deletes the given entity asynchronously.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
         public virtual async Task DeleteAsync(T entity)
@@ -254,7 +261,7 @@
         }
 
         /// <summary>
-        /// asynchronously Deletes the entities matching the predicate.
+        /// Deletes the entities matching the predicate asynchronously.
         /// </summary>
         /// <param name="predicate">The expression.</param>
         public virtual async Task DeleteAsync(Expression<Func<T, bool>> predicate)
@@ -272,13 +279,13 @@
         }
 
         /// <summary>
-        /// asynchronously Deletes all entities in the repository.
+        /// Deletes all entities in the repository asynchronously.
         /// </summary>
         public virtual async void DeleteAllAsync()
         {
             await this.collection.DeleteManyAsync(x => true);
         }
-        
+
         /// <summary>
         /// Counts the total entities in the repository.
         /// </summary>
