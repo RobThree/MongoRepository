@@ -13,14 +13,15 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/mongorepositorylogo.png</iconUrl>
     <releaseNotes>
-      Documentation no longer installs in solution directory, from now on only a shortcut is created.
+      * Documentation no longer installs in solution directory, from now on only a shortcut is created.
+      * Updated to MongoCSharp driver 1.11
     </releaseNotes>
     <summary>
       Provides a repository pattern on top of 10gen's MongoDB C# driver.
     </summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="[1.10.1]" />
+      <dependency id="mongocsharpdriver" version="[1.11]" />
     </dependencies>
   </metadata>
   <files>
