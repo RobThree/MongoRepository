@@ -3,7 +3,7 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MongoRepository</id>
     <title>MongoRepository</title>
-    <version>1.6.10</version>
+    <version>1.6.11</version>
     <authors>tgeek, RobIII</authors>
     <owners>tgeek</owners>
     <licenseUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/LICENSE</licenseUrl>
@@ -13,7 +13,6 @@
     <tags>mongo mongodb repository</tags>
     <iconUrl>https://raw.githubusercontent.com/RobThree/MongoRepository/master/mongorepositorylogo.png</iconUrl>
     <releaseNotes>
-      * Documentation no longer installs in solution directory, from now on only a shortcut is created.
       * Updated to MongoCSharp driver 1.11
     </releaseNotes>
     <summary>
