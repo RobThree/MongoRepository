@@ -2,17 +2,20 @@
 {
     using MongoDB.Bson;
     using MongoDB.Driver;
+    using MongoDB.Driver.Linq;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using System.Threading;
 
     /// <summary>
     /// Deals with entities in MongoDb.
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
     /// <typeparam name="TKey">The type used for the entity's Id.</typeparam>
-    public class MongoRepository<T, TKey> : IRepository<T, TKey>
+    public class MongoRepository<T, TKey> : IRepositoryAsync<T, TKey>
         where T : IEntity<TKey>
     {
         /// <summary>
@@ -100,6 +103,17 @@
             return this.collection.FindSync<T>(GetIDFilter(id)).Single();
         }
 
+
+        /// <summary>
+        /// Returns the T by its given id.
+        /// </summary>
+        /// <param name="id">The Id of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
+        public async virtual Task<T> GetByIdAsync(TKey id)
+        {
+            return await this.collection.Find<T>(GetIDFilter(id)).SingleAsync();
+        }
+
         /// <summary>
         /// Returns the T by its given id.
         /// </summary>
@@ -109,6 +123,17 @@
         {
             return this.collection.FindSync<T>(GetIDFilter(id)).Single();
         }
+
+        /// <summary>
+        /// Returns the T by its given id.
+        /// </summary>
+        /// <param name="id">The Id of the entity to retrieve.</param>
+        /// <returns>The Entity T.</returns>
+        public async virtual Task<T> GetByIdAsync(ObjectId id)
+        {
+            return await this.collection.Find<T>(GetIDFilter(id)).SingleAsync();
+        }
+
 
         /// <summary>
         /// Adds the new entity in the repository.
@@ -122,6 +147,20 @@
             return entity;
         }
 
+
+        /// <summary>
+        /// Adds the new entity in the repository.
+        /// </summary>
+        /// <param name="entity">The entity T.</param>
+        /// <returns>The added entity including its new ObjectId.</returns>
+        public async virtual Task<T> AddAsync(T entity)
+        {
+            await this.collection.InsertOneAsync(entity);
+
+            return entity;
+        }
+
+
         /// <summary>
         /// Adds the new entities in the repository.
         /// </summary>
@@ -129,6 +168,15 @@
         public virtual void Add(IEnumerable<T> entities)
         {
             this.collection.InsertMany(entities);
+        }
+
+        /// <summary>
+        /// Adds the new entities in the repository.
+        /// </summary>
+        /// <param name="entities">The entities of type T.</param>
+        public async virtual Task AddAsync(IEnumerable<T> entities)
+        {
+            await this.collection.InsertManyAsync(entities);
         }
 
         /// <summary>
@@ -146,6 +194,20 @@
         }
 
         /// <summary>
+        /// Upserts an entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
+        public async virtual Task<T> UpdateAsync(T entity)
+        {
+            if (entity.Id == null)
+                await this.AddAsync(entity);
+            else
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+            return entity;
+        }
+
+        /// <summary>
         /// Upserts the entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
@@ -156,12 +218,33 @@
         }
 
         /// <summary>
+        /// Upserts the entities.
+        /// </summary>
+        /// <param name="entities">The entities to update.</param>
+        public async virtual Task UpdateAsync(IEnumerable<T> entities)
+        {
+            foreach (T entity in entities)
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+        }
+
+
+
+        /// <summary>
         /// Deletes an entity from the repository by its id.
         /// </summary>
         /// <param name="id">The entity's id.</param>
         public virtual void Delete(TKey id)
         {
             this.collection.DeleteOne(GetIDFilter(id));
+        }
+
+        /// <summary>
+        /// Deletes an entity from the repository by its id.
+        /// </summary>
+        /// <param name="id">The entity's id.</param>
+        public async virtual Task<DeleteResult> DeleteAsync(TKey id)
+        {
+            return await this.collection.DeleteOneAsync(GetIDFilter(id));
         }
 
         /// <summary>
@@ -174,12 +257,30 @@
         }
 
         /// <summary>
+        /// Deletes an entity from the repository by its ObjectId.
+        /// </summary>
+        /// <param name="id">The ObjectId of the entity.</param>
+        public async virtual Task<DeleteResult> DeleteAsync(ObjectId id)
+        {
+            return await this.collection.DeleteOneAsync(GetIDFilter(id));
+        }
+
+        /// <summary>
         /// Deletes the given entity.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
         public virtual void Delete(T entity)
         {
             this.Delete(entity.Id);
+        }
+
+        /// <summary>
+        /// Deletes the given entity.
+        /// </summary>
+        /// <param name="entity">The entity to delete.</param>
+        public async virtual Task<DeleteResult> DeleteAsync(T entity)
+        {
+            return await this.DeleteAsync(entity.Id);
         }
 
         /// <summary>
@@ -192,11 +293,28 @@
         }
 
         /// <summary>
+        /// Deletes the entities matching the predicate.
+        /// </summary>
+        /// <param name="predicate">The expression.</param>
+        public async virtual Task<DeleteResult> DeleteAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await this.collection.DeleteManyAsync<T>(predicate);
+        }
+
+        /// <summary>
         /// Deletes all entities in the repository.
         /// </summary>
         public virtual void DeleteAll()
         {
             this.collection.DeleteMany<T>(t => true);
+        }
+
+        /// <summary>
+        /// Deletes all entities in the repository.
+        /// </summary>
+        public async virtual Task<DeleteResult> DeleteAllAsync()
+        {
+            return await this.collection.DeleteManyAsync<T>(t => true);
         }
 
         /// <summary>
@@ -209,6 +327,15 @@
         }
 
         /// <summary>
+        /// Counts the total entities in the repository.
+        /// </summary>
+        /// <returns>Count of entities in the collection.</returns>
+        public async virtual Task<long> CountAsync()
+        {
+            return await this.collection.CountAsync(t => true);
+        }
+
+        /// <summary>
         /// Checks if the entity exists for given predicate.
         /// </summary>
         /// <param name="predicate">The expression.</param>
@@ -216,6 +343,16 @@
         public virtual bool Exists(Expression<Func<T, bool>> predicate)
         {
             return this.collection.AsQueryable<T>().Any(predicate);
+        }
+
+        /// <summary>
+        /// Checks if the entity exists for given predicate.
+        /// </summary>
+        /// <param name="predicate">The expression.</param>
+        /// <returns>True when an entity matching the predicate exists, false otherwise.</returns>
+        public async virtual Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await this.collection.AsQueryable().AnyAsync(predicate);
         }
 
         private static FilterDefinition<T> GetIDFilter(ObjectId id)
@@ -272,6 +409,41 @@
         {
             get { return this.collection.AsQueryable<T>().Provider; }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~MongoRepository() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
         #endregion
     }
 
@@ -280,7 +452,7 @@
     /// </summary>
     /// <typeparam name="T">The type contained in the repository.</typeparam>
     /// <remarks>Entities are assumed to use strings for Id's.</remarks>
-    public class MongoRepository<T> : MongoRepository<T, string>, IRepository<T>
+    public class MongoRepository<T> : MongoRepository<T, string>, IRepositoryAsync<T>
         where T : IEntity<string>
     {
         /// <summary>

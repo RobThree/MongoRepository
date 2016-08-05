@@ -23,7 +23,7 @@ namespace MongoRepositoryTests
         [TestCleanup]
         public void Cleanup()
         {
-            this.DropDB();
+            //this.DropDB();
         }
 
         private void DropDB()
@@ -83,6 +83,58 @@ namespace MongoRepositoryTests
 
             Assert.IsTrue(_customerRepo.Exists(c => c.HomeAddress.Country == "Alaska"));
         }
+
+
+        [TestMethod]
+        public async void AddAndUpdateAsyncTest()
+        {
+            var _customerRepo = new MongoRepository<Customer>();
+            IRepositoryManager<Customer> _customerMan = new MongoRepositoryManager<Customer>();
+
+            Assert.IsFalse(_customerMan.Exists);
+
+            var customer = new Customer();
+            customer.FirstName = "Bob";
+            customer.LastName = "Dillon";
+            customer.Phone = "0900999899";
+            customer.Email = "Bob.dil@snailmail.com";
+            customer.HomeAddress = new Address
+            {
+                Address1 = "North kingdom 15 west",
+                Address2 = "1 north way",
+                PostCode = "40990",
+                City = "George Town",
+                Country = "Alaska"
+            };
+
+            await _customerRepo.AddAsync(customer);
+
+            Assert.IsTrue(_customerMan.Exists);
+
+            Assert.IsNotNull(customer.Id);
+
+            // fetch it back 
+            var alreadyAddedCustomer = _customerRepo.Where(c => c.FirstName == "Bob").Single();
+
+            Assert.IsNotNull(alreadyAddedCustomer);
+            Assert.AreEqual(customer.FirstName, alreadyAddedCustomer.FirstName);
+            Assert.AreEqual(customer.HomeAddress.Address1, alreadyAddedCustomer.HomeAddress.Address1);
+
+            alreadyAddedCustomer.Phone = "10110111";
+            alreadyAddedCustomer.Email = "dil.bob@fastmail.org";
+
+            await _customerRepo.UpdateAsync(alreadyAddedCustomer);
+
+            // fetch by id now 
+            var updatedCustomer = _customerRepo.GetById(customer.Id);
+
+            Assert.IsNotNull(updatedCustomer);
+            Assert.AreEqual(alreadyAddedCustomer.Phone, updatedCustomer.Phone);
+            Assert.AreEqual(alreadyAddedCustomer.Email, updatedCustomer.Email);
+
+            Assert.IsTrue(_customerRepo.Exists(c => c.HomeAddress.Country == "Alaska"));
+        }
+
 
         [TestMethod]
         public void ComplexEntityTest()
