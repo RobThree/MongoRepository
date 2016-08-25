@@ -14,6 +14,12 @@
         Task<T> GetByIdAsync(TKey id);
 
         /// <summary>
+        /// Returns all of the entities in the repository.
+        /// </summary>
+        /// <returns>A List of type T containing all of the entities in the repository.</returns>
+        Task<List<T>> GetAllAsync();
+
+        /// <summary>
         /// Adds the new entity in the repository.
         /// </summary>
         /// <param name="entity">The entity to add.</param>

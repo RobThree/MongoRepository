@@ -2,6 +2,7 @@
 {
     using MongoDB.Bson;
     using MongoDB.Driver;
+    using MongoDB.Driver.Core;
     using MongoDB.Driver.Linq;
     using System;
     using System.Collections.Generic;
@@ -103,6 +104,14 @@
             return this.collection.FindSync<T>(GetIDFilter(id)).Single();
         }
 
+        /// <summary>
+        /// Returns all of the entities in the repository.
+        /// </summary>
+        /// <returns>A List of type T containing all of the entities in the repository.</returns>
+        public async virtual Task<List<T>> GetAllAsync()
+        {
+            return await this.collection.Find(new BsonDocument()).ToListAsync();
+        }
 
         /// <summary>
         /// Returns the T by its given id.
