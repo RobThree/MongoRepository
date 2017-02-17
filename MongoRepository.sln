@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "MongoRepositoryTests\MongoRepositoryTests.csproj", "{7C8276C3-819A-4EA1-BFDA-64C3760B0037}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -26,11 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{288E65
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Net45", "MongoRepository\MongoRepository.Net45.csproj", "{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "MongoRepositoryDocumentation", "Help\MongoRepositoryDocumentation.shfbproj", "{08800A8D-1A63-490B-9F1B-695112E272F7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7} = {CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +40,6 @@ Global
 		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08800A8D-1A63-490B-9F1B-695112E272F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08800A8D-1A63-490B-9F1B-695112E272F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08800A8D-1A63-490B-9F1B-695112E272F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
