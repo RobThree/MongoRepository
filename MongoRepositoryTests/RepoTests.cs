@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
-using MongoRepository;
 using MongoRepositoryTests.Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using MongoRepository;
 
 namespace MongoRepositoryTests
 {

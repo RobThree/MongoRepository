@@ -1,5 +1,5 @@
-﻿using MongoRepository;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoRepository;
 
 namespace MongoRepositoryTests.Entities
 {

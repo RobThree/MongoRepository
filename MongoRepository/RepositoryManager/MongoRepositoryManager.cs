@@ -235,7 +235,7 @@
         [Obsolete("This method will be removed in the next version of the driver")]
         public virtual long GetTotalDataSize()
         {
-            return this.collection.GetTotalDataSize();
+            return this.collection.GetStats().DataSize;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@
         [Obsolete("This method will be removed in the next version of the driver")]
         public virtual long GetTotalStorageSize()
         {
-            return this.collection.GetTotalStorageSize();
+            return this.collection.GetStats().StorageSize;
         }
 
         /// <summary>
