@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MongoRepository;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoRepository;
 
 namespace MongoRepositoryTests.Entities
 {

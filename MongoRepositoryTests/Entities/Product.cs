@@ -1,5 +1,4 @@
-﻿using System;
-using MongoRepository;
+﻿using MongoRepository;
 
 namespace MongoRepositoryTests.Entities
 {
