@@ -111,6 +111,15 @@
         }
 
         /// <summary>
+        /// Returns a IQueryable<T> allowing diskuse to handle large datasets.
+        /// </summary>
+        /// <returns>IQueryable T.</returns>
+        public virtual IQueryable<T> GetLargeDataSet()
+        {
+          return this.collection.AsQueryable<T>(new AggregateOptions { AllowDiskUse = true });
+        }
+
+        /// <summary>
         /// Adds the new entity in the repository.
         /// </summary>
         /// <param name="entity">The entity T.</param>
