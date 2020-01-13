@@ -1,1 +1,1 @@
-.nuget\nuget pack MongoRepository.nuspec
+nuget pack MongoRepository.nuspec

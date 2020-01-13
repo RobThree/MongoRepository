@@ -1,5 +1,6 @@
 ﻿namespace MongoRepository
 {
+    using MongoDB.Bson;
     using MongoDB.Driver;
     using System;
     using System.Configuration;
@@ -13,6 +14,11 @@
         /// The default key MongoRepository will look for in the App.config or Web.config file.
         /// </summary>
         private const string DefaultConnectionstringName = "MongoServerSettings";
+
+        static Util()
+        {
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+        }
 
         /// <summary>
         /// Retrieves the default connectionstring from the App.config or Web.config file.

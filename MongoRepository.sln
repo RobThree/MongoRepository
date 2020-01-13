@@ -1,19 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Net40", "MongoRepository\MongoRepository.Net40.csproj", "{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC} = {9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "MongoRepositoryTests\MongoRepositoryTests.csproj", "{7C8276C3-819A-4EA1-BFDA-64C3760B0037}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC} = {9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC}
-		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7} = {CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D62DDBAF-08C6-4130-890A-888910785B65}"
 	ProjectSection(SolutionItems) = preProject
 		buildnugetpackage.cmd = buildnugetpackage.cmd
@@ -23,11 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{288E6547-DDFC-459F-8BF8-5225F06085FC}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Net40", "MongoRepository\MongoRepository.Net40.csproj", "{E2C4A7F9-4B14-46CB-BFCE-AFABFACB3390}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC} = {9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepositoryTests", "MongoRepositoryTests\MongoRepositoryTests.csproj", "{7C8276C3-819A-4EA1-BFDA-64C3760B0037}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC} = {9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC}
+		{CE75B2FE-C027-42F6-8D00-E44CC38BE7C7} = {CE75B2FE-C027-42F6-8D00-E44CC38BE7C7}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Net35", "MongoRepository\MongoRepository.Net35.csproj", "{9D7ED6B5-2B34-4EC6-88CF-CDA2F07431AC}"
@@ -73,5 +66,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45C743B9-251C-4EF4-BCA6-D8307C3EBFA3}
 	EndGlobalSection
 EndGlobal
